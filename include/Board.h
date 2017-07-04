@@ -21,6 +21,9 @@ class Board {
   void tick();
   Board(int width, int height);
   Ball &getBall(int num);
+  Tile &getTile(int num);
+  int numTiles();
+
 };
 
 #endif

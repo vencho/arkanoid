@@ -44,7 +44,8 @@ bool Ball::collideLine(int val, bool vertical, bool smallsidesolid) {
   // for membership in the solid halfplane to determine collision.
   int extremecoordinate = smallsidesolid ? coordinate - BALL_R : coordinate + BALL_R;
   // A collision takes place if that extreme tip is in the solid halfplane.
-  bool collision = smallsidesolid ? (extremecoordinate <= val) : (extremecoordinate >= val);
+  bool collision = smallsidesolid ? (extremecoordinate <= val && coordinate >= val) : 
+    (extremecoordinate >= val && coordinate <= val);
 
   if(!collision) {
     // No reflection, no change to ball.
@@ -76,10 +77,13 @@ bool Ball::collideSegment(int val, bool vertical, bool smallsidesolid, int vlow,
 void Ball::collide(Tile &tile) {
   bool havecollided = false;
   havecollided |= collideSegment(tile.getY(), false, false, tile.getX(), tile.getX() + TILE_WIDTH);
+  if(havecollided) { tile.takeDamage(); return ; }
   havecollided |= collideSegment(tile.getY() + TILE_HEIGHT, false, true, tile.getX(), tile.getX() + TILE_WIDTH);
-  havecollided |= collideSegment(tile.getX(), true, false, tile.getY(), tile.getY() + TILE_HEIGHT);
+  if(havecollided) { tile.takeDamage(); return ; }
   havecollided |= collideSegment(tile.getX(), true, true, tile.getY(), tile.getY() + TILE_HEIGHT);
-  if(havecollided) tile.takeDamage();
+  if(havecollided) { tile.takeDamage(); return ; }
+  havecollided |= collideSegment(tile.getX(), true, false, tile.getY(), tile.getY() + TILE_HEIGHT);
+  if(havecollided) { tile.takeDamage(); return ; }
 }
 
 void Ball::collideBorders() {

@@ -4,6 +4,7 @@ Tile::Tile(int i, int j, int healthleft) {
   this -> x = (j-1)*TILE_WIDTH;
   this -> y = (i-1)*TILE_HEIGHT;
   this -> healthleft = healthleft;
+  this -> indestructible = false;
 }
 
 int Tile::getX() {

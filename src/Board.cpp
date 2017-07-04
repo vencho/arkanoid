@@ -1,5 +1,6 @@
 #include<Board.h>
 #include<Ball.h>
+#include<cstdio>
 
 bool Board::gameWon() {
   return tiles.size() == 0;
@@ -14,6 +15,7 @@ void Board::collisionLogic() {
     for(int j = 0; j < tiles.size(); j++) {
       balls[i].collide(tiles[j]);
       if(tiles[j].getHealth() == 0) {
+	printf("Tile removed.\n");
 	tiles[j] = tiles.back();
 	tiles.pop_back();
 	j--;
@@ -34,6 +36,11 @@ Board::Board(int width, int height) {
   this -> width = width;
   this -> height = height;
   balls.push_back(Ball(width/2, height/2, 3, 3));
+
+  tiles.push_back(Tile(4, 1, 2));
+  tiles.push_back(Tile(4, 3, 2));
+  tiles.push_back(Tile(4, 5, 2));
+  tiles.push_back(Tile(4, 7, 2));
 }
 
 void Board::tick() {
@@ -52,4 +59,12 @@ void Board::report() {
 
 Ball & Board::getBall(int num) {
   return balls[num];
+}
+
+int Board::numTiles() {
+  return tiles.size();
+}
+
+Tile & Board::getTile(int i) {
+  return tiles[i];
 }
