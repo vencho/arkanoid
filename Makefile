@@ -11,16 +11,17 @@ OBJECTS = \
 ./$(OBJDIR)/Tile.o \
 ./$(OBJDIR)/Paddle.o \
 ./$(OBJDIR)/Ball.o \
-./$(OBJDIR)/Board.o
+./$(OBJDIR)/Board.o \
+./$(OBJDIR)/View.o
 
 
 all : main
 
 main : $(OBJECTS)
-	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main -w $(LIBS)
+	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main $(LIBS)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CC) $(FLAGS) -I$(INCDIR) -c $< -o $@
+	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) -c $< -o $@ $(LIBS)
 
 #obj/Tile.o : $(SRCDIR)/Tile.cpp $(INCDIR)/Tile.h
 #	$(CC) $(FLAGS) -I$(INCDIR) -c $(SRCDIR)/Tile.cpp -o $(OBJDIR)/Tile.o
@@ -36,4 +37,5 @@ clean :
 	rm -f $(OBJDIR)/* ;
 	rm -f $(BINDIR)/* ;
 	rm -f $(SRCDIR)/*~;
+	rm -f $(INCDIR)/*~;
 	rm -f *~

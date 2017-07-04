@@ -20,6 +20,7 @@ class Board {
   void report();
   void tick();
   Board(int width, int height);
+  Ball &getBall(int num);
 };
 
 #endif

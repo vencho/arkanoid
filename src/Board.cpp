@@ -1,4 +1,5 @@
 #include<Board.h>
+#include<Ball.h>
 
 bool Board::gameWon() {
   return tiles.size() == 0;
@@ -46,4 +47,9 @@ void Board::report() {
   for(int i = 0; i < balls.size(); i++) {
     balls[i].report();
   }
+}
+
+
+Ball & Board::getBall(int num) {
+  return balls[num];
 }
