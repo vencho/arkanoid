@@ -41,6 +41,7 @@ Board::Board(int width, int height) {
   tiles.push_back(Tile(4, 3, 2));
   tiles.push_back(Tile(4, 5, 2));
   tiles.push_back(Tile(4, 7, 2));
+
 }
 
 void Board::tick() {

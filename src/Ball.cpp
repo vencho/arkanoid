@@ -40,6 +40,9 @@ bool Ball::collideLine(int val, bool vertical, bool smallsidesolid) {
   int &coordinate = vertical ? x : y;
   // The velocity in that coordinate.
   int &velocity = vertical ? dx : dy;
+  
+  if( (velocity <= 0) != smallsidesolid ) return false;
+  
   // One of the four tips of the ball, the one which needs to be checked
   // for membership in the solid halfplane to determine collision.
   int extremecoordinate = smallsidesolid ? coordinate - BALL_R : coordinate + BALL_R;
@@ -67,11 +70,14 @@ The first three arguments define a solid halfplane as in Ball::collideLine(val, 
 The arguments vlow and vhigh define the extent of the segment in the non-constant coordinate of the line.
 */
 bool Ball::collideSegment(int val, bool vertical, bool smallsidesolid, int vlow, int vhigh) {
-  int othercoordinate = vertical ? y : x;
-  if(vlow <= othercoordinate && othercoordinate <= vhigh) {
-    return collideLine(val, vertical, smallsidesolid);
+  int oc = vertical ? y : x;
+  if(!(vlow <= oc-BALL_R && oc-BALL_R <= vhigh) && 
+     !(vlow <= oc+BALL_R && oc+BALL_R <= vhigh)) {
+    return false;
   }
-  return false;
+
+
+  return collideLine(val, vertical, smallsidesolid);
 }
 
 void Ball::collide(Tile &tile) {
