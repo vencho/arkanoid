@@ -22,6 +22,7 @@ class Board {
   Board(int width, int height);
   Ball &getBall(int num);
   Tile &getTile(int num);
+  Paddle &getPaddle();
   int numTiles();
 
 };

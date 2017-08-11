@@ -1,5 +1,6 @@
 #include<Board.h>
 #include<Ball.h>
+#include<Paddle.h>
 #include<cstdio>
 
 bool Board::gameWon() {
@@ -32,7 +33,9 @@ void Board::collisionLogic() {
   }
 }
 
-Board::Board(int width, int height) {
+Board::Board(int width, int height) : 
+  player(width/2 - BASE_PADDLE_WIDTH/2, PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT) {
+
   this -> width = width;
   this -> height = height;
   balls.push_back(Ball(width/2, height/2, 3, 3));
@@ -41,7 +44,6 @@ Board::Board(int width, int height) {
   tiles.push_back(Tile(4, 3, 2));
   tiles.push_back(Tile(4, 5, 2));
   tiles.push_back(Tile(4, 7, 2));
-
 }
 
 void Board::tick() {
@@ -68,4 +70,8 @@ int Board::numTiles() {
 
 Tile & Board::getTile(int i) {
   return tiles[i];
+}
+
+Paddle & Board::getPaddle() {
+  return player;
 }

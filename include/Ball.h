@@ -11,11 +11,11 @@ class Ball {
   int x, y, dx, dy;
   bool collideSegment(int val, bool vertical, bool smallsidesolid, int vlow, int vhigh);
   bool collideLine(int val, bool vertical, bool smallsidesolid);
+  void move();
 
  public:
   int getX();
   int getY();
-  void move();
   void tick();
   void collide(Tile &tile);
   void collide(Paddle &player);

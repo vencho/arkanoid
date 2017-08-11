@@ -21,7 +21,7 @@ int main() {
   clock();
 
 
-  Board B = Board(MAXX, MAXY);
+  Board B(MAXX, MAXY);
   View V(B);
   bool quit = false;
 

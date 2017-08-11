@@ -20,7 +20,7 @@ all : main
 main : $(OBJECTS)
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main $(LIBS)
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+$(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCDIR)/Global.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) -c $< -o $@ $(LIBS)
 
 #obj/Tile.o : $(SRCDIR)/Tile.cpp $(INCDIR)/Tile.h
