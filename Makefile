@@ -12,10 +12,12 @@ OBJECTS = \
 ./$(OBJDIR)/Paddle.o \
 ./$(OBJDIR)/Ball.o \
 ./$(OBJDIR)/Board.o \
-./$(OBJDIR)/View.o
+./$(OBJDIR)/View.o \
+./$(OBJDIR)/RectangularObject.o \
+./$(OBJDIR)/MovableRectangularObject.o 
 
 
-all : main
+all : main 
 
 main : $(OBJECTS)
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main $(LIBS)
@@ -23,19 +25,10 @@ main : $(OBJECTS)
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCDIR)/Global.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) -c $< -o $@ $(LIBS)
 
-#obj/Tile.o : $(SRCDIR)/Tile.cpp $(INCDIR)/Tile.h
-#	$(CC) $(FLAGS) -I$(INCDIR) -c $(SRCDIR)/Tile.cpp -o $(OBJDIR)/Tile.o
-
-#obj/Paddle.o : $(SRCDIR)/Paddle.cpp $(INCDIR)/Paddle.h
-#	$(CC) $(FLAGS) -I$(INCDIR) -c $(SRCDIR)/Paddle.cpp -o $(OBJDIR)/Paddle.o
-
-#obj/Ball.o : $(SRCDIR)/Ball.cpp $(INCDIR)/Ball.h
-#	$(CC) $(FLAGS) -I$(INCDIR) -c $(SRCDIR)/Ball.cpp -o $(OBJDIR)/Ball.o
-
-
 clean :
 	rm -f $(OBJDIR)/* ;
 	rm -f $(BINDIR)/* ;
 	rm -f $(SRCDIR)/*~;
 	rm -f $(INCDIR)/*~;
 	rm -f *~
+

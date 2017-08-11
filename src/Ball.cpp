@@ -1,28 +1,7 @@
 #include<Ball.h>
 #include<cstdio>
 
-Ball::Ball(int x, int y, int dx, int dy) {
-  this -> x = x;
-  this -> y = y;
-  this -> dx = dx;
-  this -> dy = dy;
-}
-
-int Ball::getX() {
-  return x;
-}
-
-int Ball::getY() {
-  return y;
-}
-
-void Ball::tick() {
-  move();
-}
-
-void Ball::move() {
-  x += dx; y += dy;
-}
+Ball::Ball(int x, int y, int dx, int dy) : MovableRectangularObject(x, y, BALL_R, BALL_R, dx, dy) { }
 
 void Ball::collide(Paddle &player) {
 
@@ -39,7 +18,7 @@ bool Ball::collideLine(int val, bool vertical, bool smallsidesolid) {
   // Which coordinate of the ball matters for the reflection.
   int &coordinate = vertical ? x : y;
   // The velocity in that coordinate.
-  int &velocity = vertical ? dx : dy;
+  int &velocity = vertical ? velocityX : velocityY;
   
   if( (velocity <= 0) != smallsidesolid ) return false;
   
@@ -101,5 +80,5 @@ void Ball::collideBorders() {
 }
 
 void Ball::report() {
-  printf("Position (%d %d), direction (%d %d)\n", x, y, dx, dy);
+  printf("Position (%d %d), direction (%d %d)\n", getX(), getY(), getVelocityX(), getVelocityY());
 }

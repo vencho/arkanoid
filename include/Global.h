@@ -14,7 +14,7 @@
 #define MAXX  (13*TILE_WIDTH)
 #define MAXY  (30*TILE_HEIGHT)
 
-#define BALL_R 2
+#define BALL_R 10
 
 #define FPS 60
 #define SPF (1./60)

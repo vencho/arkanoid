@@ -1,6 +1,7 @@
 #include<View.h>
 #include<Board.h>
 #include<Ball.h>
+#include<Paddle.h>
 
 View::View(Board &newBoard) : board(newBoard) {
   

@@ -49,6 +49,7 @@ Board::Board(int width, int height) :
 void Board::tick() {
   for(int i = 0; i < balls.size(); i++) {
     balls[i].tick();
+    //    printf("ball ticking\n");
   }
   collisionLogic();
 }
