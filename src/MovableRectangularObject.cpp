@@ -23,3 +23,7 @@ void MovableRectangularObject::tick() {
 
 int MovableRectangularObject::getVelocityX() { return velocityX; }
 int MovableRectangularObject::getVelocityY() { return velocityY; }
+
+void MovableRectangularObject::setVelocity(int dx, int dy) { setVelocityX(dx); setVelocityY(dy); }
+void MovableRectangularObject::setVelocityX(int dx) { velocityX = dx; }
+void MovableRectangularObject::setVelocityY(int dy) { velocityY = dy; }

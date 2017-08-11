@@ -1,7 +1,7 @@
 #include<Ball.h>
 #include<cstdio>
 
-Ball::Ball(int x, int y, int dx, int dy) : MovableRectangularObject(x, y, BALL_R, BALL_R, dx, dy) { }
+Ball::Ball(int x, int y, int dx, int dy) : MovableRectangularObject(x-BALL_R, y-BALL_R, 2*BALL_R, 2*BALL_R, dx, dy) { }
 
 void Ball::collide(Paddle &player) {
 

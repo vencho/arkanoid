@@ -38,7 +38,7 @@ Board::Board(int width, int height) :
 
   this -> width = width;
   this -> height = height;
-  balls.push_back(Ball(width/2, height/2, 3, 3));
+  balls.push_back(Ball(width/2, height/2, BALL_SPEED_X, BALL_SPEED_Y));
 
   tiles.push_back(Tile(4, 1, 2));
   tiles.push_back(Tile(4, 3, 2));
@@ -49,8 +49,8 @@ Board::Board(int width, int height) :
 void Board::tick() {
   for(int i = 0; i < balls.size(); i++) {
     balls[i].tick();
-    //    printf("ball ticking\n");
   }
+  player.tick();
   collisionLogic();
 }
 

@@ -31,12 +31,26 @@ int main() {
     t1 = clock();
 
     while(SDL_PollEvent(&e)) {
+      /*
       if(e.type == SDL_KEYDOWN) {
 	if(e.key.keysym.sym == SDLK_q) {
 	  quit = true;
 	}
       }
+      */
     }
+
+    const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
+
+    Uint8 leftPressed = currentKeyStates[SDL_SCANCODE_A];
+    Uint8 rightPressed = currentKeyStates[SDL_SCANCODE_D];
+    int dx;
+    if( (leftPressed ^ rightPressed) == 0 ) { dx = 0; } 
+    else if(leftPressed) { dx = -1; } 
+    else { dx = 1; }
+    B.getPaddle().setVelocity(dx*PADDLE_SPEED, 0);
+
+    if(currentKeyStates[SDL_SCANCODE_Q]) quit = true;
 
     B.tick();
 
