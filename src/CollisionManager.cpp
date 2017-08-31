@@ -1,11 +1,14 @@
 #include<CollisionManager.h>
+#include<Global.h>
 
-
-CollisionManager::Line::Line(bool v, int cc, bool sss) : vertical(v), constantCoordinate(cc), smallSideSolid(sss) { }
+CollisionManager::Line::Line(bool v, int cc, bool sss) : vertical(v), constantCoordinate(cc), smallsidesolid(sss) { }
 CollisionManager::Segment::Segment(bool v, int cc, bool sss, int vcl, int vch) : 
   CollisionManager::Line::Line(v, cc, sss), variableCoordinateLow(vcl), variableCoordinateHigh(vch) { }
 
 
+/*
+Collision with tile.
+*/
 bool CollisionManager::collideRectangle(MovableRectangularObject &ball, RectangularObject &tile, bool reflect) {
   bool havecollided = false;
   
@@ -22,32 +25,36 @@ bool CollisionManager::collideRectangle(MovableRectangularObject &ball, Rectangu
 
 /*
 Collision with segment. 
-The first three arguments define a solid halfplane as in Ball::collideLine(x, vertical, smallsidesolid).
-The arguments ylow and yhigh define the extent of the segment in the non-constant coordinate of the line.
 */
 bool CollisionManager::collideSegment(
 				      MovableRectangularObject &ball, 
-				      Segment &S,
+				      CollisionManager::Segment S,
 				      bool reflect) {
   int ballLow = S.vertical ? ball.getY() : ball.getX();
   int boundedCoordinateExtent = S.vertical ? ball.getHeight() : ball.getWidth();
   int ballHigh = ballLow + boundedCoordinateExtent;
 
   if(S.variableCoordinateLow > ballHigh) return false;
-  if(S.variableCoordinateHigh > ballLow) return false;
+  if(S.variableCoordinateHigh < ballLow) return false;
 
   return collideLine(ball, S, reflect);
 }
 
+bool CollisionManager::collideBorders(MovableRectangularObject &ball) {
+  bool havecollided;
+  havecollided |= collideLine(ball, Line(true, 0, true), true);
+  havecollided |= collideLine(ball, Line(false, 0, true), true);
+  havecollided |= collideLine(ball, Line(true, MAXX, false), true);
+  havecollided |= collideLine(ball, Line(false, MAXY, false), true);
+  return havecollided;
+}
 
 /*
 Collision and reflection with an infinite line L.
-The constant coordinate of this line is the first argument val.
-This line is vertical or horizontal, indicated by the second parameter.
-If smallsidesolid is true, then { z : z <= coordinate } is the solid side.
-Otherwise it is { z : z >= coordinate }.
 */
-bool CollisionManager::collideLine(MovableRectangularObject &ball, Line &L, bool reflect) {
+bool CollisionManager::collideLine(MovableRectangularObject &ball, 
+					  CollisionManager::Line L, 
+					  bool reflect) {
   // Which coordinate of the ball matters for the reflection.
   int coordinate = L.vertical ? ball.getX() : ball.getY();
 
@@ -85,8 +92,8 @@ bool CollisionManager::collideLine(MovableRectangularObject &ball, Line &L, bool
   // Make coordinate refer to corner again.
   coordinate -= extent / 2;
 
-  // Set the new value for coordinate, and possibly velocity.
-  if(vertical) {
+  // Set the new value for coordinate and velocity.
+  if(L.vertical) {
     ball.setX(coordinate); 
     ball.setVelocityX(velocity);
   }

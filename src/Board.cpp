@@ -2,6 +2,7 @@
 #include<Ball.h>
 #include<Paddle.h>
 #include<cstdio>
+#include<CollisionManager.h>
 
 bool Board::gameWon() {
   return tiles.size() == 0;
@@ -14,7 +15,8 @@ bool Board::gameLost() {
 void Board::collisionLogic() {
   for(int i = 0; i < balls.size(); i++) {
     for(int j = 0; j < tiles.size(); j++) {
-      balls[i].collide(tiles[j]);
+      if(CollisionManager::collideRectangle(balls[i], tiles[j], true)) tiles[j].takeDamage();
+
       if(tiles[j].getHealth() == 0) {
 	printf("Tile removed.\n");
 	tiles[j] = tiles.back();
@@ -25,11 +27,11 @@ void Board::collisionLogic() {
   }
 
   for(int i = 0; i < balls.size(); i++) {
-    balls[i].collide(player);
+    CollisionManager::collideRectangle(balls[i], player, true);
   }
 
   for(int i = 0; i < balls.size(); i++) {
-    balls[i].collideBorders();
+    CollisionManager::collideBorders(balls[i]);
   }
 }
 

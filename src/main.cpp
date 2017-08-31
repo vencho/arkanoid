@@ -61,7 +61,6 @@ int main() {
     
     t2 = clock();
     double secondsspent = (t2 - t1) / ( (double) CLOCKS_PER_SEC) ;
-
     int delay = (int)(1000*(SPF - secondsspent));
     SDL_Delay(delay);
   }

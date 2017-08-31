@@ -14,12 +14,12 @@ OBJECTS = \
 ./$(OBJDIR)/Board.o \
 ./$(OBJDIR)/View.o \
 ./$(OBJDIR)/RectangularObject.o \
-./$(OBJDIR)/MovableRectangularObject.o 
-
+./$(OBJDIR)/MovableRectangularObject.o \
+./$(OBJDIR)/CollisionManager.o
 
 all : main 
 
-main : $(OBJECTS)
+main : $(OBJECTS) $(INCDIR)/Global.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main $(LIBS)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCDIR)/Global.h

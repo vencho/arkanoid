@@ -11,3 +11,5 @@ int RectangularObject::getX() { return x; }
 int RectangularObject::getY() { return y; }
 int RectangularObject::getWidth() { return width; }
 int RectangularObject::getHeight() { return height; }
+void RectangularObject::setX(int x) { this -> x = x; }
+void RectangularObject::setY(int y) { this -> y = y; }

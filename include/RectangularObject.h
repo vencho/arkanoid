@@ -9,6 +9,8 @@ class RectangularObject {
   virtual void tick();
   int getX();
   int getY();
+  void setX(int x);
+  void setY(int y);
   int getWidth();
   int getHeight();
 };

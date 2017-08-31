@@ -12,9 +12,6 @@ class Ball : public MovableRectangularObject {
 
  public:
   Ball(int x, int y, int dx, int dy);
-  void collide(Tile &tile);
-  void collide(Paddle &player);
-  void collideBorders();
   void report();
 };
 
