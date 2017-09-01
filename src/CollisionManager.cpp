@@ -1,9 +1,16 @@
 #include<CollisionManager.h>
 #include<Global.h>
 
-CollisionManager::Line::Line(bool v, int cc, bool sss) : vertical(v), constantCoordinate(cc), smallsidesolid(sss) { }
-CollisionManager::Segment::Segment(bool v, int cc, bool sss, int vcl, int vch) : 
-  CollisionManager::Line::Line(v, cc, sss), variableCoordinateLow(vcl), variableCoordinateHigh(vch) { }
+CollisionManager::Line::Line(bool vertical, int constantCoordinate, bool smallsidesolid) 
+  : vertical(vertical), constantCoordinate(constantCoordinate), smallsidesolid(smallsidesolid) { }
+CollisionManager::Segment::Segment(bool vertical, 
+				   int constantCoordinate, 
+				   bool smallsidesolid, 
+				   int variableCoordinateLow, 
+				   int variableCoordinateHigh) : 
+  CollisionManager::Line::Line(vertical, constantCoordinate, smallsidesolid), 
+  variableCoordinateLow(variableCoordinateLow), 
+  variableCoordinateHigh(variableCoordinateHigh) { }
 
 
 /*
@@ -18,7 +25,7 @@ bool CollisionManager::collideRectangle(MovableRectangularObject &ball, Rectangu
   if(havecollided) return true;
   havecollided |= collideSegment(ball, Segment(false, tile.getY(), false, tile.getX(), tile.getX() + tile.getWidth()), reflect);
   if(havecollided) return true;
-  havecollided |= collideSegment(ball, Segment(true, tile.getY(), false, tile.getX(), tile.getX() + tile.getWidth()), reflect);
+  havecollided |= collideSegment(ball, Segment(false, tile.getY() + tile.getHeight(), true, tile.getX(), tile.getX() + tile.getWidth()), reflect);
   if(havecollided) return true;
   return false;
 }

@@ -33,6 +33,8 @@ void Board::collisionLogic() {
   for(int i = 0; i < balls.size(); i++) {
     CollisionManager::collideBorders(balls[i]);
   }
+
+  CollisionManager::collideBorders(player);
 }
 
 Board::Board(int width, int height) : 
