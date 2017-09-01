@@ -21,7 +21,7 @@ int main() {
   clock();
 
 
-  Board B(MAXX, MAXY);
+  Board B(MAXX, MAXY, "levels/level1.txt");
   View V(B);
   bool quit = false;
 

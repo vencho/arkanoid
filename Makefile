@@ -5,6 +5,7 @@ SRCDIR = ./src
 BINDIR = ./bin
 OBJDIR = ./obj
 INCDIR = ./include
+LEVELDIR = ./levels
 LIBDIR = /usr/include/SDL2
 
 OBJECTS = \
@@ -30,5 +31,6 @@ clean :
 	rm -f $(BINDIR)/* ;
 	rm -f $(SRCDIR)/*~;
 	rm -f $(INCDIR)/*~;
+	rm -f $(LEVELDIR)/*~;
 	rm -f *~
 

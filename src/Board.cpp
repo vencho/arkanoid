@@ -3,6 +3,7 @@
 #include<Paddle.h>
 #include<cstdio>
 #include<CollisionManager.h>
+#include<string>
 
 bool Board::gameWon() {
   return tiles.size() == 0;
@@ -37,7 +38,7 @@ void Board::collisionLogic() {
   CollisionManager::collideBorders(player);
 }
 
-Board::Board(int width, int height) : 
+Board::Board(int width, int height, std::string filename) : 
   player(width/2 - BASE_PADDLE_WIDTH/2, PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT) {
 
   this -> width = width;
@@ -46,10 +47,18 @@ Board::Board(int width, int height) :
   balls.push_back(Ball(0, 0, 0, 0));
   balls[0].snapToPaddle(player);
 
-  tiles.push_back(Tile(4, 1, 2));
-  tiles.push_back(Tile(4, 3, 2));
-  tiles.push_back(Tile(4, 5, 2));
-  tiles.push_back(Tile(4, 7, 2));
+  loadTiles(filename);
+}
+
+void Board::loadTiles(std::string filename) {
+  FILE *fin = fopen(filename.c_str(), "r");
+  int row, column, health;
+  while(1) {
+    if(fscanf(fin, "%d%d%d", &row, &column, &health) != 3) break;
+    tiles.push_back(Tile(row, column, health));
+  }
+  fclose(fin);
+
 }
 
 void Board::initialiseBalls() {
