@@ -16,7 +16,7 @@ CollisionManager::Segment::Segment(bool vertical,
 /*
 Collision with tile.
 */
-bool CollisionManager::collideRectangle(MovableRectangularObject &ball, RectangularObject &tile, bool reflect) {
+bool CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect) {
   bool havecollided = false;
   
   havecollided |= collideSegment(ball, Segment(true, tile.getX(), false, tile.getY(), tile.getY() + tile.getHeight()), reflect);
@@ -34,7 +34,7 @@ bool CollisionManager::collideRectangle(MovableRectangularObject &ball, Rectangu
 Collision with segment. 
 */
 bool CollisionManager::collideSegment(
-				      MovableRectangularObject &ball, 
+				      MovableRectangle &ball, 
 				      CollisionManager::Segment S,
 				      bool reflect) {
   int ballLow = S.vertical ? ball.getY() : ball.getX();
@@ -47,7 +47,7 @@ bool CollisionManager::collideSegment(
   return collideLine(ball, S, reflect);
 }
 
-bool CollisionManager::collideBorders(MovableRectangularObject &ball) {
+bool CollisionManager::collideBorders(MovableRectangle &ball) {
   bool havecollided;
   havecollided |= collideLine(ball, Line(true, 0, true), true);
   havecollided |= collideLine(ball, Line(false, 0, true), true);
@@ -59,7 +59,7 @@ bool CollisionManager::collideBorders(MovableRectangularObject &ball) {
 /*
 Collision and reflection with an infinite line L.
 */
-bool CollisionManager::collideLine(MovableRectangularObject &ball, 
+bool CollisionManager::collideLine(MovableRectangle &ball, 
 					  CollisionManager::Line L, 
 					  bool reflect) {
   // Which coordinate of the ball matters for the reflection.

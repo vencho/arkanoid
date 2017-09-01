@@ -1,10 +1,10 @@
 #include<Global.h>
-#include<RectangularObject.h>
+#include<DockedRectangle.h>
 
 #ifndef TILE_H_INCLUDED
 #define TILE_H_INCLUDED
 
-class Tile : public RectangularObject {
+class Tile : public DockedRectangle {
  private:
   // zero means the tile should disappear
   int healthleft;

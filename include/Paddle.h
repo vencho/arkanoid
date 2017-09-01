@@ -1,9 +1,9 @@
 #include<Global.h>
-#include<MovableRectangularObject.h>
+#include<MovableRectangle.h>
 
 #ifndef PADDLE_H_INCLUDED
 #define PADDLE_H_INCLUDED
-class Paddle : public MovableRectangularObject {
+class Paddle : public MovableRectangle {
  public:
   Paddle(int x, int y);
 };

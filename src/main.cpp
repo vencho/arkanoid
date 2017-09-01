@@ -3,7 +3,7 @@
 #include<SDL.h>
 #include<GameScreen.h>
 #include<ctime>
-
+//#include<ScorePane.h>
 
 int main() {
   SDL_Init(SDL_INIT_VIDEO);
@@ -14,7 +14,7 @@ int main() {
 					SCREEN_HEIGHT,
 					0);
   SDL_Surface *screen = SDL_GetWindowSurface(window);
-  SDL_Surface *game;
+  SDL_Surface *game; // , *score;
   
   clock_t t1, t2;
   double secondsspent;
@@ -23,6 +23,7 @@ int main() {
 
   Board B(MAXX, MAXY, "levels/level1.txt");
   GameScreen V(B);
+  //  ScorePane scorepane(B);
   bool quit = false;
 
   SDL_Event e;
@@ -30,15 +31,7 @@ int main() {
 
     t1 = clock();
 
-    while(SDL_PollEvent(&e)) {
-      /*
-      if(e.type == SDL_KEYDOWN) {
-	if(e.key.keysym.sym == SDLK_q) {
-	  quit = true;
-	}
-      }
-      */
-    }
+    while(SDL_PollEvent(&e)) { }
 
     const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
 
@@ -57,8 +50,11 @@ int main() {
     B.tick();
 
     game = V.draw();
+    //    score = scorepane.draw();
+    //    SDL_BlitSurface(score, NULL, screen, NULL);
     SDL_BlitSurface(game, NULL, screen, NULL);
     SDL_FreeSurface(game);
+    //    SDL_FreeSurface(score);
     SDL_UpdateWindowSurface(window);
     
     t2 = clock();

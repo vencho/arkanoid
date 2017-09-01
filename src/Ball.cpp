@@ -1,7 +1,7 @@
 #include<Ball.h>
 #include<cstdio>
 
-Ball::Ball(int x, int y, int dx, int dy) : MovableRectangularObject(x, y, BALL_WIDTH, BALL_HEIGHT, dx, dy) { }
+Ball::Ball(int x, int y, int dx, int dy) : MovableRectangle(x, y, BALL_WIDTH, BALL_HEIGHT, dx, dy) { }
 
 void Ball::snapToPaddle(Paddle &player) {
   x = player.getX() + player.getWidth()/2;

@@ -1,5 +1,5 @@
-#include<RectangularObject.h>
-#include<MovableRectangularObject.h>
+#include<DockedRectangle.h>
+#include<MovableRectangle.h>
 
 #ifndef COLLISIONMANAGER_H_INCLUDED
 #define COLLISIONMANAGER_H_INCLUDED
@@ -22,12 +22,12 @@ class CollisionManager {
     Segment(bool v, int cc, bool sss, int vcl, int vch);
   };
 
-  static bool collideLine(MovableRectangularObject &ball, Line L, bool reflect);
-  static bool collideSegment(MovableRectangularObject &ball, Segment S, bool reflect);
+  static bool collideLine(MovableRectangle &ball, Line L, bool reflect);
+  static bool collideSegment(MovableRectangle &ball, Segment S, bool reflect);
 
  public:
-  static bool collideRectangle(MovableRectangularObject &ball, RectangularObject &tile, bool reflect);
-  static bool collideBorders(MovableRectangularObject &ball);
+  static bool collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect);
+  static bool collideBorders(MovableRectangle &ball);
 };
 
 #endif

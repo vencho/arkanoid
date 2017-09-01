@@ -9,13 +9,14 @@ LEVELDIR = ./levels
 LIBDIR = /usr/include/SDL2
 
 OBJECTS = \
+./$(OBJDIR)/DockedRectangle.o \
+./$(OBJDIR)/FloatingRectangle.o \
+./$(OBJDIR)/MovableRectangle.o \
 ./$(OBJDIR)/Tile.o \
 ./$(OBJDIR)/Paddle.o \
 ./$(OBJDIR)/Ball.o \
 ./$(OBJDIR)/Board.o \
 ./$(OBJDIR)/GameScreen.o \
-./$(OBJDIR)/RectangularObject.o \
-./$(OBJDIR)/MovableRectangularObject.o \
 ./$(OBJDIR)/CollisionManager.o
 
 all : main 
