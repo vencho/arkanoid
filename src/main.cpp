@@ -3,6 +3,7 @@
 #include<SDL.h>
 #include<GameScreen.h>
 #include<ctime>
+#include<DrawablePaneComposition.h>
 //#include<ScorePane.h>
 
 int main() {
@@ -14,8 +15,8 @@ int main() {
 					SCREEN_HEIGHT,
 					0);
   SDL_Surface *screen = SDL_GetWindowSurface(window);
-  SDL_Surface *game; // , *score;
-  
+
+
   clock_t t1, t2;
   double secondsspent;
   clock();
@@ -23,7 +24,6 @@ int main() {
 
   Board B(MAXX, MAXY, "levels/level1.txt");
   GameScreen V(B);
-  //  ScorePane scorepane(B);
   bool quit = false;
 
   SDL_Event e;
@@ -48,13 +48,7 @@ int main() {
     if(currentKeyStates[SDL_SCANCODE_W]) B.initialiseBalls();
 
     B.tick();
-
-    game = V.draw();
-    //    score = scorepane.draw();
-    //    SDL_BlitSurface(score, NULL, screen, NULL);
-    SDL_BlitSurface(game, NULL, screen, NULL);
-    SDL_FreeSurface(game);
-    //    SDL_FreeSurface(score);
+    V.draw(screen, 0, 0);
     SDL_UpdateWindowSurface(window);
     
     t2 = clock();

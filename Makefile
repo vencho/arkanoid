@@ -17,7 +17,9 @@ OBJECTS = \
 ./$(OBJDIR)/Ball.o \
 ./$(OBJDIR)/Board.o \
 ./$(OBJDIR)/GameScreen.o \
-./$(OBJDIR)/CollisionManager.o
+./$(OBJDIR)/CollisionManager.o \
+./$(OBJDIR)/DrawablePane.o \
+./$(OBJDIR)/DrawablePaneComposition.o
 
 all : main 
 
