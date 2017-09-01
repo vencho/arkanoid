@@ -1,7 +1,7 @@
 #include<Board.h>
 #include<Global.h>
 #include<SDL.h>
-#include<View.h>
+#include<GameScreen.h>
 #include<ctime>
 
 
@@ -22,7 +22,7 @@ int main() {
 
 
   Board B(MAXX, MAXY, "levels/level1.txt");
-  View V(B);
+  GameScreen V(B);
   bool quit = false;
 
   SDL_Event e;

@@ -1,14 +1,14 @@
-#include<View.h>
+#include<GameScreen.h>
 #include<Board.h>
 #include<Ball.h>
 #include<Paddle.h>
 
-View::View(Board &newBoard) : board(newBoard) {
+GameScreen::GameScreen(Board &newBoard) : board(newBoard) {
   
 }
 
 
-SDL_Surface *View::draw() {
+SDL_Surface *GameScreen::draw() {
   SDL_Surface *answer = SDL_CreateRGBSurface(0, MAXX, MAXY, 32, 0, 0, 0, 0);
   SDL_Rect r;
   

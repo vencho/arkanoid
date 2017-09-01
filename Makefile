@@ -13,7 +13,7 @@ OBJECTS = \
 ./$(OBJDIR)/Paddle.o \
 ./$(OBJDIR)/Ball.o \
 ./$(OBJDIR)/Board.o \
-./$(OBJDIR)/View.o \
+./$(OBJDIR)/GameScreen.o \
 ./$(OBJDIR)/RectangularObject.o \
 ./$(OBJDIR)/MovableRectangularObject.o \
 ./$(OBJDIR)/CollisionManager.o
