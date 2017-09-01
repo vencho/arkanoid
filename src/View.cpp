@@ -20,10 +20,10 @@ SDL_Surface *View::draw() {
 
   // Draw the ball
   Ball &ball = board.getBall(0);
-  r.x = ball.getX() - BALL_R;
-  r.y = ball.getY() - BALL_R;
-  r.w = 2*BALL_R;
-  r.h = 2*BALL_R;
+  r.x = ball.getX();
+  r.y = ball.getY();
+  r.w = ball.getWidth();
+  r.h = ball.getHeight();
   SDL_FillRect(answer, &r, SDL_MapRGB(answer->format, 0, 255, 0));
 
   // Iterate over the tiles and draw each

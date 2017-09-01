@@ -15,6 +15,7 @@ class Board {
   void collisionLogic();
 
  public:
+  void initialiseBalls();
   bool gameWon();
   bool gameLost();
   void report();

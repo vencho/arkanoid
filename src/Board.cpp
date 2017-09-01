@@ -42,7 +42,9 @@ Board::Board(int width, int height) :
 
   this -> width = width;
   this -> height = height;
-  balls.push_back(Ball(width/2, height/2, BALL_SPEED_X, BALL_SPEED_Y));
+
+  balls.push_back(Ball(0, 0, 0, 0));
+  balls[0].snapToPaddle(player);
 
   tiles.push_back(Tile(4, 1, 2));
   tiles.push_back(Tile(4, 3, 2));
@@ -50,11 +52,39 @@ Board::Board(int width, int height) :
   tiles.push_back(Tile(4, 7, 2));
 }
 
+void Board::initialiseBalls() {
+  for(int i = 0; i < balls.size(); i++) {
+    if(!balls[i].isInitialised()) {
+      balls[i].initialise();
+    }
+  }
+}
+
 void Board::tick() {
+  static int timetorespawn = -1;
+  if(balls.empty()) {
+    if(timetorespawn > 0) timetorespawn--;
+    else if(timetorespawn == 0) {
+      Ball b(0, 0, 0, 0);
+      b.snapToPaddle(player);
+      balls.push_back(b);
+      timetorespawn--;
+    }
+    else {
+      timetorespawn = RESPAWN_TIME_IN_FRAMES;
+    }
+  }
+  
+  player.tick();
   for(int i = 0; i < balls.size(); i++) {
     balls[i].tick();
+    if(!balls[i].isInitialised()) balls[i].snapToPaddle(player); 
+    if(balls[i].getY() > MAXY) {
+      balls[i] = balls.back();
+      balls.pop_back();
+      i--;
+    }
   }
-  player.tick();
   collisionLogic();
 }
 

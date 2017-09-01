@@ -6,13 +6,12 @@
 #define BALL_H_INCLUDED
 
 class Ball : public MovableRectangularObject {
- private:
-  bool collideSegment(int val, bool vertical, bool smallsidesolid, int vlow, int vhigh);
-  bool collideLine(int val, bool vertical, bool smallsidesolid);
-
  public:
   Ball(int x, int y, int dx, int dy);
   void report();
+  bool isInitialised();
+  void initialise();
+  void snapToPaddle(Paddle &player);
 };
 
 #endif

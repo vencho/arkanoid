@@ -52,6 +52,8 @@ int main() {
 
     if(currentKeyStates[SDL_SCANCODE_Q]) quit = true;
 
+    if(currentKeyStates[SDL_SCANCODE_W]) B.initialiseBalls();
+
     B.tick();
 
     game = V.draw();

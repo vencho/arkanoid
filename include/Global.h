@@ -14,10 +14,13 @@
 #define PADDLE_OFFSET_FROM_TOP (23*TILE_HEIGHT)
 #define PADDLE_SPEED 5
 
-#define BALL_R 3
+#define BALL_HEIGHT 6
+#define BALL_WIDTH 6
 #define BALL_SPEED_X 3
 #define BALL_SPEED_Y 3
 
+#define RESPAWN_TIME_IN_FRAMES 60
+
 #define FPS 60
-#define SPF (1./60)
+#define SPF (1./FPS)
 #endif
