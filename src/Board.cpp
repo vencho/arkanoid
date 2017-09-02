@@ -19,7 +19,7 @@ void Board::collisionLogic() {
       if(CollisionManager::collideRectangle(balls[i], tiles[j], true)) tiles[j].takeDamage();
 
       if(tiles[j].getHealth() == 0) {
-	printf("Tile removed.\n");
+	reportTileDestruction();
 	tiles[j] = tiles.back();
 	tiles.pop_back();
 	j--;
@@ -69,11 +69,34 @@ void Board::initialiseBalls() {
   }
 }
 
+
+void Board::addDeathMonitor(DeathMonitor *dm) {
+  deathMonitors.push_back(dm);
+}
+
+
+void Board::addTileDestructionMonitor(TileDestructionMonitor *tdm) {
+  tileDestructionMonitors.push_back(tdm);
+}
+
+void Board::reportDeath() {
+  for(int i = 0; i < deathMonitors.size(); i++) {
+    deathMonitors[i] -> notifyDied();
+  }
+}
+
+void Board::reportTileDestruction() {
+  for(int i = 0; i < tileDestructionMonitors.size(); i++) {
+    tileDestructionMonitors[i] -> notifyTileDestroyed();
+  }
+}
+
 void Board::tick() {
   static int timetorespawn = -1;
   if(balls.empty()) {
     if(timetorespawn > 0) timetorespawn--;
     else if(timetorespawn == 0) {
+      reportDeath();
       Ball b(0, 0, 0, 0);
       b.snapToPaddle(player);
       balls.push_back(b);
@@ -88,7 +111,7 @@ void Board::tick() {
   for(int i = 0; i < balls.size(); i++) {
     balls[i].tick();
     if(!balls[i].isInitialised()) balls[i].snapToPaddle(player); 
-    if(balls[i].getY() > MAXY) {
+    if(balls[i].getY() > GAME_SCREEN_HEIGHT) {
       balls[i] = balls.back();
       balls.pop_back();
       i--;

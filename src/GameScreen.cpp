@@ -3,9 +3,9 @@
 #include<Ball.h>
 #include<Paddle.h>
 
-GameScreen::GameScreen(Board &newBoard) : DrawablePane(), board(newBoard) {
-  width = MAXX;
-  height = MAXY;
+GameScreen::GameScreen(Board &newBoard) : board(newBoard) {
+  width = GAME_SCREEN_WIDTH;
+  height = GAME_SCREEN_HEIGHT;
 }
 
 
@@ -16,16 +16,19 @@ void GameScreen::draw(SDL_Surface *target, int baseX, int baseY) {
   // Draw background
   r.x = baseX; 
   r.y = baseY;
-  r.w = MAXX;
-  r.h = MAXY;
+  r.w = GAME_SCREEN_WIDTH;
+  r.h = GAME_SCREEN_HEIGHT;
   SDL_FillRect(target, &r, SDL_MapRGB(target->format, 0xcd, 0xcd, 0xcd));
 
   // Draw the ball
   Ball &ball = board.getBall(0);
-  r.x = ball.getX() + baseX;
-  r.y = ball.getY() + baseY;
+  r.x = ball.getX();
+  r.y = ball.getY();
   r.w = ball.getWidth();
   r.h = ball.getHeight();
+  if(r.y + r.h > height) r.h = height - r.y;
+  r.x += baseX;
+  r.y += baseY;
   SDL_FillRect(target, &r, SDL_MapRGB(target->format, 0, 255, 0));
 
   // Iterate over the tiles and draw each

@@ -1,13 +1,17 @@
 #include<Board.h>
 #include<Global.h>
 #include<SDL.h>
+#include<SDL_ttf.h>
 #include<GameScreen.h>
+#include<ScorePane.h>
 #include<ctime>
 #include<DrawablePaneComposition.h>
-//#include<ScorePane.h>
+
 
 int main() {
   SDL_Init(SDL_INIT_VIDEO);
+  TTF_Init();
+  
   SDL_Window *window = SDL_CreateWindow("Arkanoid", 
 					SDL_WINDOWPOS_UNDEFINED,
 					SDL_WINDOWPOS_UNDEFINED,
@@ -22,8 +26,14 @@ int main() {
   clock();
 
 
-  Board B(MAXX, MAXY, "levels/level1.txt");
-  GameScreen V(B);
+  Board B(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "levels/level1.txt");
+  GameScreen gameScreen(B);
+  ScorePane scorePane(B);
+  DrawablePaneComposition bothPanes(true);
+  
+  bothPanes.addPane(&scorePane);
+  bothPanes.addPane(&gameScreen);
+  
   bool quit = false;
 
   SDL_Event e;
@@ -48,7 +58,7 @@ int main() {
     if(currentKeyStates[SDL_SCANCODE_W]) B.initialiseBalls();
 
     B.tick();
-    V.draw(screen, 0, 0);
+    bothPanes.draw(screen, 0, 0);
     SDL_UpdateWindowSurface(window);
     
     t2 = clock();
@@ -56,7 +66,8 @@ int main() {
     int delay = (int)(1000*(SPF - secondsspent));
     SDL_Delay(delay);
   }
-
+  
+  TTF_Quit();
   SDL_Quit();
   return 0;
 }

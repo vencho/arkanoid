@@ -51,8 +51,8 @@ bool CollisionManager::collideBorders(MovableRectangle &ball) {
   bool havecollided;
   havecollided |= collideLine(ball, Line(true, 0, true), true);
   havecollided |= collideLine(ball, Line(false, 0, true), true);
-  havecollided |= collideLine(ball, Line(true, MAXX, false), true);
-  //  havecollided |= collideLine(ball, Line(false, MAXY, false), true);
+  havecollided |= collideLine(ball, Line(true, GAME_SCREEN_WIDTH, false), true);
+  //  havecollided |= collideLine(ball, Line(false, GAME_SCREEN_HEIGHT, false), true);
   return havecollided;
 }
 

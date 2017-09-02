@@ -1,22 +1,31 @@
+#ifndef BOARD_H_INCLUDED
+#define BOARD_H_INCLUDED
+
 #include<Tile.h>
 #include<Ball.h>
 #include<Paddle.h>
 #include<vector>
 #include<string>
-
-#ifndef BOARD_H_INCLUDED
-#define BOARD_H_INCLUDED
+#include<DeathMonitor.h>
+#include<TileDestructionMonitor.h>
 
 class Board {
  private:
   std::vector<Tile> tiles;
   std::vector<Ball> balls;
+  std::vector<DeathMonitor *> deathMonitors;
+  std::vector<TileDestructionMonitor *> tileDestructionMonitors;
+  
   Paddle player;
   int width, height;
   void collisionLogic();
   void loadTiles(std::string filename);
-
+  void reportDeath();
+  void reportTileDestruction();
+  
  public:
+  void addTileDestructionMonitor(TileDestructionMonitor *tdm);
+  void addDeathMonitor(DeathMonitor *dm);
   void initialiseBalls();
   bool gameWon();
   bool gameLost();

@@ -1,5 +1,5 @@
 CC = g++
-LIBS = -lSDL2
+LIBS = -lSDL2 -lSDL2_ttf
 FLAGS = -O2 -w
 SRCDIR = ./src
 BINDIR = ./bin
@@ -19,7 +19,8 @@ OBJECTS = \
 ./$(OBJDIR)/GameScreen.o \
 ./$(OBJDIR)/CollisionManager.o \
 ./$(OBJDIR)/DrawablePane.o \
-./$(OBJDIR)/DrawablePaneComposition.o
+./$(OBJDIR)/DrawablePaneComposition.o \
+./$(OBJDIR)/ScorePane.o
 
 all : main 
 
