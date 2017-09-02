@@ -7,8 +7,8 @@ class FloatingRectangle {
  public:
   FloatingRectangle(int width, int height);
   virtual void tick();
-  int getWidth();
-  int getHeight();
+  int & getWidth();
+  int & getHeight();
 };
 
 #endif
