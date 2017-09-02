@@ -9,10 +9,6 @@ void Ball::snapToPaddle(Paddle &player) {
   velocityX = velocityY = 0;
 }
 
-void Ball::report() {
-  printf("Position (%d %d), direction (%d %d)\n", getX(), getY(), getVelocityX(), getVelocityY());
-}
-
 bool Ball::isInitialised() {
   return velocityX || velocityY;
 }

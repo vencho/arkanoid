@@ -110,22 +110,22 @@ void Board::tick() {
   player.tick();
   for(int i = 0; i < balls.size(); i++) {
     balls[i].tick();
-    if(!balls[i].isInitialised()) balls[i].snapToPaddle(player); 
     if(balls[i].getY() > GAME_SCREEN_HEIGHT) {
       balls[i] = balls.back();
       balls.pop_back();
       i--;
     }
   }
+
   collisionLogic();
-}
 
-void Board::report() {
   for(int i = 0; i < balls.size(); i++) {
-    balls[i].report();
+    if(!balls[i].isInitialised()) {
+      balls[i].snapToPaddle(player); 
+    }
   }
-}
 
+}
 
 Ball & Board::getBall(int num) {
   return balls[num];
