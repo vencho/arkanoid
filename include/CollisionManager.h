@@ -5,18 +5,26 @@
 #define COLLISIONMANAGER_H_INCLUDED
 
 class CollisionManager {
+
  private:
-  static void intervalSnap(MovableRectangle &ball, int tileLeft, int tileRight, bool reflect, bool x);
-  static bool rectanglesIntersect(DockedRectangle &first, DockedRectangle &second);
-  static bool intervalsIntersect(int a, int b, int c, int d);
-  static int intervalOverlap(int a, int b, int c, int d);
-  static bool intervalContainment(int a, int b, int c, int d);
-  
-  static DockedRectangle leftBorder;
-  static DockedRectangle rightBorder;
-  static DockedRectangle topBorder;
-  static DockedRectangle bottomBorder;
-    
+  class Line {
+  public:
+    bool vertical;
+    int constantCoordinate;
+    bool smallsidesolid;
+    Line(bool v, int cc, bool sss);
+  };
+
+  class Segment : public Line {
+  public:
+    int variableCoordinateLow;
+    int variableCoordinateHigh;
+    Segment(bool v, int cc, bool sss, int vcl, int vch);
+  };
+
+  static bool collideLine(MovableRectangle &ball, Line L, bool reflect);
+  static bool collideSegment(MovableRectangle &ball, Segment S, bool reflect);
+
  public:
   static bool collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect);
   static bool collideBorders(MovableRectangle &ball);
