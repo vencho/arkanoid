@@ -1,116 +1,101 @@
 #include<CollisionManager.h>
 #include<Global.h>
+#include<cstdio>
 
-CollisionManager::Line::Line(bool vertical, int constantCoordinate, bool smallsidesolid) 
-  : vertical(vertical), constantCoordinate(constantCoordinate), smallsidesolid(smallsidesolid) { }
-CollisionManager::Segment::Segment(bool vertical, 
-				   int constantCoordinate, 
-				   bool smallsidesolid, 
-				   int variableCoordinateLow, 
-				   int variableCoordinateHigh) : 
-  CollisionManager::Line::Line(vertical, constantCoordinate, smallsidesolid), 
-  variableCoordinateLow(variableCoordinateLow), 
-  variableCoordinateHigh(variableCoordinateHigh) { }
-
-
-/*
-Collision with tile.
-*/
-bool CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect) {
-  bool havecollided = false;
-  
-  havecollided |= collideSegment(ball, Segment(true, tile.getX(), false, tile.getY(), tile.getY() + tile.getHeight()), reflect);
-  if(havecollided) return true;
-  havecollided |= collideSegment(ball, Segment(true, tile.getX() + tile.getWidth(), true, tile.getY(), tile.getY() + tile.getHeight()), reflect);
-  if(havecollided) return true;
-  havecollided |= collideSegment(ball, Segment(false, tile.getY(), false, tile.getX(), tile.getX() + tile.getWidth()), reflect);
-  if(havecollided) return true;
-  havecollided |= collideSegment(ball, Segment(false, tile.getY() + tile.getHeight(), true, tile.getX(), tile.getX() + tile.getWidth()), reflect);
-  if(havecollided) return true;
-  return false;
-}
-
-/*
-Collision with segment. 
-*/
-bool CollisionManager::collideSegment(
-				      MovableRectangle &ball, 
-				      CollisionManager::Segment S,
-				      bool reflect) {
-  int ballLow = S.vertical ? ball.getY() : ball.getX();
-  int boundedCoordinateExtent = S.vertical ? ball.getHeight() : ball.getWidth();
-  int ballHigh = ballLow + boundedCoordinateExtent;
-
-  if(S.variableCoordinateLow > ballHigh) return false;
-  if(S.variableCoordinateHigh < ballLow) return false;
-
-  return collideLine(ball, S, reflect);
-}
+#define INFINITY 4000
+DockedRectangle CollisionManager::leftBorder = DockedRectangle(-INFINITY, 0, INFINITY, INFINITY);
+DockedRectangle CollisionManager::rightBorder = DockedRectangle(GAME_SCREEN_WIDTH, 0, INFINITY, INFINITY);
+DockedRectangle CollisionManager::topBorder = DockedRectangle(0, -INFINITY, INFINITY, INFINITY);
+// DockedRectangle CollisionManager::bottomBorder = DockedRectangle(0, GAME_SCREEN_HEIGHT, INFINITY, INFINITY);
+#undef INFINITY
 
 bool CollisionManager::collideBorders(MovableRectangle &ball) {
-  bool havecollided;
-  havecollided |= collideLine(ball, Line(true, 0, true), true);
-  havecollided |= collideLine(ball, Line(false, 0, true), true);
-  havecollided |= collideLine(ball, Line(true, GAME_SCREEN_WIDTH, false), true);
-  //  havecollided |= collideLine(ball, Line(false, GAME_SCREEN_HEIGHT, false), true);
-  return havecollided;
+  bool ans = false;
+  ans |= collideRectangle(ball, topBorder, true);
+  ans |= collideRectangle(ball, leftBorder, true);
+  ans |= collideRectangle(ball, rightBorder, true);
+  //  ans |= collideRectangle(ball, bottomBorder, true);
+  return ans;
 }
 
-/*
-Collision and reflection with an infinite line L.
-*/
-bool CollisionManager::collideLine(MovableRectangle &ball, 
-					  CollisionManager::Line L, 
-					  bool reflect) {
-  // Which coordinate of the ball matters for the reflection.
-  int coordinate = L.vertical ? ball.getX() : ball.getY();
+bool CollisionManager::rectanglesIntersect(DockedRectangle &first, DockedRectangle &second) {
+  bool a = intervalsIntersect(first.getX(), first.getX() + first.getWidth()-1, 
+			      second.getX(), second.getX() + second.getWidth()-1);
+  bool b = intervalsIntersect(first.getY(), first.getY() + first.getHeight()-1, 
+			      second.getY(), second.getY() + second.getHeight()-1);
+  return a && b;
+}
 
-  // What is the size of the movable object in that coordinate?
-  int extent = L.vertical ? ball.getWidth() : ball.getHeight();
+int CollisionManager::intervalOverlap(int a, int b, int c, int d) {
+  if(b < c || d < a) return 0;
+  if(intervalContainment(a, b, c, d)) return d-c+1;
+  if(intervalContainment(c, d, a, b)) return b-a+1;
+  if(a <= c) return b-c+1;
+  return d-a+1;
+}
+
+bool CollisionManager::intervalContainment(int a, int b, int c, int d) {
+  return c <= a && b <= d;
+}
+
+bool CollisionManager::intervalsIntersect(int a, int b, int c, int d) {
+  return intervalOverlap(a, b, c, d) > 0;
+}
+
+bool CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect) {
+  int a, b, c, d;
+  a = ball.getX(); 
+  b = ball.getX() + ball.getWidth()-1;
+  c = tile.getX(); 
+  d = tile.getX() + tile.getWidth()-1;
+  int u = intervalOverlap(a,b,c,d);
+
+  int x, y, z, w;
+  x = ball.getY();
+  y = ball.getY() + ball.getHeight()-1;
+  z = tile.getY();
+  w = tile.getY() + tile.getHeight()-1;
+  int v = intervalOverlap(x, y, z, w);
+
+  if(!u || !v) return false;
+#define snapX { intervalSnap(ball, tile.getX(), tile.getX() + tile.getWidth() - 1, reflect, true); return true; }
+#define snapY { intervalSnap(ball, tile.getY(), tile.getY() + tile.getHeight() - 1, reflect, false); return true; }
+
+  if(intervalContainment(a, b, c, d) || intervalContainment(c, d, a, b)) snapY ;
+  if(intervalContainment(x, y, z, w) || intervalContainment(z, w, x, y)) snapX ;
   
-  // Make coordinate refer to the centre in the relevant dimension.
-  coordinate += extent / 2;
-
-  // The velocity in that coordinate.
-  int velocity = L.vertical ? ball.getVelocityX() : ball.getVelocityY();
-  
-  if( (velocity <= 0) != L.smallsidesolid ) return false;
-  
-  // One of the four tips of the ball, the one which needs to be checked
-  // for membership in the solid halfplane to determine collision.
-  int extremecoordinate = L.smallsidesolid ? coordinate - extent/2 : coordinate + extent/2;
-
-  // A collision takes place if that extreme tip is in the solid halfplane.
-  bool collision = L.smallsidesolid ? (extremecoordinate <= L.constantCoordinate && coordinate >= L.constantCoordinate) : 
-    (extremecoordinate >= L.constantCoordinate && coordinate <= L.constantCoordinate);
-
-  if(!collision) {
-    // No reflection, no change to ball.
-    return false;
-  }
-
-  // Push the ball out of the solid halfplane.
-  extremecoordinate = L.constantCoordinate;
-  coordinate = L.smallsidesolid ? extremecoordinate + extent/2 : extremecoordinate - extent/2;
-
-  // Invert ball velocity in the relevant direction.
-  if(reflect) velocity = -velocity;
-
-  // Make coordinate refer to corner again.
-  coordinate -= extent / 2;
-
-  // Set the new value for coordinate and velocity.
-  if(L.vertical) {
-    ball.setX(coordinate); 
-    ball.setVelocityX(velocity);
-  }
-  else {
-    ball.setY(coordinate);
-    ball.setVelocityY(velocity);
-  }
+  if(v >= u) snapY;
+  snapX;
   return true;
 }
 
+void CollisionManager::intervalSnap(MovableRectangle &ball, int tileLeft, int tileRight, bool reflect, bool x) {
+  int & ballLeft = x ? ball.getX() : ball.getY();
+  int & ballv = x ? ball.getVelocityX() : ball.getVelocityY();
+  int ballExtent = x ? ball.getWidth() : ball.getHeight();
+  int ballRight = ballLeft + ballExtent - 1;
+
+#define popleft { ballRight = tileLeft - 1;\
+    ballLeft = ballRight - (ballExtent-1);\
+    if(reflect) { printf("reflecting\n"); ballv = -ballv; }	\
+    printf("popleft\n"); \
+  }
+#define popright {  ballLeft = tileRight + 1; \
+  ballRight = ballLeft + (ballExtent-1); \
+  if(reflect) { printf("reflecting\n"); ballv = -ballv; } \
+  printf("popright\n"); \
+  }
+
+
+  if( (tileLeft <= ballLeft && ballRight <= tileRight) || (ballLeft <= tileLeft && tileRight <= ballRight) )
+    return;
+
+  if(tileLeft <= ballLeft) popright
+  else popleft 
+
+#undef popleft
+#undef popright
+}
 
 
 
