@@ -22,10 +22,26 @@ OBJECTS = \
 ./$(OBJDIR)/DrawablePaneComposition.o \
 ./$(OBJDIR)/ScorePane.o
 
+MENUOBJECTS = \
+./$(OBJDIR)/FloatingRectangle.o \
+./$(OBJDIR)/BasicMenuItem.o \
+./$(OBJDIR)/Menu.o \
+./$(OBJDIR)/MenuPane.o \
+./$(OBJDIR)/MenuItemDrawer.o \
+./$(OBJDIR)/MenuItem.o \
+./$(OBJDIR)/DrawablePane.o
+
+
+
 all : main 
 
 main : $(OBJECTS) $(INCDIR)/Global.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main $(LIBS)
+
+
+menuTest : $(INCDIR)/MenuItem.h $(INCDIR)/DrawablePane.h $(MENUOBJECTS)
+	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/menuTest.cpp $(MENUOBJECTS) -o $(BINDIR)/menuTest $(LIBS)
+
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCDIR)/Global.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) -c $< -o $@ $(LIBS)
