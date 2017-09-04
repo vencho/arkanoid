@@ -1,4 +1,5 @@
 #include<Menu.h>
+#include<MenuItem.h>
 
 Menu::Menu(std::string title) { 
   this -> title = title;
