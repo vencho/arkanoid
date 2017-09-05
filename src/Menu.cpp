@@ -30,10 +30,8 @@ void Menu::addMenuItem(MenuItem *item) {
 
 void Menu::advanceSelection(int howmuch) {
   if(v.size() == 0) return;
-
   v[whichSelected] -> toggleSelect(); 
-  whichSelected += howmuch;
-  whichSelected %= v.size();
+  whichSelected = (whichSelected + howmuch) % (int) v.size();
   if(whichSelected < 0) whichSelected += v.size();
   v[whichSelected] -> toggleSelect(); 
 }
