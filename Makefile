@@ -20,7 +20,14 @@ OBJECTS = \
 ./$(OBJDIR)/CollisionManager.o \
 ./$(OBJDIR)/DrawablePane.o \
 ./$(OBJDIR)/DrawablePaneComposition.o \
-./$(OBJDIR)/ScorePane.o
+./$(OBJDIR)/ScorePane.o \
+./$(OBJDIR)/BasicMenuItem.o \
+./$(OBJDIR)/Menu.o \
+./$(OBJDIR)/MenuPane.o \
+./$(OBJDIR)/MenuItemDrawer.o \
+./$(OBJDIR)/MenuItem.o \
+./$(OBJDIR)/Application.o \
+./$(OBJDIR)/ChangePaneCommand.o
 
 MENUOBJECTS = \
 ./$(OBJDIR)/FloatingRectangle.o \
@@ -39,11 +46,11 @@ main : $(OBJECTS) $(INCDIR)/Global.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main $(LIBS)
 
 
-menuTest : $(INCDIR)/MenuItem.h $(INCDIR)/DrawablePane.h $(MENUOBJECTS)
+menuTest : $(MENUOBJECTS)
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/menuTest.cpp $(MENUOBJECTS) -o $(BINDIR)/menuTest $(LIBS)
 
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCDIR)/Global.h
+$(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCDIR)/%.h $(INCDIR)/Global.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) -c $< -o $@ $(LIBS)
 
 clean :

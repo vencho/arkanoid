@@ -13,6 +13,7 @@ class GameScreen : public DrawablePane {
  public:
   GameScreen(Board &newBoard);
   SDL_Surface * draw();
+  void handleInput(SDL_KeyboardEvent *e);
   virtual void draw(SDL_Surface *target, int baseX, int baseY);
 };
 

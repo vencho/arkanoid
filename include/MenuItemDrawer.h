@@ -11,9 +11,10 @@ class MenuItemDrawer {
   SDL_Surface *target;
   int baseX, baseY;
   TTF_Font *font;
-  SDL_Color textcolor;
+  SDL_Color selectedcolor, unselectedcolor;
+  
  public:
-  MenuItemDrawer(SDL_Surface *target, int baseX, int baseY, TTF_Font *font, SDL_Color textcolor);
+  MenuItemDrawer(SDL_Surface *target, int baseX, int baseY, TTF_Font *font, SDL_Color selectedcolor, SDL_Color unselectedcolor);
   void drawBasicMenuItem(BasicMenuItem *elt);
 };
 #endif

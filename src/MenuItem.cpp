@@ -7,6 +7,10 @@ MenuItem::MenuItem(std::string text, bool selected) {
   this -> selected = selected;
 }
 
+MenuItem::~MenuItem() {
+
+}
+
 bool MenuItem::isSelected() {
   return selected;
 }
@@ -23,3 +27,8 @@ void MenuItem::handleInput(SDL_Keycode sym) {
 std::string MenuItem::getText() {
   return text;
 }
+
+void MenuItem::addReaction(SDL_Keycode key, AbstractCommand *command) {
+  reaction[key] = command;
+}
+

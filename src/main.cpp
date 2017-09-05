@@ -6,9 +6,22 @@
 #include<ScorePane.h>
 #include<ctime>
 #include<DrawablePaneComposition.h>
-
+#include<BasicMenuItem.h>
+#include<Menu.h>
+#include<MenuItem.h>
+#include<MenuPane.h>
+#include<Application.h>
 
 int main() {
+  Application arkanoid;
+
+  arkanoid.start();
+  while(!arkanoid.isFinished()) {
+    arkanoid.tick();
+  }
+
+  /*
+
   SDL_Init(SDL_INIT_VIDEO);
   TTF_Init();
   
@@ -20,12 +33,53 @@ int main() {
 					0);
   SDL_Surface *screen = SDL_GetWindowSurface(window);
 
+  */
 
+  /*
   clock_t t1, t2;
   double secondsspent;
   clock();
 
+  Menu mainMenu("Main menu");
+  mainMenu.addMenuItem(new BasicMenuItem("New game", true));
+  mainMenu.addMenuItem(new BasicMenuItem("Options", false));
+  mainMenu.addMenuItem(new BasicMenuItem("Quit", false));
 
+  Menu optionsMenu("Options");
+  optionsMenu.addMenuItem(new BasicMenuItem("Example", true));
+  optionsMenu.addMenuItem(new BasicMenuItem("Back", false));
+  
+  
+  MenuPane mainMenuPane(mainMenu, SCREEN_WIDTH, SCREEN_HEIGHT);
+  MenuPane optionsMenuPane(optionsMenu, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+  bool quit = false;
+  while(!quit) {
+
+    t1 = clock();
+
+    SDL_Event e;
+    while(SDL_PollEvent(&e)) {
+      if(e.type == SDL_KEYDOWN) {
+	pane.handleInput(&(e.key));
+      }
+    }
+
+    const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
+    if(currentKeyStates[SDL_SCANCODE_Q]) quit = true;
+
+    pane.draw(screen, 0, 0);
+    SDL_UpdateWindowSurface(window);
+    
+    t2 = clock();
+    double secondsspent = (t2 - t1) / ( (double) CLOCKS_PER_SEC) ;
+    int delay = (int)(1000*(SPF - secondsspent));
+    SDL_Delay(delay);
+  }
+
+  */
+
+  /*
   Board B(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "levels/level1.txt");
   GameScreen gameScreen(B);
   ScorePane scorePane(B);
@@ -66,8 +120,11 @@ int main() {
     int delay = (int)(1000*(SPF - secondsspent));
     SDL_Delay(delay);
   }
-  
+  */
+
+  /*
   TTF_Quit();
   SDL_Quit();
+  */
   return 0;
 }

@@ -3,10 +3,21 @@
 
 Menu::Menu(std::string title) { 
   this -> title = title;
+  whichSelected = 0;
+}
+
+Menu::~Menu() {
+  for(int i = 0; i < getNumItems(); i++) {
+    delete v[i];
+  }
 }
 
 int Menu::getNumItems() {
   return v.size();
+}
+
+MenuItem * Menu::getSelectedItem() {
+  return v[whichSelected];
 }
 
 MenuItem * Menu::getItemByIndex(int ind) {
@@ -17,21 +28,13 @@ void Menu::addMenuItem(MenuItem *item) {
   v.push_back(item);
 }
 
-void Menu::handleInput(SDL_KeyboardEvent *e) {
-  if(e -> type != SDL_KEYDOWN) return;
-  
-  if(v.empty()) return;
-    
-  SDL_Keycode sym = (e -> keysym).sym;
-  if(sym == SDLK_UP) { 
-    v[whichSelected] -> toggleSelect(); 
-    whichSelected = (whichSelected - 1 + v.size()) % v.size();
-    v[whichSelected] -> toggleSelect();
-  }
-  else if(sym == SDLK_DOWN) {
-    v[whichSelected] -> toggleSelect(); 
-    whichSelected = (whichSelected + 1) % v.size();
-    v[whichSelected] -> toggleSelect(); 
-  }
-  else v[whichSelected] -> handleInput(sym);
+void Menu::advanceSelection(int howmuch) {
+  if(v.size() == 0) return;
+
+  v[whichSelected] -> toggleSelect(); 
+  whichSelected += howmuch;
+  whichSelected %= v.size();
+  if(whichSelected < 0) whichSelected += v.size();
+  v[whichSelected] -> toggleSelect(); 
 }
+

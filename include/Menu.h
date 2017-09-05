@@ -15,10 +15,12 @@ class Menu {
 
  public:
   Menu(std::string title);
+  ~Menu();
   void addMenuItem(MenuItem *item);
   int getNumItems();
   MenuItem * getItemByIndex(int ind);
-  void handleInput(SDL_KeyboardEvent *e);
+  void advanceSelection(int howmuch);
+  MenuItem * getSelectedItem();
 };
 
 #endif
