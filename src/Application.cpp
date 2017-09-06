@@ -1,6 +1,5 @@
 #include<Application.h>
 #include<MenuPane.h>
-#include<BasicMenuItem.h>
 #include<Menu.h>
 #include<Global.h>
 #include<ChangePaneCommand.h>
@@ -8,17 +7,23 @@
 #include<DrawablePaneComposition.h>
 #include<GameScreen.h>
 #include<ScorePane.h>
+#include<MainMenu.h>
+#include<OptionsMenu.h>
+#include<MenuStack.h>
+#include<MenuPane.h>
+#include<GamePane.h>
+#include<MenuInputHandler.h>
 
 Application::Application() {
-  ended = true;
+  haveFinished = true;
 }
 
 bool Application::isFinished() {
-  return ended;
+  return haveFinished;
 }
 
 void Application::start() {
-  ended = false;
+  haveFinished = false;
   SDL_Init(SDL_INIT_VIDEO);
   TTF_Init();
   window = SDL_CreateWindow("Arkanoid", 
@@ -28,70 +33,30 @@ void Application::start() {
 					SCREEN_HEIGHT,
 					0);
   screen = SDL_GetWindowSurface(window);
-  Menu *main = new Menu("Main menu");
-  BasicMenuItem *newgameitem, *optionsitem, *quititem;
-  newgameitem = new BasicMenuItem("New game", true);
-  optionsitem = new BasicMenuItem("Options", false);
-  quititem = new BasicMenuItem("Quit", false);
-  main -> addMenuItem(newgameitem);
-  main -> addMenuItem(optionsitem); 
-  main -> addMenuItem(quititem);
+  menuMode = true;
 
-  Menu *options = new Menu("Options");
-  BasicMenuItem *exampleitem, *backitem;
-  exampleitem = new BasicMenuItem("Example", true);
-  backitem = new BasicMenuItem("Back", false);
-  options -> addMenuItem(exampleitem);
-  options -> addMenuItem(backitem);
-
-
-
-  mainMenu = new MenuPane(*main, SCREEN_WIDTH, SCREEN_HEIGHT);
-  optionsMenu = new MenuPane(*options, SCREEN_WIDTH, SCREEN_HEIGHT);
-  gameScreen = NULL;
+  mainMenu = new MainMenu(menuStack);
+  menuStack.push(mainMenu);
+  menuPane = new MenuPane(menuStack, SCREEN_WIDTH, SCREEN_HEIGHT);
+  menuInputHandler = new MenuInputHandler(menuStack);
 
   Board *board = new Board(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "levels/level1.txt");
-  GameScreen *gs = new GameScreen(*board);
-  ScorePane *sp = new ScorePane(*board);
-  DrawablePaneComposition *bothPanes = new DrawablePaneComposition(true);
-  
-  bothPanes -> addPane(sp);
-  bothPanes -> addPane(gs);
-  gameScreen = bothPanes;
-
-  ChangePaneCommand *toOptions = new ChangePaneCommand(*this, optionsMenu);
-  optionsitem -> addReaction(SDLK_RETURN, toOptions);
-
-  ChangePaneCommand *toMain = new ChangePaneCommand(*this, mainMenu);
-  backitem -> addReaction(SDLK_RETURN, toMain);
-
-  ChangePaneCommand *toGameScreen = new ChangePaneCommand(*this, gameScreen);
-  newgameitem -> addReaction(SDLK_RETURN, toGameScreen);
-  
-  currentDisplay = mainMenu;
-  
-  ended = false;
+  gamePane = new GamePane(board);
+  gameInputHandler = NULL;
 }
-
-void Application::setActivePane(DrawablePane *pane) {
-
-  SDL_Rect r;
-  r.x = 0; 
-  r.y = 0;
-  r.w = SCREEN_WIDTH;
-  r.h = SCREEN_HEIGHT;
-  SDL_FillRect(screen, &r, SDL_MapRGB(screen->format, 0,0,0));
-  currentDisplay = pane;
-}
-
 
 void Application::handleInput() {
   SDL_Event e;
   while(SDL_PollEvent(&e)) { 
-    if(e.type != SDL_KEYDOWN) continue;
-    if(e.key.keysym.sym == SDLK_q) { end(); return; }
-    if(currentDisplay) currentDisplay -> handleInput(& (e.key));
+    if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_q) { 
+      end();
+      return; 
+    }
+
+    if(menuMode) menuInputHandler -> handleInput(e);
+    else gameInputHandler -> handleInput(e);
   }
+
 }
 
 void Application::tick() {
@@ -102,7 +67,9 @@ void Application::tick() {
 
   handleInput();
   if(isFinished()) return;
-  if(currentDisplay) currentDisplay -> draw(screen, 0, 0);
+  if(menuMode) menuPane -> draw(screen, 0, 0); 
+  else gamePane -> draw(screen, 0, 0);
+  
   SDL_UpdateWindowSurface(window);
 
   t2 = clock();
@@ -112,10 +79,11 @@ void Application::tick() {
 }
 
 void Application::end() {
-  ended = true;
-  if(mainMenu) delete mainMenu;
-  if(optionsMenu) delete optionsMenu;
-  if(gameScreen) delete gameScreen;
+  haveFinished = true;
+  /*
+  if(mainMenuPane) delete mainMenuPane;
+  if(gameScreenPane) delete gameScreenPane;
+  */
   
   SDL_FreeSurface(screen);
   SDL_DestroyWindow(window);

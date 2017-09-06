@@ -1,6 +1,6 @@
 
 #include<MenuItemDrawer.h>
-#include<BasicMenuItem.h>
+#include<MenuItem.h>
 #include<SDL.h>
 #include<SDL_ttf.h>
 
@@ -15,7 +15,15 @@ MenuItemDrawer::MenuItemDrawer(SDL_Surface *target, int baseX, int baseY,
   this -> unselectedcolor = unselectedcolor;
 }
 
-void MenuItemDrawer::drawBasicMenuItem(BasicMenuItem *elt) {
+void MenuItemDrawer::drawActionMenuItem(ActionMenuItem *elt) {
+  simpleitemdraw((MenuItem *)elt);
+}
+
+void MenuItemDrawer::drawNavigationMenuItem(NavigationMenuItem *elt) {
+  simpleitemdraw((MenuItem *) elt);
+}
+
+void MenuItemDrawer::simpleitemdraw(MenuItem *elt) {
   std::string text = elt -> getText();
   SDL_Surface *textsurface = elt -> isSelected() ? 
     TTF_RenderText_Solid(font, text.c_str(), selectedcolor) :
@@ -24,7 +32,6 @@ void MenuItemDrawer::drawBasicMenuItem(BasicMenuItem *elt) {
   SDL_Rect r;
   r.x = baseX; 
   r.y = baseY;
-  //  SDL_FillRect(target, &r, SDL_MapRGB(target->format, 0, 0, 0));
 
   r.x = baseX;
   r.y = baseY;

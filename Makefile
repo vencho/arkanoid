@@ -21,17 +21,23 @@ OBJECTS = \
 ./$(OBJDIR)/DrawablePane.o \
 ./$(OBJDIR)/DrawablePaneComposition.o \
 ./$(OBJDIR)/ScorePane.o \
-./$(OBJDIR)/BasicMenuItem.o \
 ./$(OBJDIR)/Menu.o \
-./$(OBJDIR)/MenuPane.o \
 ./$(OBJDIR)/MenuItemDrawer.o \
 ./$(OBJDIR)/MenuItem.o \
 ./$(OBJDIR)/Application.o \
-./$(OBJDIR)/ChangePaneCommand.o
+./$(OBJDIR)/ActionMenuItem.o \
+./$(OBJDIR)/NavigationMenuItem.o \
+./$(OBJDIR)/MenuStack.o \
+./$(OBJDIR)/MainMenu.o \
+./$(OBJDIR)/OptionsMenu.o \
+./$(OBJDIR)/MenuPane.o  \
+./$(OBJDIR)/DoNothingCommand.o \
+./$(OBJDIR)/GamePane.o \
+./$(OBJDIR)/MenuInputHandler.o 
+
 
 MENUOBJECTS = \
 ./$(OBJDIR)/FloatingRectangle.o \
-./$(OBJDIR)/BasicMenuItem.o \
 ./$(OBJDIR)/Menu.o \
 ./$(OBJDIR)/MenuPane.o \
 ./$(OBJDIR)/MenuItemDrawer.o \

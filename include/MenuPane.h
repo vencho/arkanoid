@@ -6,18 +6,18 @@
 #include<DrawablePane.h>
 
 class Menu;
+class MenuStack;
 
 class MenuPane : public DrawablePane {
  private:
-  Menu & menu;
+  MenuStack & menuStack;
   int itemHeight;
   TTF_Font *font;
   SDL_Color selectedcolor, unselectedcolor;
   
  public:
   virtual void draw(SDL_Surface *target, int baseX, int baseY);
-  void handleInput(SDL_KeyboardEvent *e);
-  MenuPane(Menu & menu, int width, int height);
+  MenuPane(MenuStack &menuStack, int width, int height);
 
 };
 

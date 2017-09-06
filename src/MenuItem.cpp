@@ -19,16 +19,7 @@ void MenuItem::toggleSelect() {
   selected ^= 1;
 }
 
-void MenuItem::handleInput(SDL_Keycode sym) {
-  if(reaction.find( sym ) == reaction.end()) return;
-  reaction[ sym ] -> execute();
-}
-
 std::string MenuItem::getText() {
   return text;
-}
-
-void MenuItem::addReaction(SDL_Keycode key, AbstractCommand *command) {
-  reaction[key] = command;
 }
 

@@ -6,21 +6,25 @@
 #include<string>
 
 class MenuItem;
+class MenuStack;
 
 class Menu {
  private:
   std::string title;
   std::vector<MenuItem *> v;
   int whichSelected;
-
+  MenuStack &menuStack;
+  
  public:
-  Menu(std::string title);
+  Menu(std::string title, MenuStack &menuStack);
   ~Menu();
   void addMenuItem(MenuItem *item);
   int getNumItems();
   MenuItem * getItemByIndex(int ind);
   void advanceSelection(int howmuch);
   MenuItem * getSelectedItem();
+  MenuStack & getMenuStack();
+
 };
 
 #endif

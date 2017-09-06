@@ -1,18 +1,25 @@
 #ifndef APPLICATION_H_DEFINED
 #define APPLICATION_H_DEFINED
 #include<SDL.h>
+#include<MenuStack.h>
 
 class DrawablePane;
-
+class GamePane;
+class Menu;
+class MenuPane;
+class AbstractInputHandler;
 
 class Application {
  private:
   SDL_Surface *screen;
   SDL_Window *window;
-  DrawablePane *currentDisplay;
-  DrawablePane *mainMenu, *optionsMenu, *gameScreen;
-  bool ended;
+  bool haveFinished;
+  bool menuMode;
 
+  DrawablePane *gamePane, *menuPane;
+  AbstractInputHandler *gameInputHandler, *menuInputHandler; 
+  Menu *mainMenu;
+  MenuStack menuStack;
   void handleInput();
 
  public:

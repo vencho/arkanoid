@@ -1,15 +1,3 @@
-#include<Board.h>
-#include<Global.h>
-#include<SDL.h>
-#include<SDL_ttf.h>
-#include<GameScreen.h>
-#include<ScorePane.h>
-#include<ctime>
-#include<DrawablePaneComposition.h>
-#include<BasicMenuItem.h>
-#include<Menu.h>
-#include<MenuItem.h>
-#include<MenuPane.h>
 #include<Application.h>
 
 int main() {
