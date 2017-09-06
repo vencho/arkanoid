@@ -10,6 +10,7 @@ class GamePane : public DrawablePaneComposition {
   ScorePane *sp;
  public:
   GamePane(Board *board);
+  ~GamePane();
   virtual void tick();
 };
 #endif

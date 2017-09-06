@@ -8,6 +8,11 @@ GamePane::GamePane(Board *board) : DrawablePaneComposition(true) {
   addPane(gs);
 }
 
+GamePane::~GamePane() {
+  delete gs;
+  delete sp;
+}
+
 void GamePane::tick() {
   gs -> tick();
 }

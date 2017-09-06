@@ -34,6 +34,7 @@ class Application {
   bool isFinished();
   void setActivePane(DrawablePane *pane);
   void switchToGameMode();
+  void switchToMenuMode();
 };
 
 

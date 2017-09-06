@@ -72,8 +72,8 @@ void Application::tick() {
   if(menuMode) menuPane -> tick();
   else gamePane -> tick();
 
-  if(menuMode) menuPane -> draw(screen, 0, 0); 
-  else gamePane -> draw(screen, 0, 0);
+  if(menuMode) menuPane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0); 
+  else gamePane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0);
   
   SDL_UpdateWindowSurface(window);
 
@@ -81,6 +81,8 @@ void Application::tick() {
   double secondsspent = (t2 - t1) / ( (double) CLOCKS_PER_SEC) ;
   int delay = (int)(1000*(SPF - secondsspent));
   SDL_Delay(delay);
+
+  if(!menuMode && board -> numTiles() == 0) switchToMenuMode();
 }
 
 void Application::requestEnd() {
@@ -88,6 +90,15 @@ void Application::requestEnd() {
 }
 
 void Application::end() {
+  if(menuMode) {
+    delete menuPane;
+    delete menuInputHandler;
+    delete mainMenu;
+  }
+  else {
+    delete gamePane;
+    delete board;
+  }
   /*
     FIXME Clean up operations. Destroy everything.
   */
@@ -104,13 +115,21 @@ void Application::end() {
   SDL_Quit();
 }
 
+void Application::switchToMenuMode() {
+  delete board;
+  board = NULL;  
+  delete gamePane;
+  delete gameInputHandler;
+
+  menuMode = true;
+}
 
 void Application::switchToGameMode() {
   menuMode = false;
   if(board != NULL) {
     return;
   }
-  board = new Board(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "levels/level1.txt");
+  board = new Board(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "levels/level0.txt");
   gamePane = new GamePane(board);
   gameInputHandler = new GameInputHandler(*board);
 }

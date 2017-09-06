@@ -8,6 +8,7 @@
 #include<OptionsMenu.h>
 #include<Application.h>
 #include<SwitchToGameCommand.h>
+#include<QuitCommand.h>
 
 MainMenu::MainMenu(MenuStack &menuStack, Application &application) : Menu("Main menu", menuStack), application(application) {
   ActionMenuItem *newgameitem; 
@@ -21,13 +22,8 @@ MainMenu::MainMenu(MenuStack &menuStack, Application &application) : Menu("Main 
   addMenuItem(optionsitem); 
 
   ActionMenuItem *quititem;
-  AbstractCommand *quitcommand = new DoNothingCommand();
+  AbstractCommand *quitcommand = new QuitCommand(application);
   quititem = new ActionMenuItem("Quit", false, *quitcommand);
   addMenuItem(quititem);
 }
-
-
-
-
-
 
