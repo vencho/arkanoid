@@ -8,6 +8,7 @@ class GamePane;
 class Menu;
 class MenuPane;
 class AbstractInputHandler;
+class Board;
 
 class Application {
  private:
@@ -20,15 +21,19 @@ class Application {
   AbstractInputHandler *gameInputHandler, *menuInputHandler; 
   Menu *mainMenu;
   MenuStack menuStack;
+  Board *board;
+
   void handleInput();
+  void end();
 
  public:
   Application();
   void start();
-  void end();
+  void requestEnd();
   void tick();
   bool isFinished();
   void setActivePane(DrawablePane *pane);
+  void switchToGameMode();
 };
 
 

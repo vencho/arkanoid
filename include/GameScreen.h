@@ -15,6 +15,8 @@ class GameScreen : public DrawablePane {
   SDL_Surface * draw();
   void handleInput(SDL_KeyboardEvent *e);
   virtual void draw(SDL_Surface *target, int baseX, int baseY);
+  virtual void tick();
+
 };
 
 

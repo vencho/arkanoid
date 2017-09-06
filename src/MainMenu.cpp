@@ -6,11 +6,12 @@
 #include<DoNothingCommand.h>
 #include<NavigationMenuItem.h>
 #include<OptionsMenu.h>
+#include<Application.h>
+#include<SwitchToGameCommand.h>
 
-
-MainMenu::MainMenu(MenuStack &menuStack) : Menu("Main menu", menuStack) {
+MainMenu::MainMenu(MenuStack &menuStack, Application &application) : Menu("Main menu", menuStack), application(application) {
   ActionMenuItem *newgameitem; 
-  AbstractCommand *newgamecommand = new DoNothingCommand();
+  AbstractCommand *newgamecommand = new SwitchToGameCommand(application);
   newgameitem = new ActionMenuItem("New game", true, *newgamecommand);
   addMenuItem(newgameitem);
 

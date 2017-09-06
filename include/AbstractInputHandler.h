@@ -4,5 +4,6 @@
 class AbstractInputHandler {
  public:
   virtual void handleInput(SDL_Event &e) = 0;
+  virtual void handleInput() = 0;
 };
 #endif

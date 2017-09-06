@@ -4,10 +4,12 @@
 #include<Menu.h>
 #include<string>
 class MenuStack;
-
+class Application;
 class MainMenu : public Menu {
-public:
-  MainMenu(MenuStack &menuStack);
+ private:
+  Application &application;
+ public:
+  MainMenu(MenuStack &menuStack, Application &application);
 };
 
 #endif

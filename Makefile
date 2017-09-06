@@ -33,7 +33,9 @@ OBJECTS = \
 ./$(OBJDIR)/MenuPane.o  \
 ./$(OBJDIR)/DoNothingCommand.o \
 ./$(OBJDIR)/GamePane.o \
-./$(OBJDIR)/MenuInputHandler.o 
+./$(OBJDIR)/MenuInputHandler.o \
+./$(OBJDIR)/GameInputHandler.o \
+./$(OBJDIR)/SwitchToGameCommand.o
 
 
 MENUOBJECTS = \

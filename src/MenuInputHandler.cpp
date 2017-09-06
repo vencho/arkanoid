@@ -26,6 +26,8 @@ void MenuInputHandler::handleInput(SDL_Event &e) {
   };
 }
 
+void MenuInputHandler::handleInput() { }
+
 MenuInputHandler::MenuInputHandler(MenuStack &menuStack) : menuStack(menuStack) { }
 
 

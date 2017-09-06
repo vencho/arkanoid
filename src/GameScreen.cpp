@@ -12,19 +12,11 @@ GameScreen::GameScreen(Board &newBoard) : board(newBoard) {
 
 
 void GameScreen::handleInput(SDL_KeyboardEvent *e) {
-  /*
-    Uint8 leftPressed = currentKeyStates[SDL_SCANCODE_A];
-    Uint8 rightPressed = currentKeyStates[SDL_SCANCODE_D];
-    int dx;
-    if( (leftPressed ^ rightPressed) == 0 ) { dx = 0; } 
-    else if(leftPressed) { dx = -1; } 
-    else { dx = 1; }
-    board.getPaddle().setVelocity(dx*PADDLE_SPEED, 0);
-
-    if(currentKeyStates[SDL_SCANCODE_W]) board.initialiseBalls();
-  */
 }
 
+void GameScreen::tick() {
+  board.tick();
+}
 
 void GameScreen::draw(SDL_Surface *target, int baseX, int baseY) {
   SDL_Rect r;

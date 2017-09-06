@@ -11,5 +11,6 @@ class MenuInputHandler : public AbstractInputHandler {
  public:
   MenuInputHandler(MenuStack &menuStack);
   virtual void handleInput(SDL_Event &e);
+  virtual void handleInput();
 };
 #endif
