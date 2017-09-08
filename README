@@ -1,0 +1,3 @@
+An Arkanoid clone using basic SDL functionality. Intentionally 
+minimalist on libraries and other building blocks, as an exercise 
+in OOP design.
