@@ -4,21 +4,22 @@
 #include<ActionMenuItem.h>
 #include<AbstractCommand.h>
 #include<DoNothingCommand.h>
-#include<NavigationMenuItem.h>
 #include<OptionsMenu.h>
 #include<Application.h>
 #include<SwitchToGameCommand.h>
 #include<QuitCommand.h>
+#include<MenuNavigationCommand.h>
 
-MainMenu::MainMenu(MenuStack &menuStack, Application &application) : Menu("Main menu", menuStack), application(application) {
+MainMenu::MainMenu(Application &app) : Menu("Main menu", app) {
   ActionMenuItem *newgameitem; 
   AbstractCommand *newgamecommand = new SwitchToGameCommand(application);
   newgameitem = new ActionMenuItem("New game", true, *newgamecommand);
   addMenuItem(newgameitem);
 
-  NavigationMenuItem *optionsitem;
-  Menu *options = new OptionsMenu(menuStack);
-  optionsitem = new NavigationMenuItem("Options", false, options, *this);
+  ActionMenuItem *optionsitem;
+  Menu *options = new OptionsMenu(application);
+  AbstractCommand *optionscommand = new MenuNavigationCommand(options, application);
+  optionsitem = new ActionMenuItem("Options", false, *optionscommand);
   addMenuItem(optionsitem); 
 
   ActionMenuItem *quititem;

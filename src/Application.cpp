@@ -36,7 +36,7 @@ void Application::start() {
   screen = SDL_GetWindowSurface(window);
   menuMode = true;
 
-  mainMenu = new MainMenu(menuStack, *this);
+  mainMenu = new MainMenu(*this);
   menuStack.push(mainMenu);
   menuPane = new MenuPane(menuStack, SCREEN_WIDTH, SCREEN_HEIGHT);
   menuInputHandler = new MenuInputHandler(menuStack);
@@ -113,6 +113,13 @@ void Application::end() {
   SDL_DestroyWindow(window);
   TTF_Quit();
   SDL_Quit();
+}
+
+void Application::menuNavigate(Menu *menu) {
+  if(menu == NULL)
+    menuStack.pop();
+  else
+    menuStack.push(menu);
 }
 
 void Application::switchToMenuMode() {

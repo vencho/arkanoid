@@ -1,7 +1,7 @@
 #include<Menu.h>
 #include<MenuItem.h>
 
-Menu::Menu(std::string title, MenuStack &menuStack) : menuStack(menuStack) {
+Menu::Menu(std::string title, Application &application) : application(application) {
   this -> title = title;
   whichSelected = 0;
 }
@@ -36,6 +36,3 @@ void Menu::advanceSelection(int howmuch) {
   v[whichSelected] -> toggleSelect(); 
 }
 
-MenuStack & Menu::getMenuStack() {
-  return menuStack;
-}

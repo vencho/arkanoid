@@ -35,6 +35,7 @@ class Application {
   void setActivePane(DrawablePane *pane);
   void switchToGameMode();
   void switchToMenuMode();
+  void menuNavigate(Menu *menu);
 };
 
 

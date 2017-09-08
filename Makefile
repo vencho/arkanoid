@@ -26,7 +26,6 @@ OBJECTS = \
 ./$(OBJDIR)/MenuItem.o \
 ./$(OBJDIR)/Application.o \
 ./$(OBJDIR)/ActionMenuItem.o \
-./$(OBJDIR)/NavigationMenuItem.o \
 ./$(OBJDIR)/MenuStack.o \
 ./$(OBJDIR)/MainMenu.o \
 ./$(OBJDIR)/OptionsMenu.o \
@@ -36,16 +35,10 @@ OBJECTS = \
 ./$(OBJDIR)/MenuInputHandler.o \
 ./$(OBJDIR)/GameInputHandler.o \
 ./$(OBJDIR)/SwitchToGameCommand.o \
-./$(OBJDIR)/QuitCommand.o
+./$(OBJDIR)/QuitCommand.o \
+./$(OBJDIR)/MenuNavigationCommand.o 
 
 
-MENUOBJECTS = \
-./$(OBJDIR)/FloatingRectangle.o \
-./$(OBJDIR)/Menu.o \
-./$(OBJDIR)/MenuPane.o \
-./$(OBJDIR)/MenuItemDrawer.o \
-./$(OBJDIR)/MenuItem.o \
-./$(OBJDIR)/DrawablePane.o
 
 
 
@@ -53,11 +46,6 @@ all : main
 
 main : $(OBJECTS) $(INCDIR)/Global.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main $(LIBS)
-
-
-menuTest : $(MENUOBJECTS)
-	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/menuTest.cpp $(MENUOBJECTS) -o $(BINDIR)/menuTest $(LIBS)
-
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCDIR)/%.h $(INCDIR)/Global.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) -c $< -o $@ $(LIBS)

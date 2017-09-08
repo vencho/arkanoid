@@ -2,18 +2,19 @@
 #include<MenuStack.h>
 #include<Menu.h>
 #include<ActionMenuItem.h>
-#include<NavigationMenuItem.h>
+#include<MenuNavigationCommand.h>
 #include<AbstractCommand.h>
 #include<DoNothingCommand.h>
 
 
-OptionsMenu::OptionsMenu(MenuStack &menuStack) : Menu("Options menu", menuStack) {
+OptionsMenu::OptionsMenu(Application &application) : Menu("Options menu", application) {
   ActionMenuItem *exampleitem;;
   AbstractCommand *examplecommand = new DoNothingCommand();
   exampleitem = new ActionMenuItem("Example", true, *examplecommand);
   addMenuItem(exampleitem);
 
-  NavigationMenuItem *backitem;
-  backitem = new NavigationMenuItem("Back", false, NULL, *this);
+  ActionMenuItem *backitem;
+  MenuNavigationCommand *backcommand = new MenuNavigationCommand(NULL, application);
+  backitem = new ActionMenuItem("Back", false, *backcommand);
   addMenuItem(backitem);
 }

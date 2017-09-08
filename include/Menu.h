@@ -6,25 +6,23 @@
 #include<string>
 
 class MenuItem;
-class MenuStack;
+class Application;
 
 class Menu {
- private:
+ protected:
+  Application &application;
   std::string title;
   std::vector<MenuItem *> v;
   int whichSelected;
-  MenuStack &menuStack;
-  
+
  public:
-  Menu(std::string title, MenuStack &menuStack);
+  Menu(std::string title, Application &application);
   ~Menu();
   void addMenuItem(MenuItem *item);
   int getNumItems();
   MenuItem * getItemByIndex(int ind);
   void advanceSelection(int howmuch);
   MenuItem * getSelectedItem();
-  MenuStack & getMenuStack();
-
 };
 
 #endif
