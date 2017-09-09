@@ -5,13 +5,24 @@
 #include<MenuNavigationCommand.h>
 #include<AbstractCommand.h>
 #include<DoNothingCommand.h>
-
+#include<SetValueMenuItem.h>
+#include<Configuration.h>
 
 OptionsMenu::OptionsMenu(Application &application) : Menu("Options menu", application) {
-  ActionMenuItem *exampleitem;;
-  AbstractCommand *examplecommand = new DoNothingCommand();
-  exampleitem = new ActionMenuItem("Example", true, *examplecommand);
-  addMenuItem(exampleitem);
+  SetValueMenuItem *difficultyitem;
+  difficultyitem = new SetValueMenuItem("Difficulty", true, 
+					Configuration::minDifficulty,
+					Configuration::maxDifficulty,
+					Configuration::difficulty);
+
+  addMenuItem(difficultyitem);
+
+  SetValueMenuItem *levelitem;
+  levelitem = new SetValueMenuItem("Level", false, 
+				   Configuration::minLevel,
+				   Configuration::maxLevel,
+				   Configuration::level);
+  addMenuItem(levelitem);
 
   ActionMenuItem *backitem;
   MenuNavigationCommand *backcommand = new MenuNavigationCommand(NULL, application);

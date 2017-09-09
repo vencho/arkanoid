@@ -36,8 +36,9 @@ OBJECTS = \
 ./$(OBJDIR)/GameInputHandler.o \
 ./$(OBJDIR)/SwitchToGameCommand.o \
 ./$(OBJDIR)/QuitCommand.o \
-./$(OBJDIR)/MenuNavigationCommand.o 
-
+./$(OBJDIR)/MenuNavigationCommand.o \
+./$(OBJDIR)/Configuration.o \
+./$(OBJDIR)/SetValueMenuItem.o
 
 
 

@@ -5,6 +5,7 @@
 #include<SDL_ttf.h>
 
 class ActionMenuItem;
+class SetValueMenuItem;
 class MenuItem;
 
 class MenuItemDrawer {
@@ -20,5 +21,6 @@ class MenuItemDrawer {
 
 
   void drawActionMenuItem(ActionMenuItem *elt);
+  void drawSetValueMenuItem(SetValueMenuItem *elt);
 };
 #endif

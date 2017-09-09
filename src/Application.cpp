@@ -14,6 +14,8 @@
 #include<GamePane.h>
 #include<MenuInputHandler.h>
 #include<GameInputHandler.h>
+#include<Configuration.h>
+#include<string>
 
 Application::Application() {
   haveFinished = true;
@@ -136,7 +138,12 @@ void Application::switchToGameMode() {
   if(board != NULL) {
     return;
   }
-  board = new Board(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "levels/level0.txt");
+ 
+  char lvl[4];
+  sprintf(lvl, "%d", Configuration::level);
+  std::string level(lvl);
+  std::string levelpath = "levels/level" + level + ".txt";
+  board = new Board(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, levelpath);
   gamePane = new GamePane(board);
   gameInputHandler = new GameInputHandler(*board);
 }
