@@ -1,19 +1,24 @@
-#include<Application.h>
-#include<MenuPane.h>
-#include<Menu.h>
-#include<Global.h>
-#include<Board.h>
-#include<DrawablePaneComposition.h>
-#include<GameScreen.h>
-#include<ScorePane.h>
-#include<MainMenu.h>
-#include<OptionsMenu.h>
-#include<MenuPane.h>
-#include<GamePane.h>
-#include<MenuInputHandler.h>
-#include<GameInputHandler.h>
-#include<Configuration.h>
 #include<string>
+#include<Application.h>
+#include<Global.h>
+#include<Configuration.h>
+
+#include<model/Board.h>
+
+#include<panes/GameScreen.h>
+#include<panes/ScorePane.h>
+#include<panes/MenuPane.h>
+#include<panes/GamePane.h>
+#include<panes/MenuPane.h>
+#include<panes/DrawablePaneComposition.h>
+
+#include<menus/MainMenu.h>
+#include<menus/OptionsMenu.h>
+#include<menus/Menu.h>
+
+#include<controllers/MenuInputHandler.h>
+#include<controllers/GameInputHandler.h>
+
 
 Application::Application() {
   haveFinished = true;
