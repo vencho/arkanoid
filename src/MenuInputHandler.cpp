@@ -2,7 +2,7 @@
 #include<SDL.h>
 #include<Menu.h>
 #include<MenuItem.h>
-#include<MenuStack.h>
+
 
 void MenuInputHandler::handleInput(SDL_Event &e) {
   if(e.type != SDL_KEYDOWN) return;
@@ -28,7 +28,7 @@ void MenuInputHandler::handleInput(SDL_Event &e) {
 
 void MenuInputHandler::handleInput() { }
 
-MenuInputHandler::MenuInputHandler(MenuStack &menuStack) : menuStack(menuStack) { }
+MenuInputHandler::MenuInputHandler(std::stack<Menu *> &menuStack) : menuStack(menuStack) { }
 
 
 

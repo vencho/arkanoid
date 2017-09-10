@@ -1,7 +1,7 @@
 #ifndef APPLICATION_H_DEFINED
 #define APPLICATION_H_DEFINED
 #include<SDL.h>
-#include<MenuStack.h>
+#include<stack>
 
 class DrawablePane;
 class GamePane;
@@ -20,7 +20,7 @@ class Application {
   DrawablePane *gamePane, *menuPane;
   AbstractInputHandler *gameInputHandler, *menuInputHandler; 
   Menu *mainMenu;
-  MenuStack menuStack;
+  std::stack<Menu *> menuStack;
   Board *board;
 
   void handleInput();

@@ -4,21 +4,20 @@
 #include<SDL.h>
 #include<SDL_ttf.h>
 #include<DrawablePane.h>
+#include<stack>
 
 class Menu;
-class MenuStack;
 
 class MenuPane : public DrawablePane {
  private:
-  MenuStack & menuStack;
+  std::stack<Menu *> & menuStack;
   int itemHeight;
   TTF_Font *font;
   SDL_Color selectedcolor, unselectedcolor;
   
  public:
   virtual void draw(SDL_Surface *target, int baseX, int baseY);
-  MenuPane(MenuStack &menuStack, int width, int height);
-
+  MenuPane(std::stack<Menu *> &menuStack, int width, int height);
 };
 
 #endif

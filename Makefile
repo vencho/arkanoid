@@ -26,7 +26,6 @@ OBJECTS = \
 ./$(OBJDIR)/MenuItem.o \
 ./$(OBJDIR)/Application.o \
 ./$(OBJDIR)/ActionMenuItem.o \
-./$(OBJDIR)/MenuStack.o \
 ./$(OBJDIR)/MainMenu.o \
 ./$(OBJDIR)/OptionsMenu.o \
 ./$(OBJDIR)/MenuPane.o  \

@@ -2,8 +2,8 @@
 #include<MenuItem.h>
 #include<MenuItemDrawer.h>
 #include<Menu.h>
-#include<MenuStack.h>
 #include<SDL.h>
+#include<stack>
 
 void MenuPane::draw(SDL_Surface *target, int baseX, int baseY) {
   SDL_Rect r;
@@ -22,7 +22,7 @@ void MenuPane::draw(SDL_Surface *target, int baseX, int baseY) {
 }
 
 
-MenuPane::MenuPane(MenuStack &menuStack, int width, int height) : menuStack(menuStack) {
+MenuPane::MenuPane(std::stack<Menu *> &menuStack, int width, int height) : menuStack(menuStack) {
   this -> width = width;
   this -> height = height;
   itemHeight = 50;

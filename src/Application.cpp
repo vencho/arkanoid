@@ -2,14 +2,12 @@
 #include<MenuPane.h>
 #include<Menu.h>
 #include<Global.h>
-#include<ChangePaneCommand.h>
 #include<Board.h>
 #include<DrawablePaneComposition.h>
 #include<GameScreen.h>
 #include<ScorePane.h>
 #include<MainMenu.h>
 #include<OptionsMenu.h>
-#include<MenuStack.h>
 #include<MenuPane.h>
 #include<GamePane.h>
 #include<MenuInputHandler.h>
