@@ -38,12 +38,14 @@ void Board::collisionLogic() {
   CollisionManager::collideBorders(player);
 }
 
-Board::Board(int width, int height, std::string filename) : 
+Board::Board(int width, int height) : 
   player(width/2 - BASE_PADDLE_WIDTH/2, PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT) {
-
   this -> width = width;
   this -> height = height;
+}
 
+void Board::resetBoard(std::string filename) {
+  balls.clear();
   balls.push_back(Ball(0, 0, 0, 0));
   balls[0].snapToPaddle(player);
 
@@ -51,6 +53,7 @@ Board::Board(int width, int height, std::string filename) :
 }
 
 void Board::loadTiles(std::string filename) {
+  tiles.clear();
   FILE *fin = fopen(filename.c_str(), "r");
   int row, column, health;
   while(1) {
@@ -58,7 +61,6 @@ void Board::loadTiles(std::string filename) {
     tiles.push_back(Tile(row, column, health));
   }
   fclose(fin);
-
 }
 
 void Board::initialiseBalls() {
@@ -124,7 +126,6 @@ void Board::tick() {
       balls[i].snapToPaddle(player); 
     }
   }
-
 }
 
 Ball & Board::getBall(int num) {

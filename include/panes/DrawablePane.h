@@ -8,8 +8,7 @@ class DrawablePane : public FloatingRectangle {
  public:
   virtual void draw(SDL_Surface *target, int baseX, int baseY) = 0;
   virtual void tick();
-  virtual void handleInput(SDL_KeyboardEvent *e);
-
+  virtual void resetPane();
   DrawablePane();
 };
 

@@ -8,23 +8,20 @@
 #include<Configuration.h>
 
 OptionsMenu::OptionsMenu(Application &application) : Menu("Options menu", application) {
-  SetValueMenuItem *difficultyitem;
-  difficultyitem = new SetValueMenuItem("Difficulty", true, 
+  v.emplace_back(new SetValueMenuItem("Difficulty", true, 
 					Configuration::minDifficulty,
 					Configuration::maxDifficulty,
-					Configuration::difficulty);
+				      Configuration::difficulty)
+		 );
 
-  addMenuItem(difficultyitem);
 
-  SetValueMenuItem *levelitem;
-  levelitem = new SetValueMenuItem("Level", false, 
+  v.emplace_back(new SetValueMenuItem("Level", false, 
 				   Configuration::minLevel,
 				   Configuration::maxLevel,
-				   Configuration::level);
-  addMenuItem(levelitem);
+				   Configuration::level)
+		 );
 
-  ActionMenuItem *backitem;
   MenuNavigationCommand *backcommand = new MenuNavigationCommand(NULL, application);
-  backitem = new ActionMenuItem("Back", false, *backcommand);
-  addMenuItem(backitem);
+  v.emplace_back(new ActionMenuItem("Back", false, *backcommand));
 }
+

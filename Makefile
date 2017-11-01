@@ -1,6 +1,6 @@
 CC = g++
 LIBS = -lSDL2 -lSDL2_ttf
-FLAGS = -O2 -w
+FLAGS = -O2 -w -std=c++11
 SRCDIR = ./src
 BINDIR = ./bin
 OBJDIR = ./obj

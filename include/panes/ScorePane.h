@@ -13,12 +13,13 @@ class ScorePane : public DrawablePane, public DeathMonitor, public TileDestructi
   int deaths, tilesLeft, tilesTotal;
   TTF_Font *font;
   SDL_Color textcolor;
-
+  Board &board;
  public:
   ScorePane(Board &B);
   virtual void draw(SDL_Surface *target, int baseX, int baseY);
   virtual void notifyDied();
   virtual void notifyTileDestroyed();
+  void resetPane();
 };
 
 #endif

@@ -6,10 +6,6 @@ MenuItem::MenuItem(std::string text, bool selected) {
   this -> selected = selected;
 }
 
-MenuItem::~MenuItem() {
-
-}
-
 bool MenuItem::isSelected() {
   return selected;
 }
@@ -21,4 +17,5 @@ void MenuItem::toggleSelect() {
 std::string MenuItem::getText() {
   return text;
 }
+
 

@@ -15,11 +15,10 @@ class MenuItem {
 
  public:
   MenuItem(std::string text, bool selected);
-  ~MenuItem();
   bool isSelected();
   void toggleSelect();
   std::string getText();
-
+  
   virtual void activate() = 0;
   virtual void left() = 0;
   virtual void right() = 0;

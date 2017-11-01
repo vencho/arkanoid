@@ -9,21 +9,14 @@
 #include<commands/MenuNavigationCommand.h>
 #include<Application.h>
 
-MainMenu::MainMenu(Application &app) : Menu("Main menu", app) {
-  ActionMenuItem *newgameitem; 
+MainMenu::MainMenu(Application &app) : Menu("Main menu", app), options(new OptionsMenu(app)) {
   AbstractCommand *newgamecommand = new SwitchToGameCommand(application);
-  newgameitem = new ActionMenuItem("New game", true, *newgamecommand);
-  addMenuItem(newgameitem);
+  v.emplace_back(new ActionMenuItem("New game", true, *newgamecommand));
 
-  ActionMenuItem *optionsitem;
-  Menu *options = new OptionsMenu(application);
-  AbstractCommand *optionscommand = new MenuNavigationCommand(options, application);
-  optionsitem = new ActionMenuItem("Options", false, *optionscommand);
-  addMenuItem(optionsitem); 
+  AbstractCommand *optionscommand = new MenuNavigationCommand(options.get(), application);
+  v.emplace_back(new ActionMenuItem("Options", false, *optionscommand));
 
-  ActionMenuItem *quititem;
   AbstractCommand *quitcommand = new QuitCommand(application);
-  quititem = new ActionMenuItem("Quit", false, *quitcommand);
-  addMenuItem(quititem);
+  v.emplace_back(new ActionMenuItem("Quit", false, *quitcommand));
 }
 

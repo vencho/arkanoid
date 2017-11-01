@@ -15,13 +15,13 @@ void MenuInputHandler::handleInput(SDL_Event &e) {
     menuStack.top() -> advanceSelection(1);
     break;
   case SDLK_LEFT:
-    menuStack.top() -> getSelectedItem() -> left();
+    menuStack.top() -> getSelectedItem().left();
     break;
   case SDLK_RIGHT:
-    menuStack.top() -> getSelectedItem() -> right();
+    menuStack.top() -> getSelectedItem().right();
     break;
   case SDLK_RETURN:
-    menuStack.top() -> getSelectedItem() -> activate();
+    menuStack.top() -> getSelectedItem().activate();
     break;
   };
 }

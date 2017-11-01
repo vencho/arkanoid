@@ -15,9 +15,9 @@ void MenuPane::draw(SDL_Surface *target, int baseX, int baseY) {
   
   Menu *menu = menuStack.top();
   for(int i = 0; i < menu -> getNumItems(); i++) {
-    MenuItem *item = menu -> getItemByIndex(i);
+    MenuItem & item = menu -> getItemByIndex(i);
     MenuItemDrawer mid(target, baseX, baseY + i*itemHeight, font, selectedcolor, unselectedcolor);
-    item -> drawYourself(mid);
+    item.drawYourself(mid);
   }
 }
 

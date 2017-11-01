@@ -20,18 +20,16 @@
 #include<controllers/GameInputHandler.h>
 
 
-Application::Application() {
-  haveFinished = true;
-}
-
-bool Application::isFinished() {
-  return haveFinished;
-}
-
-void Application::start() {
+Application::Application() : mainMenu(new MainMenu(*this)), 
+			     menuInputHandler(new MenuInputHandler(menuStack)),
+			     gameInputHandler(new GameInputHandler(board)),
+			     board(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT),
+			     gamePane(new GamePane(board)),
+			     menuPane(new MenuPane(menuStack, SCREEN_WIDTH, SCREEN_HEIGHT)) {
   haveFinished = false;
-  SDL_Init(SDL_INIT_VIDEO);
-  TTF_Init();
+  menuMode = true;
+  menuStack.push(mainMenu.get());
+
   window = SDL_CreateWindow("Arkanoid", 
 					SDL_WINDOWPOS_UNDEFINED,
 					SDL_WINDOWPOS_UNDEFINED,
@@ -39,15 +37,12 @@ void Application::start() {
 					SCREEN_HEIGHT,
 					0);
   screen = SDL_GetWindowSurface(window);
-  menuMode = true;
-
-  mainMenu = new MainMenu(*this);
-  menuStack.push(mainMenu);
-  menuPane = new MenuPane(menuStack, SCREEN_WIDTH, SCREEN_HEIGHT);
-  menuInputHandler = new MenuInputHandler(menuStack);
-
-  board = NULL;
 }
+
+bool Application::isFinished() {
+  return haveFinished;
+}
+
 
 void Application::handleInput() {
   SDL_Event e;
@@ -79,7 +74,7 @@ void Application::tick() {
 
   if(menuMode) menuPane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0); 
   else gamePane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0);
-  
+
   SDL_UpdateWindowSurface(window);
 
   t2 = clock();
@@ -87,7 +82,7 @@ void Application::tick() {
   int delay = (int)(1000*(SPF - secondsspent));
   SDL_Delay(delay);
 
-  if(!menuMode && board -> numTiles() == 0) switchToMenuMode();
+  if(!menuMode && board.numTiles() == 0) switchToMenuMode();
 }
 
 void Application::requestEnd() {
@@ -95,29 +90,9 @@ void Application::requestEnd() {
 }
 
 void Application::end() {
-  if(menuMode) {
-    delete menuPane;
-    delete menuInputHandler;
-    delete mainMenu;
-  }
-  else {
-    delete gamePane;
-    delete board;
-  }
-  /*
-    FIXME Clean up operations. Destroy everything.
-  */
-
   haveFinished = true;
-  /*
-  if(mainMenuPane) delete mainMenuPane;
-  if(gameScreenPane) delete gameScreenPane;
-  */
-  
   SDL_FreeSurface(screen);
   SDL_DestroyWindow(window);
-  TTF_Quit();
-  SDL_Quit();
 }
 
 void Application::menuNavigate(Menu *menu) {
@@ -128,26 +103,18 @@ void Application::menuNavigate(Menu *menu) {
 }
 
 void Application::switchToMenuMode() {
-  delete board;
-  board = NULL;  
-  delete gamePane;
-  delete gameInputHandler;
-
   menuMode = true;
 }
 
 void Application::switchToGameMode() {
   menuMode = false;
-  if(board != NULL) {
-    return;
-  }
  
   char lvl[4];
   sprintf(lvl, "%d", Configuration::level);
   std::string level(lvl);
   std::string levelpath = "levels/level" + level + ".txt";
-  board = new Board(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, levelpath);
-  gamePane = new GamePane(board);
-  gameInputHandler = new GameInputHandler(*board);
+
+  board.resetBoard(levelpath);
+  gamePane -> resetPane();
 }
 

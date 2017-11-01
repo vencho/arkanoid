@@ -24,12 +24,12 @@ class Board {
   void reportTileDestruction();
   
  public:
-  Board(int width, int height, std::string filename);
-
+  Board(int width, int height);
   void addTileDestructionMonitor(TileDestructionMonitor *tdm);
   void addDeathMonitor(DeathMonitor *dm);
   void initialiseBalls();
 
+  void resetBoard(std::string filename);
   void tick();
 
   bool gameWon();

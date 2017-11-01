@@ -1,19 +1,18 @@
 #include<panes/GamePane.h>
 #include<panes/ScorePane.h>
 #include<panes/GameScreen.h>
-GamePane::GamePane(Board *board) : DrawablePaneComposition(true) {
-  gs = new GameScreen(*board);
-  sp = new ScorePane(*board);
-  addPane(sp);
-  addPane(gs);
+GamePane::GamePane(Board &board) : DrawablePaneComposition(true) {
+  std::unique_ptr<ScorePane> sp(new ScorePane(board));
+  std::unique_ptr<GameScreen> gs(new GameScreen(board));
+  addPane(std::move(sp));
+  addPane(std::move(gs));
 }
 
-GamePane::~GamePane() {
-  delete gs;
-  delete sp;
+void GamePane::resetPane() {
+  panes[0] -> resetPane();
 }
 
 void GamePane::tick() {
-  gs -> tick();
+  panes[1] -> tick();
 }
 

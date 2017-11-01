@@ -4,25 +4,23 @@
 #include<SDL.h>
 #include<vector>
 #include<string>
-
-class MenuItem;
+#include<memory>
+#include<menus/MenuItem.h>
 class Application;
 
 class Menu {
  protected:
   Application &application;
   std::string title;
-  std::vector<MenuItem *> v;
+  std::vector<std::unique_ptr<MenuItem>> v;
   int whichSelected;
 
  public:
   Menu(std::string title, Application &application);
-  ~Menu();
-  void addMenuItem(MenuItem *item);
   int getNumItems();
-  MenuItem * getItemByIndex(int ind);
   void advanceSelection(int howmuch);
-  MenuItem * getSelectedItem();
+  MenuItem & getItemByIndex(int ind);
+  MenuItem & getSelectedItem();
 };
 
 #endif

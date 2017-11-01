@@ -11,9 +11,6 @@ GameScreen::GameScreen(Board &newBoard) : board(newBoard) {
 }
 
 
-void GameScreen::handleInput(SDL_KeyboardEvent *e) {
-}
-
 void GameScreen::tick() {
   board.tick();
 }

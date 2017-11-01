@@ -2,13 +2,15 @@
 #define APPLICATION_H_DEFINED
 #include<SDL.h>
 #include<stack>
+#include<memory>
+#include<model/Board.h>
+#include<menus/MainMenu.h>
+#include<panes/GamePane.h>
+#include<panes/MenuPane.h>
+#include<controllers/AbstractInputHandler.h>
 
 class DrawablePane;
-class GamePane;
 class Menu;
-class MenuPane;
-class AbstractInputHandler;
-class Board;
 
 class Application {
  private:
@@ -17,11 +19,14 @@ class Application {
   bool haveFinished;
   bool menuMode;
 
-  DrawablePane *gamePane, *menuPane;
-  AbstractInputHandler *gameInputHandler, *menuInputHandler; 
-  Menu *mainMenu;
+
+  Board board;
+  std::unique_ptr<GamePane> gamePane;
+  std::unique_ptr<MenuPane> menuPane;
+  std::unique_ptr<AbstractInputHandler> gameInputHandler, menuInputHandler;
+  std::unique_ptr<MainMenu> mainMenu;
+
   std::stack<Menu *> menuStack;
-  Board *board;
 
   void handleInput();
   void end();
@@ -32,7 +37,6 @@ class Application {
   void requestEnd();
   void tick();
   bool isFinished();
-  void setActivePane(DrawablePane *pane);
   void switchToGameMode();
   void switchToMenuMode();
   void menuNavigate(Menu *menu);

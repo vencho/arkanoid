@@ -5,13 +5,11 @@ class Board;
 class GameScreen;
 class ScorePane;
 class GamePane : public DrawablePaneComposition {
- private:
-  GameScreen *gs;
-  ScorePane *sp;
  public:
-  GamePane(Board *board);
-  ~GamePane();
+  GamePane(Board &board);
   virtual void tick();
+  void resetPane();
+
 };
 #endif
 
