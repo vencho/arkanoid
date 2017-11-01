@@ -69,8 +69,7 @@ void Application::tick() {
   handleInput();
   if(isFinished()) return;
 
-  if(menuMode) menuPane -> tick();
-  else gamePane -> tick();
+  board.tick();
 
   if(menuMode) menuPane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0); 
   else gamePane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0);

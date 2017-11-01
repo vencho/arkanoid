@@ -10,11 +10,6 @@ GameScreen::GameScreen(Board &newBoard) : board(newBoard) {
   height = GAME_SCREEN_HEIGHT;
 }
 
-
-void GameScreen::tick() {
-  board.tick();
-}
-
 void GameScreen::draw(SDL_Surface *target, int baseX, int baseY) {
   SDL_Rect r;
   

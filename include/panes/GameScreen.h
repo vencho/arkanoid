@@ -12,7 +12,6 @@ class GameScreen : public DrawablePane {
  public:
   GameScreen(Board &newBoard);
   virtual void draw(SDL_Surface *target, int baseX, int baseY);
-  virtual void tick();
 };
 
 
