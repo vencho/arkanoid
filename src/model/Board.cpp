@@ -4,6 +4,7 @@
 #include<geometry/CollisionManager.h>
 #include<cstdio>
 #include<string>
+#include<algorithm>
 
 bool Board::gameWon() {
   return tiles.size() == 0;
@@ -20,8 +21,7 @@ void Board::collisionLogic() {
 
       if(tiles[j].getHealth() == 0) {
 	reportTileDestruction();
-	tiles[j] = tiles.back();
-	tiles.pop_back();
+	tiles.erase(tiles.begin() + j);
 	j--;
       }
     }
@@ -61,6 +61,7 @@ void Board::loadTiles(std::string filename) {
     tiles.push_back(Tile(row, column, health));
   }
   fclose(fin);
+  sort(tiles.begin(), tiles.end());
 }
 
 void Board::initialiseBalls() {

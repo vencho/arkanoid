@@ -14,6 +14,7 @@ class Tile : public DockedRectangle {
   int getHealth();
   void takeDamage();
   Tile(int x, int y, int healthleft);
+  bool operator<(const Tile &other);
 };
 
 #endif

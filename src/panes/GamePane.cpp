@@ -11,8 +11,3 @@ GamePane::GamePane(Board &board) : DrawablePaneComposition(true) {
 void GamePane::resetPane() {
   panes[0] -> resetPane();
 }
-
-void GamePane::tick() {
-  panes[1] -> tick();
-}
-

@@ -5,22 +5,22 @@
 #include<SDL.h>
 #include<Global.h>
 
-GameScreen::GameScreen(Board &newBoard) : board(newBoard) {
+GameScreen::GameScreen(Board &newBoard) : board(newBoard), paddleDrawer(), tileDrawer() {
   width = GAME_SCREEN_WIDTH;
   height = GAME_SCREEN_HEIGHT;
 }
 
-void GameScreen::draw(SDL_Surface *target, int baseX, int baseY) {
+void GameScreen::drawBackground(SDL_Surface *target, int baseX, int baseY) {
   SDL_Rect r;
-  
-  // Draw background
   r.x = baseX; 
   r.y = baseY;
   r.w = GAME_SCREEN_WIDTH;
   r.h = GAME_SCREEN_HEIGHT;
   SDL_FillRect(target, &r, SDL_MapRGB(target->format, 0xcd, 0xcd, 0xcd));
+}
 
-  // Draw the ball
+void GameScreen::drawBall(SDL_Surface *target, int baseX, int baseY) {
+  SDL_Rect r;
   Ball &ball = board.getBall(0);
   r.x = ball.getX();
   r.y = ball.getY();
@@ -30,8 +30,15 @@ void GameScreen::draw(SDL_Surface *target, int baseX, int baseY) {
   r.x += baseX;
   r.y += baseY;
   SDL_FillRect(target, &r, SDL_MapRGB(target->format, 0, 255, 0));
+}
 
-  // Iterate over the tiles and draw each
+void GameScreen::drawTiles(SDL_Surface *target, int baseX, int baseY) {
+  for(int i = 0; i < board.numTiles(); i++) {
+    Tile &tile = board.getTile(i);
+    tileDrawer.draw(target, baseX, baseY, tile);
+  }
+  /*
+  SDL_Rect r;
   for(int i = 0; i < board.numTiles(); i++) {
     Tile &tile = board.getTile(i);
     r.x = tile.getX() + baseX;
@@ -44,12 +51,16 @@ void GameScreen::draw(SDL_Surface *target, int baseX, int baseY) {
 					(colourcode / 256) % 256, 
 					colourcode % 256));
   }
+  */
+}
 
-  // Draw the paddle
-  Paddle &player = board.getPaddle();
-  r.x = player.getX() + baseX;
-  r.y = player.getY() + baseY;
-  r.w = player.getWidth();
-  r.h = player.getHeight();
-  SDL_FillRect(target, &r, SDL_MapRGB(target -> format, 0xff, 0x12, 0x34));
+void GameScreen::drawPaddle(SDL_Surface *target, int baseX, int baseY) {
+  paddleDrawer.draw(target, baseX, baseY, board.getPaddle());
+}
+
+void GameScreen::draw(SDL_Surface *target, int baseX, int baseY) {
+  drawBackground(target, baseX, baseY);
+  drawTiles(target, baseX, baseY);
+  drawBall(target, baseX, baseY);
+  drawPaddle(target, baseX, baseY);
 }

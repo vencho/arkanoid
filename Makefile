@@ -30,7 +30,6 @@ GEOMETRY = \
 ./$(OBJDIR)/geometry/MovableRectangle.o \
 ./$(OBJDIR)/geometry/CollisionManager.o 
 
-
 PANES = \
 ./$(OBJDIR)/panes/GameScreen.o \
 ./$(OBJDIR)/panes/DrawablePane.o \
@@ -48,6 +47,10 @@ MENUS = \
 ./$(OBJDIR)/menus/OptionsMenu.o \
 ./$(OBJDIR)/menus/SetValueMenuItem.o
 
+DRAWERS = \
+./$(OBJDIR)/drawers/PaddleDrawer.o \
+./$(OBJDIR)/drawers/TileDrawer.o
+
 OBJECTS = \
 ./$(OBJDIR)/Application.o \
 ./$(OBJDIR)/Configuration.o \
@@ -56,7 +59,8 @@ $(GEOMETRY) \
 $(PANES) \
 $(MODELS) \
 $(COMMANDS) \
-$(CONTROLLERS) 
+$(CONTROLLERS) \
+$(DRAWERS)
 
 
 
@@ -90,4 +94,5 @@ clean :
 	mkdir $(OBJDIR)/panes;
 	mkdir $(OBJDIR)/commands;
 	mkdir $(OBJDIR)/controllers;
+	mkdir $(OBJDIR)/drawers;
 

@@ -7,9 +7,7 @@ class ScorePane;
 class GamePane : public DrawablePaneComposition {
  public:
   GamePane(Board &board);
-  virtual void tick();
   void resetPane();
-
 };
 #endif
 

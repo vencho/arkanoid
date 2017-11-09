@@ -1,6 +1,7 @@
 #ifndef APPLICATION_H_DEFINED
 #define APPLICATION_H_DEFINED
 #include<SDL.h>
+#include<SDL_image.h>
 #include<stack>
 #include<memory>
 #include<model/Board.h>
