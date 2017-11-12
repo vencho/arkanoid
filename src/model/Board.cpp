@@ -4,7 +4,6 @@
 #include<geometry/CollisionManager.h>
 #include<cstdio>
 #include<string>
-#include<algorithm>
 
 bool Board::gameWon() {
   return tiles.size() == 0;
@@ -61,7 +60,6 @@ void Board::loadTiles(std::string filename) {
     tiles.push_back(Tile(row, column, health));
   }
   fclose(fin);
-  sort(tiles.begin(), tiles.end());
 }
 
 void Board::initialiseBalls() {
@@ -135,6 +133,10 @@ Ball & Board::getBall(int num) {
 
 int Board::numTiles() {
   return tiles.size();
+}
+
+int Board::numBalls() {
+  return balls.size();
 }
 
 Tile & Board::getTile(int i) {

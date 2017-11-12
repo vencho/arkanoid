@@ -47,10 +47,6 @@ MENUS = \
 ./$(OBJDIR)/menus/OptionsMenu.o \
 ./$(OBJDIR)/menus/SetValueMenuItem.o
 
-DRAWERS = \
-./$(OBJDIR)/drawers/PaddleDrawer.o \
-./$(OBJDIR)/drawers/TileDrawer.o
-
 OBJECTS = \
 ./$(OBJDIR)/Application.o \
 ./$(OBJDIR)/Configuration.o \
@@ -59,8 +55,7 @@ $(GEOMETRY) \
 $(PANES) \
 $(MODELS) \
 $(COMMANDS) \
-$(CONTROLLERS) \
-$(DRAWERS)
+$(CONTROLLERS) 
 
 
 

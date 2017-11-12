@@ -13,7 +13,7 @@ void DrawablePaneComposition::resetPane() {
   }
 }
 
-void DrawablePaneComposition::draw(SDL_Surface *target, int baseX, int baseY) {
+void DrawablePaneComposition::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   int offsetX, offsetY;
   offsetX = offsetY = 0;
   for(int i = 0; i < panes.size(); i++) {

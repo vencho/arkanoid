@@ -11,10 +11,10 @@ class DrawablePaneComposition : public DrawablePane {
  protected:
   bool vertical;
   std::vector<std::unique_ptr<DrawablePane>> panes;
-
+  virtual void drawYourself(SDL_Surface *target, int baseX, int baseY);
+  
  public:
   DrawablePaneComposition(bool vertical);
-  virtual void draw(SDL_Surface *target, int baseX, int baseY);
   virtual void resetPane();
   void addPane(std::unique_ptr<DrawablePane> pane);
 

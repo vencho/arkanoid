@@ -16,8 +16,9 @@ class MenuPane : public DrawablePane {
   SDL_Color selectedcolor, unselectedcolor;
   
  public:
-  virtual void draw(SDL_Surface *target, int baseX, int baseY);
   MenuPane(std::stack<Menu *> &menuStack, int width, int height);
+ protected:
+  virtual void drawYourself(SDL_Surface *target, int baseX, int baseY);
 };
 
 #endif

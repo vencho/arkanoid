@@ -38,7 +38,7 @@ class Board {
   Tile &getTile(int num);
   Paddle &getPaddle();
   int numTiles();
-
+  int numBalls();
 };
 
 #endif
