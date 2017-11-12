@@ -26,7 +26,7 @@ void ScorePane::notifyTileDestroyed() {
 }
 
 
-void ScorePane::draw(SDL_Surface *target, int baseX, int baseY) {
+void ScorePane::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   char txt[64];
   sprintf(txt, "Deaths: %d         Tiles: %d / %d\n", deaths, tilesTotal - tilesLeft, tilesTotal);
   SDL_Surface *textsurface = TTF_RenderText_Solid(font, txt, textcolor);

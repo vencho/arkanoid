@@ -5,7 +5,7 @@
 #include<SDL.h>
 #include<stack>
 
-void MenuPane::draw(SDL_Surface *target, int baseX, int baseY) {
+void MenuPane::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   SDL_Rect r;
   r.x = baseX;
   r.y = baseY;

@@ -137,6 +137,10 @@ int Board::numTiles() {
   return tiles.size();
 }
 
+int Board::numBalls() {
+  return balls.size();
+}
+
 Tile & Board::getTile(int i) {
   return tiles[i];
 }
