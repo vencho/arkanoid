@@ -8,7 +8,7 @@
 void GameScreen::loadPaddleSprites(SDL_Surface *spritesheet) {
   int spriteHeight = 22;
   int rows = 8;
-
+  paddleSprites.resize(rows);
   for(int i = 0, paddleWidth = 128; i < rows; i++) {
     paddleSprites[i] = SDL_CreateRGBSurface(0, paddleWidth, spriteHeight, 32, 0, 0, 0, 0);
     SDL_Rect r;
@@ -25,19 +25,18 @@ void GameScreen::loadPaddleSprites(SDL_Surface *spritesheet) {
 }
 
 void GameScreen::loadSpritesFromGrid(SDL_Surface *spritesheet, 
-			 int firstSpriteX, int firstSpriteY,
-			 int spriteWidth, int spriteHeight,
-			 int horizontalGap, int verticalGap,
-			 int rows, int columns,
-			 SDL_Surface **spriteArray) {
+				     int firstSpriteX, int firstSpriteY,
+				     int spriteWidth, int spriteHeight,
+				     int horizontalGap, int verticalGap,
+				     int rows, int columns,
+				     std::vector<SDL_Surface *> &spriteArray) {
   for(int i = 0; i < rows; i++) {
     for(int j = 0; j < columns; j++) {
-      int idx = columns*i + j;
-      spriteArray[idx] = SDL_CreateRGBSurface(0, 
-					      spriteWidth,
-					      spriteHeight,
-					      32, 0, 0, 0, 0);
-
+      spriteArray.push_back(SDL_CreateRGBSurface(0, 
+						 spriteWidth,
+						 spriteHeight,
+						 32, 0, 0, 0, 0));
+      int idx = spriteArray.size()-1;
       SDL_Rect r;
       r.x = firstSpriteX + j*(spriteWidth + horizontalGap);
       r.y = firstSpriteY + i*(spriteHeight + verticalGap);
@@ -55,13 +54,16 @@ void GameScreen::loadBallSprites(SDL_Surface *spritesheet) {
 }
 
 void GameScreen::loadTileSprites(SDL_Surface *spritesheet) {
+  std::vector<SDL_Surface *> tileSprites;
   loadSpritesFromGrid(spritesheet, 129, 1, 44, 22, 0, 0, 3, 3, tileSprites);
+  loadSpritesFromGrid(spritesheet, 129, 77, 44, 22, 0, 0, 4, 5, tileSprites);
+  tileAnimator.loadSprites(tileSprites);
 }
 
-GameScreen::GameScreen(Board &newBoard) : board(newBoard) {
+GameScreen::GameScreen(Board &newBoard) : board(newBoard), tileAnimator(newBoard.getTiles()) {
   width = GAME_SCREEN_WIDTH;
   height = GAME_SCREEN_HEIGHT;
-
+  board.addTileDestructionMonitor(&tileAnimator);
   SDL_Surface *spritesheet = SDL_LoadBMP("./res/sprites/sprites.bmp");
   loadTileSprites(spritesheet);
   loadBallSprites(spritesheet);
@@ -79,13 +81,7 @@ void GameScreen::drawBackground(SDL_Surface *target, int baseX, int baseY) {
 }
 
 void GameScreen::drawShadows(SDL_Surface *target, int baseX, int baseY) {
-  for(int i = 0; i < board.numTiles(); i++) {
-    Tile & tile = board.getTile(i);
-    SDL_Rect r;
-    r.x = tile.getX() + baseX + 5;
-    r.y = tile.getY() + baseY + 10;
-    SDL_BlitSurface(tileSprites[8], nullptr, target, &r);
-  }
+  tileAnimator.drawShadows(target, baseX, baseY);
   for(int i = 0; i < board.numBalls(); i++) {
     Ball & ball = board.getBall(i);
     SDL_Rect r;
@@ -106,13 +102,7 @@ void GameScreen::drawBall(SDL_Surface *target, int baseX, int baseY) {
 }
 
 void GameScreen::drawTiles(SDL_Surface *target, int baseX, int baseY) {
-  for(int i = 0; i < board.numTiles(); i++) {
-    Tile &tile = board.getTile(i);
-    SDL_Rect r;
-    r.x = tile.getX() + baseX;
-    r.y = tile.getY() + baseY;
-    SDL_BlitSurface(tileSprites[tile.getHealth()], nullptr, target, &r);
-  }
+  tileAnimator.drawTiles(target, baseX, baseY);
 }
 
 void GameScreen::drawPaddle(SDL_Surface *target, int baseX, int baseY) {

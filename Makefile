@@ -47,6 +47,9 @@ MENUS = \
 ./$(OBJDIR)/menus/OptionsMenu.o \
 ./$(OBJDIR)/menus/SetValueMenuItem.o
 
+ANIMATORS = \
+./$(OBJDIR)/animators/TileAnimator.o
+
 OBJECTS = \
 ./$(OBJDIR)/Application.o \
 ./$(OBJDIR)/Configuration.o \
@@ -55,9 +58,8 @@ $(GEOMETRY) \
 $(PANES) \
 $(MODELS) \
 $(COMMANDS) \
-$(CONTROLLERS) 
-
-
+$(CONTROLLERS) \
+$(ANIMATORS)
 
 ABSTRACTS = \
 ./$(INCDIR)/observers/TileDestructionMonitor.h \
@@ -89,5 +91,5 @@ clean :
 	mkdir $(OBJDIR)/panes;
 	mkdir $(OBJDIR)/commands;
 	mkdir $(OBJDIR)/controllers;
-	mkdir $(OBJDIR)/drawers;
+	mkdir $(OBJDIR)/animators;
 

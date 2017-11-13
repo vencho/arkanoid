@@ -9,11 +9,14 @@ class Tile : public DockedRectangle {
   int healthleft;
   // true if tile takes no damage
   bool indestructible;
-
+  int colour;
+  int id;
  public: 
   int getHealth();
   void takeDamage();
-  Tile(int x, int y, int healthleft);
+  Tile(int x, int y, int healthleft, int colour);
+  int getColour();
+  int getId();
 };
 
 #endif

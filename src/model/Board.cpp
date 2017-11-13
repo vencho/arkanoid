@@ -16,10 +16,12 @@ bool Board::gameLost() {
 void Board::collisionLogic() {
   for(int i = 0; i < balls.size(); i++) {
     for(int j = 0; j < tiles.size(); j++) {
-      if(CollisionManager::collideRectangle(balls[i], tiles[j], true)) tiles[j].takeDamage();
-
+      if(CollisionManager::collideRectangle(balls[i], tiles[j], true)) {
+	tiles[j].takeDamage();
+	reportTileHit(tiles[j].getId());
+      }
       if(tiles[j].getHealth() == 0) {
-	reportTileDestruction();
+	reportTileDestruction(tiles[j].getId());
 	tiles.erase(tiles.begin() + j);
 	j--;
       }
@@ -54,10 +56,10 @@ void Board::resetBoard(std::string filename) {
 void Board::loadTiles(std::string filename) {
   tiles.clear();
   FILE *fin = fopen(filename.c_str(), "r");
-  int row, column, health;
+  int row, column, health, colour;
   while(1) {
-    if(fscanf(fin, "%d%d%d", &row, &column, &health) != 3) break;
-    tiles.push_back(Tile(row, column, health));
+    if(fscanf(fin, "%d%d%d%d", &row, &column, &health, &colour) != 4) break;
+    tiles.push_back(Tile(row, column, health, colour));
   }
   fclose(fin);
 }
@@ -86,9 +88,15 @@ void Board::reportDeath() {
   }
 }
 
-void Board::reportTileDestruction() {
+void Board::reportTileHit(int id) {
   for(int i = 0; i < tileDestructionMonitors.size(); i++) {
-    tileDestructionMonitors[i] -> notifyTileDestroyed();
+    tileDestructionMonitors[i] -> notifyTileHit(id);
+  }
+}
+
+void Board::reportTileDestruction(int id) {
+  for(int i = 0; i < tileDestructionMonitors.size(); i++) {
+    tileDestructionMonitors[i] -> notifyTileDestroyed(id);
   }
 }
 
@@ -141,6 +149,10 @@ int Board::numBalls() {
 
 Tile & Board::getTile(int i) {
   return tiles[i];
+}
+
+std::vector<Tile> & Board::getTiles() {
+  return tiles;
 }
 
 Paddle & Board::getPaddle() {

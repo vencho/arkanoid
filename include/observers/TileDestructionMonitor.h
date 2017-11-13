@@ -3,7 +3,8 @@
 
 class TileDestructionMonitor {
  public:
-  virtual void notifyTileDestroyed() = 0;
+  virtual void notifyTileDestroyed(int id) = 0;
+  virtual void notifyTileHit(int id) = 0;
 };
 
 #endif

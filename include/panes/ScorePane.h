@@ -17,7 +17,8 @@ class ScorePane : public DrawablePane, public DeathMonitor, public TileDestructi
  public:
   ScorePane(Board &B);
   virtual void notifyDied();
-  virtual void notifyTileDestroyed();
+  virtual void notifyTileDestroyed(int id);
+  virtual void notifyTileHit(int id);
   void resetPane();
  protected:
   virtual void drawYourself(SDL_Surface *target, int baseX, int baseY);

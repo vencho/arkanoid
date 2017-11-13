@@ -21,8 +21,9 @@ class Board {
   void collisionLogic();
   void loadTiles(std::string filename);
   void reportDeath();
-  void reportTileDestruction();
-  
+  void reportTileDestruction(int id);
+  void reportTileHit(int id);
+
  public:
   Board(int width, int height);
   void addTileDestructionMonitor(TileDestructionMonitor *tdm);
@@ -35,6 +36,7 @@ class Board {
   bool gameWon();
   bool gameLost();
   Ball &getBall(int num);
+  std::vector<Tile> &getTiles();
   Tile &getTile(int num);
   Paddle &getPaddle();
   int numTiles();
