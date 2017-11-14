@@ -28,10 +28,10 @@ class CollisionManager {
   static void snapToLine(MovableRectangle &ball, Line L, bool reflect);
   static std::pair<bool, double> timeToIntersection(int x1, int y1, int x2, int y2, Segment &s);
   static std::pair<bool, double> timeToIntersectionSinceLastTick(MovableRectangle &ball, Segment &s);
-  static bool rectanglesIntersect(DockedRectangle &first, DockedRectangle &second);
   static bool intervalsIntersect(int a, int b, int c, int d);
   static int intervalOverlap(int a, int b, int c, int d);
   static bool intervalContainment(int a, int b, int c, int d);
+  static bool headingInside(MovableRectangle &ball, CollisionManager::Segment s);
   
 
   static DockedRectangle leftBorder;
@@ -41,6 +41,7 @@ class CollisionManager {
 
 
  public:
+  static bool rectanglesIntersect(DockedRectangle &first, DockedRectangle &second);
   static bool collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect);
   static bool collideBorders(MovableRectangle &ball);
 

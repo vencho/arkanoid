@@ -24,6 +24,12 @@ class Board {
   void reportTileDestruction(int id);
   void reportTileHit(int id);
 
+  void collideBallsWithBorders();
+  void collideBallsWithPlayer();
+  void collidePlayerWithBorders();
+  void collideBallsWithTiles();
+
+
  public:
   Board(int width, int height);
   void addTileDestructionMonitor(TileDestructionMonitor *tdm);

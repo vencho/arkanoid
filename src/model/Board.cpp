@@ -13,7 +13,70 @@ bool Board::gameLost() {
   return balls.size() == 0;
 }
 
-void Board::collisionLogic() {
+
+void Board::collideBallsWithBorders() {
+  for(int i = 0; i < balls.size(); i++) {
+    CollisionManager::collideBorders(balls[i]);
+  }
+}
+
+void Board::collideBallsWithPlayer() {
+  for(int i = 0; i < balls.size(); i++) {
+    CollisionManager::collideRectangle(balls[i], player, true);
+  }
+}
+
+void Board::collidePlayerWithBorders() {
+  CollisionManager::collideBorders(player);
+}
+
+void Board::collideBallsWithTiles() {
+
+  for(int i = 0; i < balls.size(); i++) {
+    std::vector<int> whichTilesHit;
+    for(int j = 0; j < tiles.size(); j++) {
+      Tile &tile = tiles[j];
+      if(CollisionManager::rectanglesIntersect(balls[i], tile)) {
+	whichTilesHit.push_back(j);
+      }
+    }
+
+    if(whichTilesHit.size() != 2 ||
+       (tiles[whichTilesHit[0]].getX() != tiles[whichTilesHit[1]].getX() &&
+	tiles[whichTilesHit[0]].getY() != tiles[whichTilesHit[1]].getY())) {
+      for(int j = 0; j < whichTilesHit.size(); j++) {
+	Tile &tile = tiles[whichTilesHit[j]];
+	CollisionManager::collideRectangle(balls[i], tile, true);
+      }
+    }
+    else {
+      Tile &a = tiles[whichTilesHit[0]];
+      Tile &b = tiles[whichTilesHit[1]];
+      printf("Hitting simultaneously tiles %d and %d\n", a.getId(), b.getId());
+      int x, y, w, h;
+      x = a.getX() < b.getX() ? a.getX() : b.getX();
+      y = a.getY() < b.getY() ? a.getY() : b.getY();
+      w = a.getY() == b.getY() ? a.getWidth() : a.getWidth() + b.getWidth();
+      h = b.getX() == b.getX() ? a.getHeight() : a.getHeight() + b.getHeight();
+      DockedRectangle rect(x, y, w, h);
+      CollisionManager::collideRectangle(balls[i], rect, true);
+    }
+
+    for(int j = 0; j < whichTilesHit.size(); j++) {
+      Tile &tile = tiles[whichTilesHit[j] - j];
+      tile.takeDamage();
+      reportTileHit(tile.getId());
+      if(tile.getHealth() == 0) {
+	reportTileDestruction(tile.getId());
+	printf("erasing tile with id %d\n", tile.getId());
+	tiles.erase(tiles.begin() + whichTilesHit[j] - j);
+      }
+    }
+  }
+
+
+
+  /*
   for(int i = 0; i < balls.size(); i++) {
     for(int j = 0; j < tiles.size(); j++) {
       if(CollisionManager::collideRectangle(balls[i], tiles[j], true)) {
@@ -27,16 +90,14 @@ void Board::collisionLogic() {
       }
     }
   }
+  */
+}
 
-  for(int i = 0; i < balls.size(); i++) {
-    CollisionManager::collideRectangle(balls[i], player, true);
-  }
-
-  for(int i = 0; i < balls.size(); i++) {
-    CollisionManager::collideBorders(balls[i]);
-  }
-
-  CollisionManager::collideBorders(player);
+void Board::collisionLogic() {
+  collideBallsWithTiles();
+  collideBallsWithPlayer();
+  collideBallsWithBorders();
+  collidePlayerWithBorders();
 }
 
 Board::Board(int width, int height) : 

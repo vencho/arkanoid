@@ -153,8 +153,31 @@ bool CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle 
   }
   if(j == -1) { return false; }
 
-  snapToLine(ball, Line(s[j].vertical, s[j].constantCoordinate, s[j].smallsidesolid), true);
+  int k = -1;
+  for(int i = 0; i < 4; i++) {
+    if(ar[i].first && i != j) {
+      if( (ar[i].second - ar[j].second) < 0.000001 ) {
+	k = i;
+	break;
+      }
+    }
+  }
+
+  if(k == -1) {
+    snapToLine(ball, Line(s[j].vertical, s[j].constantCoordinate, s[j].smallsidesolid), true);
+  }
+  else {
+    bool flag1 = headingInside(ball, s[j]);
+    bool flag2 = headingInside(ball, s[k]);
+    if(flag1) snapToLine(ball, Line(s[j].vertical, s[j].constantCoordinate, s[j].smallsidesolid), true);
+    else snapToLine(ball, Line(s[k].vertical, s[k].constantCoordinate, s[k].smallsidesolid), true);
+  }
   return true;
+}
+
+bool CollisionManager::headingInside(MovableRectangle &ball, CollisionManager::Segment s) {
+  int velocity = s.vertical ? ball.getVelocityX() : ball.getVelocityY();
+  return (velocity < 0 && s.smallsidesolid) || (velocity > 0 && !s.smallsidesolid);
 }
 
 
