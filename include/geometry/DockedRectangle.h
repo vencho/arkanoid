@@ -8,8 +8,8 @@ class DockedRectangle : public FloatingRectangle {
  protected:
   int x, y;
  public:
-  int & getX();
-  int & getY();
+  int getX();
+  int getY();
   void setX(int x);
   void setY(int y);
   DockedRectangle(int x, int y, int width, int height);

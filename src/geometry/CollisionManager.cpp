@@ -190,13 +190,22 @@ push it out and reflect.
 void CollisionManager::snapToLine(MovableRectangle &ball, 
 				   CollisionManager::Line L, 
 				   bool reflect) {
-  int & coordinate = L.vertical ? ball.getX() : ball.getY();
-  int & velocity = L.vertical ? ball.getVelocityX() : ball.getVelocityY();
+  int coordinate = L.vertical ? ball.getX() : ball.getY();
+  int velocity = L.vertical ? ball.getVelocityX() : ball.getVelocityY();
   int extent = L.vertical ? ball.getWidth() : ball.getHeight();
 
   if(L.smallsidesolid) coordinate = L.constantCoordinate+1;
   else coordinate = L.constantCoordinate - extent;
 
   if(reflect) velocity = -velocity;
+
+  if(L.vertical) {
+    ball.setX(coordinate);
+    ball.setVelocityX(velocity);
+  }
+  else {
+    ball.setY(coordinate);
+    ball.setVelocityY(velocity);
+  }
 }
 

@@ -21,8 +21,8 @@ void MovableRectangle::tick() {
   move();
 }
 
-int & MovableRectangle::getVelocityX() { return velocityX; }
-int & MovableRectangle::getVelocityY() { return velocityY; }
+int MovableRectangle::getVelocityX() { return velocityX; }
+int MovableRectangle::getVelocityY() { return velocityY; }
 void MovableRectangle::setVelocity(int dx, int dy) { setVelocityX(dx); setVelocityY(dy); }
 void MovableRectangle::setVelocityX(int dx) { velocityX = dx; }
 void MovableRectangle::setVelocityY(int dy) { velocityY = dy; }
