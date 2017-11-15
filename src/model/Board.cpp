@@ -46,6 +46,7 @@ void Board::collideBallsWithTiles() {
 	tiles[whichTilesHit[0]].getY() != tiles[whichTilesHit[1]].getY())) {
       for(int j = 0; j < whichTilesHit.size(); j++) {
 	Tile &tile = tiles[whichTilesHit[j]];
+	printf("Collision with tile id %d\n", tile.getId());
 	CollisionManager::collideRectangle(balls[i], tile, true);
       }
     }
@@ -56,20 +57,23 @@ void Board::collideBallsWithTiles() {
       int x, y, w, h;
       x = a.getX() < b.getX() ? a.getX() : b.getX();
       y = a.getY() < b.getY() ? a.getY() : b.getY();
-      w = a.getY() == b.getY() ? a.getWidth() : a.getWidth() + b.getWidth();
-      h = b.getX() == b.getX() ? a.getHeight() : a.getHeight() + b.getHeight();
+      w = a.getX() == b.getX() ? a.getWidth() : a.getWidth() + b.getWidth();
+      h = b.getY() == b.getY() ? a.getHeight() : a.getHeight() + b.getHeight();
       DockedRectangle rect(x, y, w, h);
       CollisionManager::collideRectangle(balls[i], rect, true);
     }
 
+    int countRemoved = 0;
     for(int j = 0; j < whichTilesHit.size(); j++) {
-      Tile &tile = tiles[whichTilesHit[j] - j];
+      Tile &tile = tiles[whichTilesHit[j] - countRemoved];
       tile.takeDamage();
       reportTileHit(tile.getId());
+      printf("tile %d takes damage, health down to %d\n", tile.getId(), tile.getHealth());
       if(tile.getHealth() == 0) {
 	reportTileDestruction(tile.getId());
 	printf("erasing tile with id %d\n", tile.getId());
-	tiles.erase(tiles.begin() + whichTilesHit[j] - j);
+	tiles.erase(tiles.begin() + whichTilesHit[j] - countRemoved);
+	countRemoved++;
       }
     }
   }
