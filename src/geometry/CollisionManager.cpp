@@ -77,14 +77,14 @@ std::pair<bool, double> CollisionManager::timeToIntersection(int x1, int y1, int
    Assumes no intersection at last instant.
 */
 std::pair<bool, double> CollisionManager::timeToIntersectionSinceLastTick(MovableRectangle &ball, Segment &s) {
-  if(ball.getVelocityX() == 0 && ball.getVelocityY() == 0) return std::make_pair(false, 0);
+  if(!ball.isMoving()) return std::make_pair(false, 0);
 
   double bestT;
   bool init = false;
   for(int i = 0; i < 2; i++) {
     for(int j = 0; j < 2; j++) {
-      int x1 = ball.getX() + i*(ball.getWidth()-1) - ball.getVelocityX();
-      int y1 = ball.getY() + j*(ball.getHeight()-1) - ball.getVelocityY();
+      int x1 = ball.getPreviousX() + i*(ball.getWidth()-1);
+      int y1 = ball.getPreviousY() + j*(ball.getHeight()-1);
       int x2 = ball.getX() + i*(ball.getWidth()-1);
       int y2 = ball.getY() + j*(ball.getHeight()-1);
       std::pair<bool, double> ans = timeToIntersection(x1, y1, x2, y2, s);
@@ -176,8 +176,9 @@ bool CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle 
 }
 
 bool CollisionManager::headingInside(MovableRectangle &ball, CollisionManager::Segment s) {
-  int velocity = s.vertical ? ball.getVelocityX() : ball.getVelocityY();
-  return (velocity < 0 && s.smallsidesolid) || (velocity > 0 && !s.smallsidesolid);
+  bool velocityNegative = s.vertical ? ball.isMovingX(true) : ball.isMovingY(true);
+  bool velocityPositive = s.vertical ? ball.isMovingX(false) : ball.isMovingY(false);
+  return (velocityNegative && s.smallsidesolid) || (velocityPositive && !s.smallsidesolid);
 }
 
 
@@ -191,21 +192,14 @@ void CollisionManager::snapToLine(MovableRectangle &ball,
 				   CollisionManager::Line L, 
 				   bool reflect) {
   int coordinate = L.vertical ? ball.getX() : ball.getY();
-  int velocity = L.vertical ? ball.getVelocityX() : ball.getVelocityY();
   int extent = L.vertical ? ball.getWidth() : ball.getHeight();
 
   if(L.smallsidesolid) coordinate = L.constantCoordinate+1;
   else coordinate = L.constantCoordinate - extent;
 
-  if(reflect) velocity = -velocity;
+  if(L.vertical) ball.setX(coordinate);
+  else ball.setY(coordinate);
 
-  if(L.vertical) {
-    ball.setX(coordinate);
-    ball.setVelocityX(velocity);
-  }
-  else {
-    ball.setY(coordinate);
-    ball.setVelocityY(velocity);
-  }
+  if(reflect) ball.reflectOrthogonally(L.vertical);
 }
 
