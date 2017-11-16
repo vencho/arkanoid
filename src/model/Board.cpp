@@ -22,7 +22,8 @@ void Board::collideBallsWithBorders() {
 
 void Board::collideBallsWithPlayer() {
   for(int i = 0; i < balls.size(); i++) {
-    CollisionManager::collideRectangle(balls[i], player, true);
+    bool collisionHappened = CollisionManager::collideRectangle(balls[i], player, true);
+    if(collisionHappened) balls[i].modifyAngle(player);
   }
 }
 
@@ -105,7 +106,7 @@ void Board::collisionLogic() {
 }
 
 Board::Board(int width, int height) : 
-  player(width/2 - BASE_PADDLE_WIDTH/2, PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT) {
+  player(56/*width/2 - BASE_PADDLE_WIDTH/2*/, PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT) {
   this -> width = width;
   this -> height = height;
 }

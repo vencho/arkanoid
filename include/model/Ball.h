@@ -11,6 +11,7 @@ class Ball : public MovableRectangle {
   bool isInitialised();
   void initialise();
   void snapToPaddle(Paddle &player);
+  void modifyAngle(Paddle &player);
 };
 
 #endif

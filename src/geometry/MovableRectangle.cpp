@@ -50,12 +50,12 @@ bool MovableRectangle::isMovingY() {
 }
 
 bool MovableRectangle::isMovingX(bool small) {
-  return (small && scaledX < 0) || (!small && scaledX > 0);
+  return (small && scaledVx < 0) || (!small && scaledVx > 0);
 }
 
 
 bool MovableRectangle::isMovingY(bool small) {
-  return (small && scaledY < 0) || (!small && scaledY > 0);
+  return (small && scaledVy < 0) || (!small && scaledVy > 0);
 }
 
 int MovableRectangle::getPreviousX() {

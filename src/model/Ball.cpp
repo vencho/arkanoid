@@ -1,4 +1,5 @@
 #include<model/Ball.h>
+#include<model/Paddle.h>
 #include<cstdio>
 
 Ball::Ball(int x, int y, int dx, int dy) : MovableRectangle(x, y, BALL_WIDTH, BALL_HEIGHT, dx, dy) { }
@@ -16,4 +17,18 @@ bool Ball::isInitialised() {
 void Ball::initialise() {
   scaledVx = denominator * BALL_SPEED_X;
   scaledVy = -denominator * BALL_SPEED_Y;
+}
+
+void Ball::modifyAngle(Paddle &player) {
+  if( getX() + width - 1 < player.getX() ) return;
+  if( getX() > player.getX() + player.getWidth() - 1 ) return;
+  if( getY() + height > player.getY() ) return;
+  
+  double ballMidx = getX() + (width - 1) / 2.;
+  double f = (ballMidx - player.getX()) / player.getWidth();
+  double angle;
+  if(f < 0.1) angle = -5*M_PI/6;
+  else if(f > 0.9) angle = -M_PI/6;
+  else angle = (M_PI/6.) * (5*f - 5.5);
+  setAngle(angle);
 }
