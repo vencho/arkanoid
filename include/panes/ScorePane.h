@@ -5,10 +5,9 @@
 #include<SDL_ttf.h>
 #include<panes/DrawablePane.h>
 #include<model/Board.h>
-#include<observers/DeathMonitor.h>
-#include<observers/TileDestructionMonitor.h>
+#include<observers/GameEventMonitor.h>
 
-class ScorePane : public DrawablePane, public DeathMonitor, public TileDestructionMonitor {
+class ScorePane : public DrawablePane, public GameEventMonitor {
  private:
   int deaths, tilesLeft, tilesTotal;
   TTF_Font *font;
@@ -18,7 +17,6 @@ class ScorePane : public DrawablePane, public DeathMonitor, public TileDestructi
   ScorePane(Board &B);
   virtual void notifyDied();
   virtual void notifyTileDestroyed(int id);
-  virtual void notifyTileHit(int id);
   void resetPane();
  protected:
   virtual void drawYourself(SDL_Surface *target, int baseX, int baseY);

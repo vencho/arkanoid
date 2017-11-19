@@ -1,6 +1,7 @@
 #include<model/Board.h>
 #include<model/Ball.h>
 #include<model/Paddle.h>
+#include<model/Powerup.h>
 #include<geometry/CollisionManager.h>
 #include<cstdio>
 #include<string>
@@ -47,14 +48,14 @@ void Board::collideBallsWithTiles() {
 	tiles[whichTilesHit[0]].getY() != tiles[whichTilesHit[1]].getY())) {
       for(int j = 0; j < whichTilesHit.size(); j++) {
 	Tile &tile = tiles[whichTilesHit[j]];
-	printf("Collision with tile id %d\n", tile.getId());
+	printf("Collision with tile id %d.\n", tile.getId());
 	CollisionManager::collideRectangle(balls[i], tile, true);
       }
     }
     else {
       Tile &a = tiles[whichTilesHit[0]];
       Tile &b = tiles[whichTilesHit[1]];
-      printf("Hitting simultaneously tiles %d and %d\n", a.getId(), b.getId());
+      printf("Collision with tiles id %d and %d simultaneously.\n", a.getId(), b.getId());
       int x, y, w, h;
       x = a.getX() < b.getX() ? a.getX() : b.getX();
       y = a.getY() < b.getY() ? a.getY() : b.getY();
@@ -69,33 +70,35 @@ void Board::collideBallsWithTiles() {
       Tile &tile = tiles[whichTilesHit[j] - countRemoved];
       tile.takeDamage();
       reportTileHit(tile.getId());
-      printf("tile %d takes damage, health down to %d\n", tile.getId(), tile.getHealth());
+      printf("Tile with id %d takes damage, health down to %d.\n", tile.getId(), tile.getHealth());
       if(tile.getHealth() == 0) {
 	reportTileDestruction(tile.getId());
-	printf("erasing tile with id %d\n", tile.getId());
+
+	char powerupLetter;
+	switch(rand() % 7) {
+	case 0:
+	  powerupLetter = 'L'; break;
+	case 1:
+	  powerupLetter = 'E'; break;
+	case 2:
+	  powerupLetter = 'C'; break;
+	case 3:
+	  powerupLetter = 'S'; break;
+	case 4:
+	  powerupLetter = 'D'; break;
+	case 5:
+	  powerupLetter = 'B'; break;
+	case 6:
+	  powerupLetter = 'P'; break;
+	}
+	powerups.emplace_back(tile, powerupLetter);
+
+	printf("Erasing tile with id %d.\n", tile.getId());
 	tiles.erase(tiles.begin() + whichTilesHit[j] - countRemoved);
 	countRemoved++;
       }
     }
   }
-
-
-
-  /*
-  for(int i = 0; i < balls.size(); i++) {
-    for(int j = 0; j < tiles.size(); j++) {
-      if(CollisionManager::collideRectangle(balls[i], tiles[j], true)) {
-	tiles[j].takeDamage();
-	reportTileHit(tiles[j].getId());
-      }
-      if(tiles[j].getHealth() == 0) {
-	reportTileDestruction(tiles[j].getId());
-	tiles.erase(tiles.begin() + j);
-	j--;
-      }
-    }
-  }
-  */
 }
 
 void Board::collisionLogic() {
@@ -103,6 +106,22 @@ void Board::collisionLogic() {
   collideBallsWithPlayer();
   collideBallsWithBorders();
   collidePlayerWithBorders();
+  collidePlayerWithPowerups();
+}
+
+void Board::collidePlayerWithPowerups() {
+  for(int i = 0; i < powerups.size(); i++) {
+    if(CollisionManager::rectanglesIntersect(player, powerups[i])) {
+      consumePowerup(powerups[i]);
+      reportPowerupDestroyed(powerups[i].getId());
+      powerups.erase(powerups.begin() + i);
+      i--;
+    }
+  }
+}
+
+void Board::consumePowerup(Powerup &powerup) {
+  printf("Consumed powerup with id %d of type %c.\n", powerup.getId(), powerup.getType());
 }
 
 Board::Board(int width, int height) : 
@@ -138,31 +157,31 @@ void Board::initialiseBalls() {
   }
 }
 
-
-void Board::addDeathMonitor(DeathMonitor *dm) {
-  deathMonitors.push_back(dm);
-}
-
-
-void Board::addTileDestructionMonitor(TileDestructionMonitor *tdm) {
-  tileDestructionMonitors.push_back(tdm);
+void Board::addMonitor(GameEventMonitor *gem) {
+  monitors.push_back(gem);
 }
 
 void Board::reportDeath() {
-  for(int i = 0; i < deathMonitors.size(); i++) {
-    deathMonitors[i] -> notifyDied();
+  for(int i = 0; i < monitors.size(); i++) {
+    monitors[i] -> notifyDied();
   }
 }
 
 void Board::reportTileHit(int id) {
-  for(int i = 0; i < tileDestructionMonitors.size(); i++) {
-    tileDestructionMonitors[i] -> notifyTileHit(id);
+  for(int i = 0; i < monitors.size(); i++) {
+    monitors[i] -> notifyTileHit(id);
   }
 }
 
 void Board::reportTileDestruction(int id) {
-  for(int i = 0; i < tileDestructionMonitors.size(); i++) {
-    tileDestructionMonitors[i] -> notifyTileDestroyed(id);
+  for(int i = 0; i < monitors.size(); i++) {
+    monitors[i] -> notifyTileDestroyed(id);
+  }
+}
+
+void Board::reportPowerupDestroyed(int id) {
+  for(int i = 0; i < monitors.size(); i++) {
+    monitors[i] -> notifyPowerupDestroyed(id);
   }
 }
 
@@ -199,6 +218,16 @@ void Board::tick() {
       balls[i].snapToPaddle(player); 
     }
   }
+
+  for(int i = 0; i < powerups.size(); i++) {
+    powerups[i].tick();
+    if(powerups[i].getY() > GAME_SCREEN_HEIGHT) {
+      printf("Powerup with id %d and type %c has left the screen.\n", powerups[i].getId(), powerups[i].getType());
+      reportPowerupDestroyed(powerups[i].getId());
+      powerups.erase(powerups.begin() + i);
+      i--;
+    }
+  }
 }
 
 Ball & Board::getBall(int num) {
@@ -223,4 +252,8 @@ std::vector<Tile> & Board::getTiles() {
 
 Paddle & Board::getPaddle() {
   return player;
+}
+
+std::vector<Powerup> &Board::getPowerups() {
+  return powerups;
 }

@@ -1,8 +1,7 @@
 #include<panes/ScorePane.h>
 
 ScorePane::ScorePane(Board &board) : board(board) {
-  board.addDeathMonitor(this);
-  board.addTileDestructionMonitor(this);
+  board.addMonitor(this);
   this -> width = SCORE_PANE_WIDTH;
   this -> height = SCORE_PANE_HEIGHT;
   font = TTF_OpenFont("./res/fonts/Pacifico.ttf", 20);
@@ -18,10 +17,6 @@ void ScorePane::resetPane() {
 
 void ScorePane::notifyDied() {
   deaths++;
-}
-
-void ScorePane::notifyTileHit(int id) {
-
 }
 
 void ScorePane::notifyTileDestroyed(int id) {

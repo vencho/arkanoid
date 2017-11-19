@@ -2,12 +2,12 @@
 #define TILE_ANIMATOR_H_INCLUDED
 
 #include<model/Tile.h>
-#include<observers/TileDestructionMonitor.h>
+#include<observers/GameEventMonitor.h>
 #include<SDL.h>
 #include<vector>
 #include<unordered_map>
 
-class TileAnimator : public TileDestructionMonitor {
+class TileAnimator : public GameEventMonitor {
  private:
   std::vector<SDL_Surface *> normalTiles;
   std::vector<SDL_Surface *> silverTiles;
@@ -24,7 +24,6 @@ class TileAnimator : public TileDestructionMonitor {
   void drawTiles(SDL_Surface *target, int baseX, int baseY);
   virtual void notifyTileDestroyed(int id);
   virtual void notifyTileHit(int id);
-  
 };
 
 #endif

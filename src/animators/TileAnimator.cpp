@@ -5,7 +5,7 @@ TileAnimator::TileAnimator(std::vector<Tile> &tiles) : tiles(tiles) {
 }
 
 void TileAnimator::notifyTileDestroyed(int id) {
-
+  framesShining.erase(id);
 }
 
 void TileAnimator::notifyTileHit(int id) {
@@ -36,7 +36,6 @@ void TileAnimator::drawShadows(SDL_Surface *target, int baseX, int baseY) {
 
 void TileAnimator::incrementAllFramesShining() {
   std::unordered_map<int, int> :: iterator it;
-  std::unordered_map<int, int> :: iterator next;
   for(it = framesShining.begin(); it != framesShining.end(); it++) {
     it -> second++;
   }
@@ -60,7 +59,10 @@ void TileAnimator::drawTiles(SDL_Surface *target, int baseX, int baseY) {
     else {
       int framesSoFar = framesShining[tile.getId()];
       whichSprite = framesShining[tile.getId()] / 3;
-      if(whichSprite >= sprites.size()) whichSprite = 0;
+      if(whichSprite >= sprites.size()) {
+	whichSprite = 0;
+	framesShining.erase(tile.getId());
+      }
     }
     SDL_BlitSurface(sprites[whichSprite], nullptr, target, &r);
   }

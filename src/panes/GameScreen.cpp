@@ -53,6 +53,12 @@ void GameScreen::loadBallSprites(SDL_Surface *spritesheet) {
   loadSpritesFromGrid(spritesheet, 129, 67, 10, 10, 0, 0, 1, 5, ballSprites);
 }
 
+void GameScreen::loadPowerupSprites(SDL_Surface *spritesheet) {
+  std::vector<SDL_Surface *> powerupSprites;
+  loadSpritesFromGrid(spritesheet, 129, 165, 44, 22, 0, 2, 7, 8, powerupSprites);
+  powerupAnimator.loadSprites(powerupSprites);
+}
+
 void GameScreen::loadTileSprites(SDL_Surface *spritesheet) {
   std::vector<SDL_Surface *> tileSprites;
   loadSpritesFromGrid(spritesheet, 129, 1, 44, 22, 0, 0, 3, 3, tileSprites);
@@ -60,14 +66,16 @@ void GameScreen::loadTileSprites(SDL_Surface *spritesheet) {
   tileAnimator.loadSprites(tileSprites);
 }
 
-GameScreen::GameScreen(Board &newBoard) : board(newBoard), tileAnimator(newBoard.getTiles()) {
+GameScreen::GameScreen(Board &newBoard) : board(newBoard), tileAnimator(newBoard.getTiles()), powerupAnimator(newBoard.getPowerups()) {
   width = GAME_SCREEN_WIDTH;
   height = GAME_SCREEN_HEIGHT;
-  board.addTileDestructionMonitor(&tileAnimator);
+  board.addMonitor(&tileAnimator);
+  board.addMonitor(&powerupAnimator);
   SDL_Surface *spritesheet = SDL_LoadBMP("./res/sprites/sprites.bmp");
   loadTileSprites(spritesheet);
   loadBallSprites(spritesheet);
   loadPaddleSprites(spritesheet);
+  loadPowerupSprites(spritesheet);
   SDL_FreeSurface(spritesheet);
 }
 
@@ -105,6 +113,10 @@ void GameScreen::drawTiles(SDL_Surface *target, int baseX, int baseY) {
   tileAnimator.drawTiles(target, baseX, baseY);
 }
 
+void GameScreen::drawPowerups(SDL_Surface *target, int baseX, int baseY) {
+  powerupAnimator.drawPowerups(target, baseX, baseY);
+}
+
 void GameScreen::drawPaddle(SDL_Surface *target, int baseX, int baseY) {
   Paddle &player = board.getPaddle();
   SDL_Rect r;
@@ -119,6 +131,7 @@ void GameScreen::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   drawBackground(target, baseX, baseY);
   drawShadows(target, baseX, baseY);
   drawTiles(target, baseX, baseY);
+  drawPowerups(target, baseX, baseY);
   drawBall(target, baseX, baseY);
   drawPaddle(target, baseX, baseY);
 }

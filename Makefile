@@ -22,7 +22,8 @@ MODELS = \
 ./$(OBJDIR)/model/Tile.o \
 ./$(OBJDIR)/model/Paddle.o \
 ./$(OBJDIR)/model/Ball.o \
-./$(OBJDIR)/model/Board.o 
+./$(OBJDIR)/model/Board.o \
+./$(OBJDIR)/model/Powerup.o
 
 GEOMETRY = \
 ./$(OBJDIR)/geometry/DockedRectangle.o \
@@ -48,7 +49,11 @@ MENUS = \
 ./$(OBJDIR)/menus/SetValueMenuItem.o
 
 ANIMATORS = \
-./$(OBJDIR)/animators/TileAnimator.o
+./$(OBJDIR)/animators/TileAnimator.o \
+./$(OBJDIR)/animators/PowerupAnimator.o
+
+MONITORS = \
+./$(OBJDIR)/observers/GameEventMonitor.o
 
 OBJECTS = \
 ./$(OBJDIR)/Application.o \
@@ -59,11 +64,11 @@ $(PANES) \
 $(MODELS) \
 $(COMMANDS) \
 $(CONTROLLERS) \
-$(ANIMATORS)
+$(ANIMATORS) \
+$(OBSERVERS) \
+$(MONITORS)
 
 ABSTRACTS = \
-./$(INCDIR)/observers/TileDestructionMonitor.h \
-./$(INCDIR)/observers/DeathMonitor.h \
 ./$(INCDIR)/commands/AbstractCommand.h \
 ./$(INCDIR)/controllers/AbstractInputHandler.h \
 ./$(INCDIR)/Global.h
@@ -92,4 +97,4 @@ clean :
 	mkdir $(OBJDIR)/commands;
 	mkdir $(OBJDIR)/controllers;
 	mkdir $(OBJDIR)/animators;
-
+	mkdir $(OBJDIR)/observers;

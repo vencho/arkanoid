@@ -4,8 +4,8 @@
 #include<model/Tile.h>
 #include<model/Ball.h>
 #include<model/Paddle.h>
-#include<observers/DeathMonitor.h>
-#include<observers/TileDestructionMonitor.h>
+#include<model/Powerup.h>
+#include<observers/GameEventMonitor.h>
 #include<vector>
 #include<string>
 
@@ -13,8 +13,8 @@ class Board {
  private:
   std::vector<Tile> tiles;
   std::vector<Ball> balls;
-  std::vector<DeathMonitor *> deathMonitors;
-  std::vector<TileDestructionMonitor *> tileDestructionMonitors;
+  std::vector<Powerup> powerups;
+  std::vector<GameEventMonitor *> monitors;
   
   Paddle player;
   int width, height;
@@ -23,17 +23,19 @@ class Board {
   void reportDeath();
   void reportTileDestruction(int id);
   void reportTileHit(int id);
+  void reportPowerupDestroyed(int id);
 
   void collideBallsWithBorders();
   void collideBallsWithPlayer();
   void collidePlayerWithBorders();
   void collideBallsWithTiles();
+  void collidePlayerWithPowerups();
+  void consumePowerup(Powerup &powerup);
 
 
  public:
   Board(int width, int height);
-  void addTileDestructionMonitor(TileDestructionMonitor *tdm);
-  void addDeathMonitor(DeathMonitor *dm);
+  void addMonitor(GameEventMonitor *gem);
   void initialiseBalls();
 
   void resetBoard(std::string filename);
@@ -43,6 +45,7 @@ class Board {
   bool gameLost();
   Ball &getBall(int num);
   std::vector<Tile> &getTiles();
+  std::vector<Powerup> &getPowerups();
   Tile &getTile(int num);
   Paddle &getPaddle();
   int numTiles();
