@@ -42,7 +42,7 @@ class CollisionManager {
 
  public:
   static bool rectanglesIntersect(DockedRectangle &first, DockedRectangle &second);
-  static bool collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect);
+  static int collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect);
   static bool collideBorders(MovableRectangle &ball);
 
 };

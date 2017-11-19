@@ -130,9 +130,17 @@ bool CollisionManager::rectanglesIntersect(DockedRectangle &first, DockedRectang
 /*
 Does a moving rectangle intersect a docked rectangle?
 If it does, then push it out and possibly reflect velocity.
+
+The return value is a 4-bit mask, each bit saying whether
+the moving rectangle was snapped to one of the four sides.
+
+bit 0 --> top side (visually, that is, small y)
+bit 1 --> bottom side (visually, that is, large y)
+bit 2 --> left side
+bit 3 --> right side
 */
-bool CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect) {
-  if(!rectanglesIntersect(ball, tile)) return false;
+int CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect) {
+  if(!rectanglesIntersect(ball, tile)) return 0;
 
   std::vector<Segment> s; // top, bottom, left, right;
   s.push_back(Segment(false, tile.getY(), false, tile.getX(), tile.getX() + tile.getWidth() - 1));
@@ -151,7 +159,7 @@ bool CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle 
       }
     }
   }
-  if(j == -1) { return false; }
+  if(j == -1) { return 0; }
 
   int k = -1;
   for(int i = 0; i < 4; i++) {
@@ -163,16 +171,18 @@ bool CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle 
     }
   }
 
+  int ans = 0;
   if(k == -1) {
     snapToLine(ball, Line(s[j].vertical, s[j].constantCoordinate, s[j].smallsidesolid), true);
+    ans += (1 << j);
   }
   else {
     bool flag1 = headingInside(ball, s[j]);
     bool flag2 = headingInside(ball, s[k]);
-    if(flag1) snapToLine(ball, Line(s[j].vertical, s[j].constantCoordinate, s[j].smallsidesolid), true);
-    else snapToLine(ball, Line(s[k].vertical, s[k].constantCoordinate, s[k].smallsidesolid), true);
+    if(flag1) { snapToLine(ball, Line(s[j].vertical, s[j].constantCoordinate, s[j].smallsidesolid), true); ans += (1 << j); }
+    else { snapToLine(ball, Line(s[k].vertical, s[k].constantCoordinate, s[k].smallsidesolid), true); ans += (1 << k); }
   }
-  return true;
+  return ans;
 }
 
 bool CollisionManager::headingInside(MovableRectangle &ball, CollisionManager::Segment s) {

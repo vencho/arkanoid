@@ -22,8 +22,8 @@ void Board::collideBallsWithBorders() {
 
 void Board::collideBallsWithPlayer() {
   for(int i = 0; i < balls.size(); i++) {
-    bool collisionHappened = CollisionManager::collideRectangle(balls[i], player, true);
-    if(collisionHappened) balls[i].modifyAngle(player);
+    int answerMask = CollisionManager::collideRectangle(balls[i], player, true);
+    if((answerMask & 1) || (answerMask & 4) || (answerMask & 8) ) balls[i].modifyAngle(player);
   }
 }
 

@@ -20,10 +20,6 @@ void Ball::initialise() {
 }
 
 void Ball::modifyAngle(Paddle &player) {
-  if( getX() + width - 1 < player.getX() ) return;
-  if( getX() > player.getX() + player.getWidth() - 1 ) return;
-  if( getY() + height > player.getY() ) return;
-  
   double ballMidx = getX() + (width - 1) / 2.;
   double f = (ballMidx - player.getX()) / player.getWidth();
   double angle;
