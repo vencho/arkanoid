@@ -50,7 +50,8 @@ MENUS = \
 
 ANIMATORS = \
 ./$(OBJDIR)/animators/TileAnimator.o \
-./$(OBJDIR)/animators/PowerupAnimator.o
+./$(OBJDIR)/animators/PowerupAnimator.o \
+./$(OBJDIR)/animators/BallAnimator.o
 
 MONITORS = \
 ./$(OBJDIR)/observers/GameEventMonitor.o

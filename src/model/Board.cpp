@@ -230,8 +230,9 @@ void Board::tick() {
   }
 }
 
-Ball & Board::getBall(int num) {
-  return balls[num];
+
+std::vector<Ball> &Board::getBalls() {
+  return balls;
 }
 
 int Board::numTiles() {

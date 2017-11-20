@@ -43,7 +43,7 @@ class Board {
 
   bool gameWon();
   bool gameLost();
-  Ball &getBall(int num);
+  std::vector<Ball> &getBalls();
   std::vector<Tile> &getTiles();
   std::vector<Powerup> &getPowerups();
   Tile &getTile(int num);

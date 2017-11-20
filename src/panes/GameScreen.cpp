@@ -50,7 +50,9 @@ void GameScreen::loadSpritesFromGrid(SDL_Surface *spritesheet,
 
 
 void GameScreen::loadBallSprites(SDL_Surface *spritesheet) {
+  std::vector<SDL_Surface *> ballSprites;
   loadSpritesFromGrid(spritesheet, 129, 67, 10, 10, 0, 0, 1, 5, ballSprites);
+  ballAnimator.loadSprites(ballSprites);
 }
 
 void GameScreen::loadPowerupSprites(SDL_Surface *spritesheet) {
@@ -66,7 +68,10 @@ void GameScreen::loadTileSprites(SDL_Surface *spritesheet) {
   tileAnimator.loadSprites(tileSprites);
 }
 
-GameScreen::GameScreen(Board &newBoard) : board(newBoard), tileAnimator(newBoard.getTiles()), powerupAnimator(newBoard.getPowerups()) {
+GameScreen::GameScreen(Board &newBoard) : board(newBoard), 
+					  tileAnimator(newBoard.getTiles()), 
+					  powerupAnimator(newBoard.getPowerups()),
+					  ballAnimator(newBoard.getBalls()) {
   width = GAME_SCREEN_WIDTH;
   height = GAME_SCREEN_HEIGHT;
   board.addMonitor(&tileAnimator);
@@ -90,23 +95,11 @@ void GameScreen::drawBackground(SDL_Surface *target, int baseX, int baseY) {
 
 void GameScreen::drawShadows(SDL_Surface *target, int baseX, int baseY) {
   tileAnimator.drawShadows(target, baseX, baseY);
-  for(int i = 0; i < board.numBalls(); i++) {
-    Ball & ball = board.getBall(i);
-    SDL_Rect r;
-    r.x = ball.getX() + baseX + 5;
-    r.y = ball.getY() + baseY + 10;
-    SDL_BlitSurface(ballSprites[4], nullptr, target, &r);
-  }
+  ballAnimator.drawShadows(target, baseX, baseY);
 }
 
-void GameScreen::drawBall(SDL_Surface *target, int baseX, int baseY) {
-  for(int i = 0; i < board.numBalls(); i++) {
-    Ball &ball = board.getBall(i);
-    SDL_Rect r;
-    r.x = ball.getX() + baseX;
-    r.y = ball.getY() + baseY;
-    SDL_BlitSurface(ballSprites[0], nullptr, target, &r);
-  }
+void GameScreen::drawBalls(SDL_Surface *target, int baseX, int baseY) {
+  ballAnimator.drawBalls(target, baseX, baseY);
 }
 
 void GameScreen::drawTiles(SDL_Surface *target, int baseX, int baseY) {
@@ -132,6 +125,6 @@ void GameScreen::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   drawShadows(target, baseX, baseY);
   drawTiles(target, baseX, baseY);
   drawPowerups(target, baseX, baseY);
-  drawBall(target, baseX, baseY);
+  drawBalls(target, baseX, baseY);
   drawPaddle(target, baseX, baseY);
 }

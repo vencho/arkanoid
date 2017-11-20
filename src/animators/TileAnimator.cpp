@@ -28,8 +28,8 @@ void TileAnimator::drawShadows(SDL_Surface *target, int baseX, int baseY) {
   for(int i = 0; i < tiles.size(); i++) {
     Tile & tile = tiles[i];
     SDL_Rect r;
-    r.x = tile.getX() + baseX + 5;
-    r.y = tile.getY() + baseY + 10;
+    r.x = tile.getX() + baseX + SHADOW_OFFSET_X;
+    r.y = tile.getY() + baseY + SHADOW_OFFSET_Y;
     SDL_BlitSurface(shadow, nullptr, target, &r);
   }
 }

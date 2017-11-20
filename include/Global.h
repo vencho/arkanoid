@@ -26,6 +26,9 @@
 #define BALL_SPEED_X 3
 #define BALL_SPEED_Y 3
 
+#define SHADOW_OFFSET_X 5
+#define SHADOW_OFFSET_Y 10
+
 #define RESPAWN_TIME_IN_FRAMES 60
 
 #define FPS 60

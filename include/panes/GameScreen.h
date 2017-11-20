@@ -5,12 +5,13 @@
 #include<model/Board.h>
 #include<animators/TileAnimator.h>
 #include<animators/PowerupAnimator.h>
+#include<animators/BallAnimator.h>
 
 class GameScreen : public DrawablePane {
  private:
   Board &board;
   void drawBackground(SDL_Surface *target, int baseX, int baseY);
-  void drawBall(SDL_Surface *target, int baseX, int baseY);
+  void drawBalls(SDL_Surface *target, int baseX, int baseY);
   void drawTiles(SDL_Surface *target, int baseX, int baseY);
   void drawPaddle(SDL_Surface *target, int baseX, int baseY);
   void drawShadows(SDL_Surface *target, int baseX, int baseY);
@@ -18,7 +19,8 @@ class GameScreen : public DrawablePane {
 
   TileAnimator tileAnimator;
   PowerupAnimator powerupAnimator;
-  std::vector<SDL_Surface *> ballSprites;
+  BallAnimator ballAnimator;
+
   std::vector<SDL_Surface *> paddleSprites;
   void loadBallSprites(SDL_Surface *spritesheet);
   void loadTileSprites(SDL_Surface *spritesheet);
