@@ -23,8 +23,8 @@ void Board::collideBallsWithBorders() {
 
 void Board::collideBallsWithPlayer() {
   for(int i = 0; i < balls.size(); i++) {
-    int answerMask = CollisionManager::collideRectangle(balls[i], player, true);
-    if((answerMask & 1) || (answerMask & 4) || (answerMask & 8) ) balls[i].modifyAngle(player);
+    int answerMask = CollisionManager::collideRectangle(balls[i], player, 7, 3);
+    if((answerMask & 1) || (answerMask & 2) || (answerMask & 4) ) balls[i].modifyAngle(player);
   }
 }
 
@@ -33,7 +33,6 @@ void Board::collidePlayerWithBorders() {
 }
 
 void Board::collideBallsWithTiles() {
-
   for(int i = 0; i < balls.size(); i++) {
     std::vector<int> whichTilesHit;
     for(int j = 0; j < tiles.size(); j++) {
@@ -49,7 +48,7 @@ void Board::collideBallsWithTiles() {
       for(int j = 0; j < whichTilesHit.size(); j++) {
 	Tile &tile = tiles[whichTilesHit[j]];
 	printf("Collision with tile id %d.\n", tile.getId());
-	CollisionManager::collideRectangle(balls[i], tile, true);
+	CollisionManager::collideRectangle(balls[i], tile, 15, 3);
       }
     }
     else {
@@ -62,7 +61,7 @@ void Board::collideBallsWithTiles() {
       w = a.getX() == b.getX() ? a.getWidth() : a.getWidth() + b.getWidth();
       h = b.getY() == b.getY() ? a.getHeight() : a.getHeight() + b.getHeight();
       DockedRectangle rect(x, y, w, h);
-      CollisionManager::collideRectangle(balls[i], rect, true);
+      CollisionManager::collideRectangle(balls[i], rect, 15, 3);
     }
 
     int countRemoved = 0;

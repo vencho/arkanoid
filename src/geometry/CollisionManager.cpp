@@ -8,105 +8,136 @@
 DockedRectangle CollisionManager::leftBorder = DockedRectangle(-INFINITY, 0, INFINITY, INFINITY);
 DockedRectangle CollisionManager::rightBorder = DockedRectangle(GAME_SCREEN_WIDTH, 0, INFINITY, INFINITY);
 DockedRectangle CollisionManager::topBorder = DockedRectangle(0, -INFINITY, INFINITY, INFINITY);
-// DockedRectangle CollisionManager::bottomBorder = DockedRectangle(0, GAME_SCREEN_HEIGHT, INFINITY, INFINITY);
 #undef INFINITY
+
+
+void CollisionManager::getIntersectionInfo(DockedRectangle &first, DockedRectangle &second, struct CollisionManager::collision_info &ans) {
+  if(!rectanglesIntersect(first, second)) {
+    ans.intersect[0] = false;
+    ans.intersect[1] = false;
+    ans.intersect[2] = false;
+    ans.intersect[3] = false;
+    return;
+  }
+  
+  int x1, y1, x2, y2, x3, y3, x4, y4;
+  x1 = first.getX();
+  y1 = first.getY();
+  x2 = first.getX() + first.getWidth() - 1;
+  y2 = first.getY() + first.getHeight() - 1;
+
+  x3 = second.getX();
+  y3 = second.getY();
+  x4 = second.getX() + second.getWidth() - 1;
+  y4 = second.getY() + second.getHeight() - 1;
+
+  ans.intersect[0] = (x1 <= x3 && x3 <= x2);
+  ans.intersect[1] = (x1 <= x4 && x4 <= x2);
+  ans.intersect[2] = (y1 <= y3 && y3 <= y2);
+  ans.intersect[3] = (y1 <= y4 && y4 <= y2);
+
+  if(ans.intersect[0]) ans.pop[0] = x2 - x3 + 1;
+  if(ans.intersect[1]) ans.pop[1] = x4 - x1 + 1;
+  if(ans.intersect[2]) ans.pop[2] = y2 - y3 + 1;
+  if(ans.intersect[3]) ans.pop[3] = y2 - y4 + 1;
+}
 
 bool CollisionManager::collideBorders(MovableRectangle &ball) {
   bool ans = false;
-  ans |= collideRectangle(ball, topBorder, true);
-  ans |= collideRectangle(ball, leftBorder, true);
-  ans |= collideRectangle(ball, rightBorder, true);
-  //  ans |= collideRectangle(ball, bottomBorder, true);
+  ans |= collideRectangle(ball, topBorder, 8, 2);
+  ans |= collideRectangle(ball, leftBorder, 2, 1);
+  ans |= collideRectangle(ball, rightBorder, 1, 1);
   return ans;
 }
 
+int CollisionManager::collideRectangle(MovableRectangle &first, 
+				       DockedRectangle &second, 
+				       int allowedPopDirections, 
+				       int allowedReflects) {
+  if(first.isMovingX(true)) allowedPopDirections &= 14;
+  if(first.isMovingX(false)) allowedPopDirections &= 13;
+  if(first.isMovingY(true)) allowedPopDirections &= 11;
+  if(first.isMovingY(false)) allowedPopDirections &= 7;
+  
+  struct CollisionManager::collision_info info;
+  getIntersectionInfo(first, second, info);
 
-CollisionManager::Line::Line(bool vertical, int constantCoordinate, bool smallsidesolid) 
-  : vertical(vertical), constantCoordinate(constantCoordinate), smallsidesolid(smallsidesolid) { }
-CollisionManager::Segment::Segment(bool vertical, 
-				   int constantCoordinate, 
-				   bool smallsidesolid, 
-				   int variableCoordinateLow, 
-				   int variableCoordinateHigh) : 
-  CollisionManager::Line::Line(vertical, constantCoordinate, smallsidesolid), 
-  variableCoordinateLow(variableCoordinateLow), 
-  variableCoordinateHigh(variableCoordinateHigh) { }
-
-
-/*
-  Does the line from (x1, y1) in the direction (x2, y2) intersect the segment s?
-  If it does, what is the t such that (x1, y1) + t(x2-x1, y2-y1) lies on the segment?
-  If there are many, use the one with smallest absolute value.
-*/
-std::pair<bool, double> CollisionManager::timeToIntersection(int x1, int y1, int x2, int y2, Segment &s) {
-  int a = s.vertical ? x2 - x1 : y2 - y1;
-  int b = (s.vertical ? x1 : y1) - s.constantCoordinate;
-
-  // Movement is parallel to line of segment s.
-  if(a == 0) { 
-
-    // Movement is along a separate line, no intersection.
-    if(b != 0) return std::make_pair(false, 0);
-
-    // Look at the non-constant coordinate.
-    int var = s.vertical ? y1 : x1;
-    // And at the speed in that coordinate.
-    int c = s.vertical ? y2 - y1 : x2 - x1;
-
-    // Segment lies ahead, return a positive time.
-    if(var < s.variableCoordinateLow) return std::make_pair(true, (s.variableCoordinateLow - var) / (double) c);
-    // Segment lies behind, return a negative time.
-    if(var > s.variableCoordinateHigh) return std::make_pair(true, (s.variableCoordinateHigh - var) / (double) c);
-    // We are on segment, return zero.
-    return std::make_pair(true, 0);
+  int directionsPopped = popRectangle(first, second, allowedPopDirections, info);
+  if( (directionsPopped & 1) || (directionsPopped & 2) ) {
+    if( allowedReflects & 1 ) {
+      first.reflectOrthogonally(true);
+    }
   }
 
-  // This many time units until defining line of s is intersected. Now or never.
-  double t = -b / (double) a;
-  // Calculate other coordinate at intersection.
-  double var = s.vertical ? y1 + t*(y2-y1) : x1 + t*(x2-x1);
-  // Does it lie inside segment.
-  return std::make_pair( (double) s.variableCoordinateLow <= var && var <= (double) s.variableCoordinateHigh, t);
+  if( (directionsPopped & 4) || (directionsPopped & 8) ) {
+    if( allowedReflects & 2 ) {
+      first.reflectOrthogonally(false);
+    }
+  }
+
+  return directionsPopped;
 }
 
-
 /* 
-   Moving from its position at the last instant, does the ball ever 
-   intersect the segment and at what time?
+Assuming rectangles first and second intersect, 
+push first out of second in the direction of the
+closest side of second which is intersected by first. 
 
-   Assumes no intersection at last instant.
+Sides of second can be excluded from consideration
+by setting their corresponding bits in allowedPopDirections
+to zero. Bits 0 to 3 correspond to left, right, top, bottom
+in that order.
+
+If two edges are equally near and both allowed, then push
+out in both directions.
 */
-std::pair<bool, double> CollisionManager::timeToIntersectionSinceLastTick(MovableRectangle &ball, Segment &s) {
-  if(!ball.isMoving()) return std::make_pair(false, 0);
+int CollisionManager::popRectangle(DockedRectangle &first, 
+				   DockedRectangle &second, 
+				   int allowedPopDirections, 
+				   CollisionManager::collision_info &info) {
 
-  double bestT;
-  bool init = false;
-  for(int i = 0; i < 2; i++) {
-    for(int j = 0; j < 2; j++) {
-      int x1 = ball.getPreviousX() + i*(ball.getWidth()-1);
-      int y1 = ball.getPreviousY() + j*(ball.getHeight()-1);
-      int x2 = ball.getX() + i*(ball.getWidth()-1);
-      int y2 = ball.getY() + j*(ball.getHeight()-1);
-      std::pair<bool, double> ans = timeToIntersection(x1, y1, x2, y2, s);
-      if(!ans.first || ans.second < 0) continue;
-      if(!init || bestT > ans.second) {
-	bestT = ans.second;
-	init = true;
+  int best_direction = -1;
+  for(int i = 0; i < 4; i++) {
+    if(info.intersect[i] && (allowedPopDirections & (1 << i))) {
+      if(best_direction == -1 || info.pop[i] < info.pop[best_direction]) {
+	best_direction = i;
       }
     }
   }
 
-  if(!init) return std::make_pair(false, 0);
-  return std::make_pair(true, bestT);
+  int other_best_direction = -1;
+  for(int i = 0; i < 4; i++) {
+    if(i != best_direction && (allowedPopDirections & (1 << i)) && info.intersect[i] && info.pop[i] == info.pop[best_direction]) {
+      other_best_direction = i;
+      break;
+    }
+  }
+
+  int directionsPopped = 0;
+  if(best_direction != -1) directionsPopped += (1 << best_direction);
+  if(other_best_direction != -1) directionsPopped += (1 << other_best_direction);
+
+  if(directionsPopped & 1) first.setX(first.getX() - info.pop[0]);
+  else if(directionsPopped & 2) first.setX(first.getX() + info.pop[1]);
+  else if(directionsPopped & 4) first.setY(first.getY() - info.pop[2]);
+  else if(directionsPopped & 8) first.setY(first.getY() + info.pop[3]);
+
+  return directionsPopped;
 }
 
 
+
+/* Do the closed intervals [a,b] and [c,d] intersect? */
 bool CollisionManager::intervalsIntersect(int a, int b, int c, int d) {
   return intervalOverlap(a, b, c, d) > 0;
 }
+
+/* Is the closed interval [a, b] contained in the closed interval [c,d]? */
 bool CollisionManager::intervalContainment(int a, int b, int c, int d) {
   return c <= a && b <= d;
 }
+
+/* What is the length of the intersection of the closed intervals [a,b] and [c,d]? */
 int CollisionManager::intervalOverlap(int a, int b, int c, int d) {
   if(b < c || d < a) return 0;
   if(intervalContainment(a, b, c, d)) return d-c+1;
@@ -115,9 +146,7 @@ int CollisionManager::intervalOverlap(int a, int b, int c, int d) {
   return d-a+1;
 }
 
-
-
-
+/* Do the rectangles first and second intersect? */
 bool CollisionManager::rectanglesIntersect(DockedRectangle &first, DockedRectangle &second) {
   bool a = intervalsIntersect(first.getX(), first.getX() + first.getWidth()-1, 
 			      second.getX(), second.getX() + second.getWidth()-1);
@@ -125,91 +154,3 @@ bool CollisionManager::rectanglesIntersect(DockedRectangle &first, DockedRectang
 			      second.getY(), second.getY() + second.getHeight()-1);
   return a && b;
 }
-
-
-/*
-Does a moving rectangle intersect a docked rectangle?
-If it does, then push it out and possibly reflect velocity.
-
-The return value is a 4-bit mask, each bit saying whether
-the moving rectangle was snapped to one of the four sides.
-
-bit 0 --> top side (visually, that is, small y)
-bit 1 --> bottom side (visually, that is, large y)
-bit 2 --> left side
-bit 3 --> right side
-*/
-int CollisionManager::collideRectangle(MovableRectangle &ball, DockedRectangle &tile, bool reflect) {
-  if(!rectanglesIntersect(ball, tile)) return 0;
-
-  std::vector<Segment> s; // top, bottom, left, right;
-  s.push_back(Segment(false, tile.getY(), false, tile.getX(), tile.getX() + tile.getWidth() - 1));
-  s.push_back(Segment(false, tile.getY()+tile.getHeight()-1, true, tile.getX(), tile.getX() + tile.getWidth() - 1));
-  s.push_back(Segment(true, tile.getX(), false, tile.getY(), tile.getY() + tile.getHeight() - 1));
-  s.push_back(Segment(true, tile.getX()+tile.getWidth()-1, true, tile.getY(), tile.getY() + tile.getHeight() - 1));
-
-  std::pair<bool, double> ar[4];
-  for(int i = 0; i < 4; i++) ar[i] = timeToIntersectionSinceLastTick(ball, s[i]);
-
-  int j = -1;
-  for(int i = 0; i < 4; i++) {
-    if(ar[i].first) {
-      if(j == -1 || ar[i].second < ar[j].second) {
-	j = i;
-      }
-    }
-  }
-  if(j == -1) { return 0; }
-
-  int k = -1;
-  for(int i = 0; i < 4; i++) {
-    if(ar[i].first && i != j) {
-      if( (ar[i].second - ar[j].second) < 0.000001 ) {
-	k = i;
-	break;
-      }
-    }
-  }
-
-  int ans = 0;
-  if(k == -1) {
-    snapToLine(ball, Line(s[j].vertical, s[j].constantCoordinate, s[j].smallsidesolid), true);
-    ans += (1 << j);
-  }
-  else {
-    bool flag1 = headingInside(ball, s[j]);
-    bool flag2 = headingInside(ball, s[k]);
-    if(flag1) { snapToLine(ball, Line(s[j].vertical, s[j].constantCoordinate, s[j].smallsidesolid), true); ans += (1 << j); }
-    else { snapToLine(ball, Line(s[k].vertical, s[k].constantCoordinate, s[k].smallsidesolid), true); ans += (1 << k); }
-  }
-  return ans;
-}
-
-bool CollisionManager::headingInside(MovableRectangle &ball, CollisionManager::Segment s) {
-  bool velocityNegative = s.vertical ? ball.isMovingX(true) : ball.isMovingY(true);
-  bool velocityPositive = s.vertical ? ball.isMovingX(false) : ball.isMovingY(false);
-  return (velocityNegative && s.smallsidesolid) || (velocityPositive && !s.smallsidesolid);
-}
-
-
-/*
-Snaps a moving rectangle to a line, possibly reflecting the velocity.
-
-Typically called when the ball has intersected a tile and we wish to
-push it out and reflect.
-*/
-void CollisionManager::snapToLine(MovableRectangle &ball, 
-				   CollisionManager::Line L, 
-				   bool reflect) {
-  int coordinate = L.vertical ? ball.getX() : ball.getY();
-  int extent = L.vertical ? ball.getWidth() : ball.getHeight();
-
-  if(L.smallsidesolid) coordinate = L.constantCoordinate+1;
-  else coordinate = L.constantCoordinate - extent;
-
-  if(L.vertical) ball.setX(coordinate);
-  else ball.setY(coordinate);
-
-  if(reflect) ball.reflectOrthogonally(L.vertical);
-}
-
