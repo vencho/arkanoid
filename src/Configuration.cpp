@@ -10,5 +10,5 @@ const int Configuration::minLevel = 1;
 const int Configuration::maxLevel = 3;
 int Configuration::level = minLevel;
 
-
+const int Configuration::powerupDuration = 1800;
 

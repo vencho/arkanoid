@@ -122,6 +122,7 @@ void Board::collidePlayerWithPowerups() {
 
 void Board::consumePowerup(Powerup &powerup) {
   printf("Consumed powerup with id %d of type %c.\n", powerup.getId(), powerup.getType());
+  if(powerup.getType() == 'E') player.startEnlarge();
 }
 
 Board::Board(int width, int height) : 

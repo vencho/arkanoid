@@ -6,7 +6,7 @@ class Configuration {
 public:
   static int difficulty;
   static const int minDifficulty, maxDifficulty;
-
+  static const int powerupDuration;
 
   static int level;
   static const int minLevel, maxLevel;

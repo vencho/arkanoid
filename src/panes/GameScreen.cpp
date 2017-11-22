@@ -12,13 +12,13 @@ void GameScreen::loadPaddleSprites(SDL_Surface *spritesheet) {
   for(int i = 0, paddleWidth = 128; i < rows; i++) {
     paddleSprites[i] = SDL_CreateRGBSurface(0, paddleWidth, spriteHeight, 32, 0, 0, 0, 0);
     SDL_Rect r;
-    r.x = i*spriteHeight;
-    r.y = 0;
+    r.x = 0;
+    r.y = i*spriteHeight;
     r.w = paddleWidth;
     r.h = spriteHeight;
     SDL_BlitSurface(spritesheet, &r, paddleSprites[i], nullptr);
     SDL_SetColorKey(paddleSprites[i], SDL_TRUE, SDL_MapRGB(paddleSprites[i] -> format, 0xff, 0, 0xff));
-    if(i < 2) paddleWidth -= 4;
+    if(i < 3) paddleWidth -= 4;
     else if(i < 6) paddleWidth -= 8;
     else paddleWidth -= 12;
   }
@@ -117,7 +117,7 @@ void GameScreen::drawPaddle(SDL_Surface *target, int baseX, int baseY) {
   r.y = player.getY() + baseY;
   r.w = player.getWidth();
   r.h = player.getHeight();
-  SDL_BlitSurface(paddleSprites[0], nullptr, target, &r);
+  SDL_BlitSurface(paddleSprites[7-player.getLength()], nullptr, target, &r);
 }
 
 void GameScreen::drawYourself(SDL_Surface *target, int baseX, int baseY) {
