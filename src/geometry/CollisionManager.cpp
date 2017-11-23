@@ -39,7 +39,7 @@ void CollisionManager::getIntersectionInfo(DockedRectangle &first, DockedRectang
   if(ans.intersect[0]) ans.pop[0] = x2 - x3 + 1;
   if(ans.intersect[1]) ans.pop[1] = x4 - x1 + 1;
   if(ans.intersect[2]) ans.pop[2] = y2 - y3 + 1;
-  if(ans.intersect[3]) ans.pop[3] = y2 - y4 + 1;
+  if(ans.intersect[3]) ans.pop[3] = y4 - y1 + 1;
 }
 
 bool CollisionManager::collideBorders(MovableRectangle &ball) {

@@ -24,7 +24,16 @@ void Board::collideBallsWithBorders() {
 void Board::collideBallsWithPlayer() {
   for(int i = 0; i < balls.size(); i++) {
     int answerMask = CollisionManager::collideRectangle(balls[i], player, 7, 3);
-    if((answerMask & 1) || (answerMask & 2) || (answerMask & 4) ) balls[i].modifyAngle(player);
+    if(answerMask) {
+      int stickCode;
+      if(answerMask & 1) stickCode = 1;
+      else if(answerMask & 2) stickCode = 2;
+      else stickCode = 3;
+      balls[i].modifyAngle(player);
+      if(player.catchActive()) {
+	balls[i].stick(player, stickCode);
+      }
+    }
   }
 }
 
@@ -122,10 +131,12 @@ void Board::collidePlayerWithPowerups() {
 void Board::consumePowerup(Powerup &powerup) {
   printf("Consumed powerup with id %d of type %c.\n", powerup.getId(), powerup.getType());
   if(powerup.getType() == 'E') player.startEnlarge();
+  else if(powerup.getType() == 'C') player.startCatch();
+  else if(powerup.getType() == 'S') Ball::startSlow();
 }
 
 Board::Board(int width, int height) : 
-  player(56/*width/2 - BASE_PADDLE_WIDTH/2*/, PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT) {
+  player(45/*width/2 - BASE_PADDLE_WIDTH/2*/, PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT) {
   this -> width = width;
   this -> height = height;
 }
@@ -133,8 +144,9 @@ Board::Board(int width, int height) :
 void Board::resetBoard(std::string filename) {
   balls.clear();
   balls.push_back(Ball(0, 0, 0, 0));
-  balls[0].snapToPaddle(player);
-
+  balls.back().setX(player.getX() + player.getWidth()/2);
+  balls.back().setY(player.getY() - BALL_HEIGHT);
+  balls.back().stick(player, 3);
   loadTiles(filename);
 }
 
@@ -149,11 +161,9 @@ void Board::loadTiles(std::string filename) {
   fclose(fin);
 }
 
-void Board::initialiseBalls() {
+void Board::unstickBalls() {
   for(int i = 0; i < balls.size(); i++) {
-    if(!balls[i].isInitialised()) {
-      balls[i].initialise();
-    }
+    balls[i].unstick();
   }
 }
 
@@ -191,9 +201,10 @@ void Board::tick() {
     if(timetorespawn > 0) timetorespawn--;
     else if(timetorespawn == 0) {
       reportDeath();
-      Ball b(0, 0, 0, 0);
-      b.snapToPaddle(player);
-      balls.push_back(b);
+      balls.push_back(Ball(0, 0, 0, 0));
+      balls.back().setX(player.getX() + player.getWidth()/2);
+      balls.back().setY(player.getY() - BALL_HEIGHT);
+      balls.back().stick(player, 3);
       timetorespawn--;
     }
     else {
@@ -212,12 +223,6 @@ void Board::tick() {
   }
 
   collisionLogic();
-
-  for(int i = 0; i < balls.size(); i++) {
-    if(!balls[i].isInitialised()) {
-      balls[i].snapToPaddle(player); 
-    }
-  }
 
   for(int i = 0; i < powerups.size(); i++) {
     powerups[i].tick();

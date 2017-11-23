@@ -15,6 +15,9 @@ void GameInputHandler::handleInput() {
 
   board.getPaddle().setVelocity(dx*PADDLE_SPEED, 0);
 
-  if(currentKeyStates[SDL_SCANCODE_W]) board.initialiseBalls();
+  if(currentKeyStates[SDL_SCANCODE_W]) board.unstickBalls();
+
+  if(currentKeyStates[SDL_SCANCODE_O]) board.getPaddle().startEnlarge();
+  if(currentKeyStates[SDL_SCANCODE_P]) board.getPaddle().startCatch();
 }
 

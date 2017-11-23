@@ -41,3 +41,11 @@ int Paddle::getLength() {
 void Paddle::startEnlarge() {
   ticksLeftEnlarge = Configuration::powerupDuration;
 }
+
+void Paddle::startCatch() {
+  ticksLeftCatch = Configuration::powerupDuration;
+}
+
+bool Paddle::catchActive() {
+  return (ticksLeftCatch > 0);
+}

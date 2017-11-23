@@ -8,10 +8,18 @@
 class Ball : public MovableRectangle {
  public:
   Ball(int x, int y, int dx, int dy);
-  bool isInitialised();
-  void initialise();
-  void snapToPaddle(Paddle &player);
   void modifyAngle(Paddle &player);
+  virtual void tick();
+  virtual void move();
+  void stick(Paddle &player, int stickCode);
+  void unstick();
+  static void startSlow();
+ private:
+  static int framesLeftSlow;
+  int frozen;
+  Paddle *frozen_player;
+  int frozen_offsetY;
+  int frozen_partX; // out of 1000
 };
 
 #endif

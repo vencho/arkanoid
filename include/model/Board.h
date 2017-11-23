@@ -36,7 +36,7 @@ class Board {
  public:
   Board(int width, int height);
   void addMonitor(GameEventMonitor *gem);
-  void initialiseBalls();
+  void unstickBalls();
 
   void resetBoard(std::string filename);
   void tick();

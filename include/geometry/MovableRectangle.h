@@ -9,7 +9,7 @@ class MovableRectangle : public DockedRectangle {
     The velocity is (scaledVx, scaledVy) / denominator.
   */
   int scaledVx, scaledVy;
-  void move();
+  virtual void move();
   double getScaledSpeed();
   void setAngle(double newangle);
 

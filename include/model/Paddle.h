@@ -21,7 +21,8 @@ class Paddle : public MovableRectangle {
   void startEnlarge();
   int getLength();
   void setLength(int newSpriteNumber);
-
+  void startCatch();
+  bool catchActive();
 };
 
 #endif
