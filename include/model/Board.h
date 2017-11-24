@@ -40,6 +40,7 @@ class Board {
 
   void resetBoard(std::string filename);
   void tick();
+  void disruptionPowerup();
 
   bool gameWon();
   bool gameLost();

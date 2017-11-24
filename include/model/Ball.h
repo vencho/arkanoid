@@ -4,10 +4,12 @@
 #include<model/Tile.h>
 #include<model/Paddle.h>
 #include<geometry/MovableRectangle.h>
+#include<Global.h>
 
 class Ball : public MovableRectangle {
  public:
-  Ball(int x, int y, int dx, int dy);
+  Ball(int x, int y, int dx = BALL_SPEED_X, int dy = -BALL_SPEED_Y);
+  void modifyAngle(double angle);
   void modifyAngle(Paddle &player);
   virtual void tick();
   virtual void move();

@@ -1,6 +1,7 @@
 #include<model/Ball.h>
 #include<model/Paddle.h>
 #include<cstdio>
+#include<cmath>
 
 int Ball::framesLeftSlow = 0;
 
@@ -9,8 +10,13 @@ Ball::Ball(int x, int y, int dx, int dy) : MovableRectangle(x, y, BALL_WIDTH, BA
   frozen_player = nullptr;
   frozen_partX = 0;
   frozen_offsetY = 0;
-  scaledVx = denominator * BALL_SPEED_X;
-  scaledVy = -denominator * BALL_SPEED_Y;
+}
+
+void Ball::modifyAngle(double angle) {
+  double cs = cos(angle);
+  double sn = sin(angle);
+  scaledVx = (int) (cs * scaledVx - sn * scaledVy);
+  scaledVy = (int) (sn * scaledVx + cs * scaledVy);
 }
 
 void Ball::startSlow() {

@@ -128,11 +128,22 @@ void Board::collidePlayerWithPowerups() {
   }
 }
 
+void Board::disruptionPowerup() {
+  int n = balls.size();
+  for(int i = 0; i < n; i++) {
+    balls.push_back(balls[i]);
+    balls.back().modifyAngle(M_PI/6);
+    balls.push_back(balls[i]);
+    balls.back().modifyAngle(-M_PI/6);
+  }
+}
+
 void Board::consumePowerup(Powerup &powerup) {
   printf("Consumed powerup with id %d of type %c.\n", powerup.getId(), powerup.getType());
   if(powerup.getType() == 'E') player.startEnlarge();
   else if(powerup.getType() == 'C') player.startCatch();
   else if(powerup.getType() == 'S') Ball::startSlow();
+  else if(powerup.getType() == 'D') disruptionPowerup();
 }
 
 Board::Board(int width, int height) : 
@@ -143,7 +154,7 @@ Board::Board(int width, int height) :
 
 void Board::resetBoard(std::string filename) {
   balls.clear();
-  balls.push_back(Ball(0, 0, 0, 0));
+  balls.push_back(Ball(0, 0));
   balls.back().setX(player.getX() + player.getWidth()/2);
   balls.back().setY(player.getY() - BALL_HEIGHT);
   balls.back().stick(player, 3);
@@ -201,7 +212,7 @@ void Board::tick() {
     if(timetorespawn > 0) timetorespawn--;
     else if(timetorespawn == 0) {
       reportDeath();
-      balls.push_back(Ball(0, 0, 0, 0));
+      balls.push_back(Ball(0, 0));
       balls.back().setX(player.getX() + player.getWidth()/2);
       balls.back().setY(player.getY() - BALL_HEIGHT);
       balls.back().stick(player, 3);

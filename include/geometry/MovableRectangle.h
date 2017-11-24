@@ -17,8 +17,8 @@ class MovableRectangle : public DockedRectangle {
   MovableRectangle(int x, int y, int width, int height, int velocityX = 0, int velocityY = 0);
   int getPreviousY();
   int getPreviousX();
-  // int getVelocityX();
-  // int getVelocityY();
+  int getVelocityX();
+  int getVelocityY();
   void setVelocity(int dx, int dy);
   void setVelocityX(int dx);
   void setVelocityY(int dy);
