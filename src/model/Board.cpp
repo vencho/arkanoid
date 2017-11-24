@@ -14,6 +14,36 @@ bool Board::gameLost() {
   return balls.size() == 0;
 }
 
+void Board::fireBullets() {
+  if(!player.canFire()) return;
+  bullets.emplace_back(player, true);
+  bullets.emplace_back(player, false);
+  player.fire();
+}
+
+void Board::collideBulletsWithTiles() {
+  for(int i = 0; i < bullets.size(); i++) {
+    Bullet &bullet = bullets[i];
+    bool hitSomething = false;
+    for(int j = 0; j < tiles.size(); j++) {
+      Tile &tile = tiles[j];
+      if(!CollisionManager::rectanglesIntersect(bullet, tile)) continue;
+      hitSomething = true;
+      tile.takeDamage();
+      reportTileHit(tile.getId());
+      printf("Tile with id %d takes damage, health down to %d.\n", tile.getId(), tile.getHealth());
+      if(tile.getHealth() == 0) {
+	reportTileDestruction(tile.getId());
+	tiles.erase(tiles.begin() + j);
+	j--;
+      }
+    }
+    if(hitSomething) {
+      bullets.erase(bullets.begin() + i);
+      i--;
+    }
+  }
+}
 
 void Board::collideBallsWithBorders() {
   for(int i = 0; i < balls.size(); i++) {
@@ -110,6 +140,7 @@ void Board::collideBallsWithTiles() {
 }
 
 void Board::collisionLogic() {
+  collideBulletsWithTiles();
   collideBallsWithTiles();
   collideBallsWithPlayer();
   collideBallsWithBorders();
@@ -144,6 +175,7 @@ void Board::consumePowerup(Powerup &powerup) {
   else if(powerup.getType() == 'C') player.startCatch();
   else if(powerup.getType() == 'S') Ball::startSlow();
   else if(powerup.getType() == 'D') disruptionPowerup();
+  else if(powerup.getType() == 'L') player.startLaser();
 }
 
 Board::Board(int width, int height) : 
@@ -233,6 +265,14 @@ void Board::tick() {
     }
   }
 
+  for(int i = 0; i < bullets.size(); i++) {
+    bullets[i].tick();
+    if(CollisionManager::collideBorders(bullets[i])) {
+      bullets.erase(bullets.begin() + i);
+      i--;
+    }
+  }
+
   collisionLogic();
 
   for(int i = 0; i < powerups.size(); i++) {
@@ -249,6 +289,10 @@ void Board::tick() {
 
 std::vector<Ball> &Board::getBalls() {
   return balls;
+}
+
+std::vector<Bullet> &Board::getBullets() {
+  return bullets;
 }
 
 int Board::numTiles() {

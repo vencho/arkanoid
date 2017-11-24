@@ -23,7 +23,8 @@ MODELS = \
 ./$(OBJDIR)/model/Paddle.o \
 ./$(OBJDIR)/model/Ball.o \
 ./$(OBJDIR)/model/Board.o \
-./$(OBJDIR)/model/Powerup.o
+./$(OBJDIR)/model/Powerup.o \
+./$(OBJDIR)/model/Bullet.o
 
 GEOMETRY = \
 ./$(OBJDIR)/geometry/DockedRectangle.o \

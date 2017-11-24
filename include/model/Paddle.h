@@ -8,6 +8,7 @@ class Paddle : public MovableRectangle {
   int ticksLeftLaser;
   int ticksLeftEnlarge;
   int ticksLeftCatch;
+  int laserCooldown;
 
   // 0 to 7 corresponding to 
   // sprites from smallest to largest.
@@ -22,7 +23,11 @@ class Paddle : public MovableRectangle {
   int getLength();
   void setLength(int newSpriteNumber);
   void startCatch();
+  void startLaser();
   bool catchActive();
+  void fire();
+  bool canFire();
+  bool laserActive();
 };
 
 #endif

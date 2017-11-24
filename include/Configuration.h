@@ -7,7 +7,8 @@ public:
   static int difficulty;
   static const int minDifficulty, maxDifficulty;
   static const int powerupDuration;
-
+  static const int laserCooldown;
+  
   static int level;
   static const int minLevel, maxLevel;
 };

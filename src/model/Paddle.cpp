@@ -5,6 +5,7 @@ Paddle::Paddle(int x, int y) : MovableRectangle(x, y, BASE_PADDLE_WIDTH, BASE_PA
   ticksLeftLaser = 0;
   ticksLeftEnlarge = 0;
   ticksLeftCatch = 0;
+  laserCooldown = 0;
 }
 
 const int Paddle::paddleLength[8] = { 80, 92, 100, 108, 116, 120, 124, 128 };
@@ -24,6 +25,7 @@ void Paddle::tick() {
   if(ticksLeftLaser) ticksLeftLaser--;
   if(ticksLeftCatch) ticksLeftCatch--;
 
+  if(laserCooldown) laserCooldown--;
   if(ticksLeftEnlarge) ticksLeftEnlarge--;
   if( (Configuration::powerupDuration - ticksLeftEnlarge) % 3 == 0 ) {
     int newLength = (Configuration::powerupDuration - ticksLeftEnlarge) / 3;
@@ -46,6 +48,23 @@ void Paddle::startCatch() {
   ticksLeftCatch = Configuration::powerupDuration;
 }
 
+void Paddle::startLaser() {
+  ticksLeftLaser = Configuration::powerupDuration;
+  laserCooldown = 0;
+}
+
 bool Paddle::catchActive() {
   return (ticksLeftCatch > 0);
+}
+
+bool Paddle::laserActive() {
+  return (ticksLeftLaser > 0);
+}
+
+bool Paddle::canFire() {
+  return laserActive() && laserCooldown == 0;
+}
+
+void Paddle::fire() {
+  laserCooldown = Configuration::laserCooldown;
 }

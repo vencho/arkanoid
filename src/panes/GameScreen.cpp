@@ -48,6 +48,16 @@ void GameScreen::loadSpritesFromGrid(SDL_Surface *spritesheet,
   }
 }
 
+void GameScreen::loadBulletSprite(SDL_Surface *spritesheet) {
+  bulletSprite = SDL_CreateRGBSurface(0, 5, 5, 32, 0, 0, 0, 0);
+  SDL_Rect r;
+  r.x = 123;
+  r.y = 45;
+  r.w = 5;
+  r.h = 5;
+  SDL_BlitSurface(spritesheet, &r, bulletSprite, nullptr);
+  SDL_SetColorKey(bulletSprite, SDL_TRUE, SDL_MapRGB(bulletSprite -> format, 0xff, 0, 0xff));
+}
 
 void GameScreen::loadBallSprites(SDL_Surface *spritesheet) {
   std::vector<SDL_Surface *> ballSprites;
@@ -78,10 +88,23 @@ GameScreen::GameScreen(Board &newBoard) : board(newBoard),
   board.addMonitor(&powerupAnimator);
   SDL_Surface *spritesheet = SDL_LoadBMP("./res/sprites/sprites.bmp");
   loadTileSprites(spritesheet);
+  loadBulletSprite(spritesheet);
   loadBallSprites(spritesheet);
   loadPaddleSprites(spritesheet);
   loadPowerupSprites(spritesheet);
   SDL_FreeSurface(spritesheet);
+}
+
+void GameScreen::drawBullets(SDL_Surface *target, int baseX, int baseY) {
+  std::vector<Bullet> &bullets = board.getBullets();
+  for(int i = 0; i < bullets.size(); i++) {
+    SDL_Rect r;
+    r.x = bullets[i].getX() + baseX;
+    r.y = bullets[i].getY() + baseY;
+    r.w = 5;
+    r.h = 5;
+    SDL_BlitSurface(bulletSprite, nullptr, target, &r);
+  }
 }
 
 void GameScreen::drawBackground(SDL_Surface *target, int baseX, int baseY) {
@@ -123,6 +146,7 @@ void GameScreen::drawPaddle(SDL_Surface *target, int baseX, int baseY) {
 void GameScreen::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   drawBackground(target, baseX, baseY);
   drawShadows(target, baseX, baseY);
+  drawBullets(target, baseX, baseY);
   drawTiles(target, baseX, baseY);
   drawPowerups(target, baseX, baseY);
   drawBalls(target, baseX, baseY);

@@ -11,4 +11,4 @@ const int Configuration::maxLevel = 3;
 int Configuration::level = minLevel;
 
 const int Configuration::powerupDuration = 1800;
-
+const int Configuration::laserCooldown = 20;

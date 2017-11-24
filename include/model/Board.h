@@ -5,6 +5,7 @@
 #include<model/Ball.h>
 #include<model/Paddle.h>
 #include<model/Powerup.h>
+#include<model/Bullet.h>
 #include<observers/GameEventMonitor.h>
 #include<vector>
 #include<string>
@@ -13,6 +14,7 @@ class Board {
  private:
   std::vector<Tile> tiles;
   std::vector<Ball> balls;
+  std::vector<Bullet> bullets;
   std::vector<Powerup> powerups;
   std::vector<GameEventMonitor *> monitors;
   
@@ -30,6 +32,7 @@ class Board {
   void collidePlayerWithBorders();
   void collideBallsWithTiles();
   void collidePlayerWithPowerups();
+  void collideBulletsWithTiles();
   void consumePowerup(Powerup &powerup);
 
 
@@ -37,6 +40,8 @@ class Board {
   Board(int width, int height);
   void addMonitor(GameEventMonitor *gem);
   void unstickBalls();
+
+  void fireBullets();
 
   void resetBoard(std::string filename);
   void tick();
@@ -47,6 +52,7 @@ class Board {
   std::vector<Ball> &getBalls();
   std::vector<Tile> &getTiles();
   std::vector<Powerup> &getPowerups();
+  std::vector<Bullet> &getBullets();
   Tile &getTile(int num);
   Paddle &getPaddle();
   int numTiles();

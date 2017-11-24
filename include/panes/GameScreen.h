@@ -16,12 +16,15 @@ class GameScreen : public DrawablePane {
   void drawPaddle(SDL_Surface *target, int baseX, int baseY);
   void drawShadows(SDL_Surface *target, int baseX, int baseY);
   void drawPowerups(SDL_Surface *target, int baseX, int baseY);
-
+  void drawBullets(SDL_Surface *target, int baseX, int baseY);
+  
   TileAnimator tileAnimator;
   PowerupAnimator powerupAnimator;
   BallAnimator ballAnimator;
 
+  SDL_Surface *bulletSprite;
   std::vector<SDL_Surface *> paddleSprites;
+  void loadBulletSprite(SDL_Surface *spritesheet);
   void loadBallSprites(SDL_Surface *spritesheet);
   void loadTileSprites(SDL_Surface *spritesheet);
   void loadPaddleSprites(SDL_Surface *spritesheet);
