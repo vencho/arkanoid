@@ -6,7 +6,7 @@
 
 #define INFINITY 4000
 DockedRectangle CollisionManager::leftBorder = DockedRectangle(-INFINITY, 0, INFINITY, INFINITY);
-DockedRectangle CollisionManager::rightBorder = DockedRectangle(GAME_SCREEN_WIDTH, 0, INFINITY, INFINITY);
+DockedRectangle CollisionManager::rightBorder = DockedRectangle(PLAY_AREA_WIDTH, 0, INFINITY, INFINITY);
 DockedRectangle CollisionManager::topBorder = DockedRectangle(0, -INFINITY, INFINITY, INFINITY);
 #undef INFINITY
 

@@ -144,7 +144,6 @@ void Board::collisionLogic() {
   collideBallsWithTiles();
   collideBallsWithPlayer();
   collideBallsWithBorders();
-  collidePlayerWithBorders();
   collidePlayerWithPowerups();
 }
 
@@ -256,9 +255,10 @@ void Board::tick() {
   }
   
   player.tick();
+  collidePlayerWithBorders();
   for(int i = 0; i < balls.size(); i++) {
     balls[i].tick();
-    if(balls[i].getY() > GAME_SCREEN_HEIGHT) {
+    if(balls[i].getY() > PLAY_AREA_HEIGHT) {
       balls[i] = balls.back();
       balls.pop_back();
       i--;
@@ -277,7 +277,7 @@ void Board::tick() {
 
   for(int i = 0; i < powerups.size(); i++) {
     powerups[i].tick();
-    if(powerups[i].getY() > GAME_SCREEN_HEIGHT) {
+    if(powerups[i].getY() > PLAY_AREA_HEIGHT) {
       printf("Powerup with id %d and type %c has left the screen.\n", powerups[i].getId(), powerups[i].getType());
       reportPowerupDestroyed(powerups[i].getId());
       powerups.erase(powerups.begin() + i);

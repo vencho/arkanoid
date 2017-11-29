@@ -17,22 +17,34 @@ class GameScreen : public DrawablePane {
   void drawShadows(SDL_Surface *target, int baseX, int baseY);
   void drawPowerups(SDL_Surface *target, int baseX, int baseY);
   void drawBullets(SDL_Surface *target, int baseX, int baseY);
-  
+  void drawBorders(SDL_Surface *target, int baseX, int baseY);
+  void drawSpritesInRow(SDL_Surface *target, int baseX, int baseY, std::vector<SDL_Surface *> &v, bool vertical);
+
   TileAnimator tileAnimator;
   PowerupAnimator powerupAnimator;
   BallAnimator ballAnimator;
 
+  SDL_Surface *shortHorizontalPipeSprite, *longHorizontalPipeSprite, *leftAnglePipeSprite, *rightAnglePipeSprite, *verticalPipeSprite;
   SDL_Surface *bulletSprite;
+  std::vector<SDL_Surface *> gateSprites;
+  
   std::vector<SDL_Surface *> paddleSprites;
   void loadBulletSprite(SDL_Surface *spritesheet);
   void loadBallSprites(SDL_Surface *spritesheet);
   void loadTileSprites(SDL_Surface *spritesheet);
   void loadPaddleSprites(SDL_Surface *spritesheet);
   void loadPowerupSprites(SDL_Surface *spritesheet);
+  void loadBorderSprites(SDL_Surface *spritesheet);
+  SDL_Surface *loadSingleSprite(SDL_Surface *spritesheet, int spriteX, int spriteY, int spriteWidth, int spriteHeight);
+  SDL_Surface *loadSingleSprite(SDL_Surface *spritesheet,
+				int spriteX, int spriteY,
+				int spriteWidth, int spriteHeight,
+				int resultWidth, int resultHeight);
   void loadSpritesFromGrid(SDL_Surface *spritesheet, int firstSpriteX, int firstSpriteY,
 			   int spriteWidth, int spriteHeight,
 			   int horizontalGap, int verticalGap,
 			   int rows, int columns,
+			   int resultWidth, int resultHeight,
 			   std::vector<SDL_Surface *> &spriteArray);
 
 

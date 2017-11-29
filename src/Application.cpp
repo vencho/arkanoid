@@ -23,7 +23,7 @@
 Application::Application() : mainMenu(new MainMenu(*this)), 
 			     menuInputHandler(new MenuInputHandler(menuStack)),
 			     gameInputHandler(new GameInputHandler(board)),
-			     board(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT),
+			     board(PLAY_AREA_WIDTH, PLAY_AREA_HEIGHT),
 			     gamePane(new GamePane(board)),
 			     menuPane(new MenuPane(menuStack, SCREEN_WIDTH, SCREEN_HEIGHT)) {
   haveFinished = false;
