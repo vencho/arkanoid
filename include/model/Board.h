@@ -6,18 +6,34 @@
 #include<model/Paddle.h>
 #include<model/Powerup.h>
 #include<model/Bullet.h>
+#include<model/Enemy.h>
 #include<observers/GameEventMonitor.h>
 #include<vector>
 #include<string>
 
 class Board {
  private:
+
+
+  class EnemySpawner : public GameEventMonitor {
+ private:
+   Board &board;
+ public:
+   EnemySpawner(Board &board);
+   void tick();
+   int spawnRate;
+   int ticksSinceSpawnLeft;
+   int ticksSinceSpawnRight;
+ };
+ EnemySpawner enemySpawner;
+
   std::vector<Tile> tiles;
   std::vector<Ball> balls;
   std::vector<Bullet> bullets;
   std::vector<Powerup> powerups;
   std::vector<GameEventMonitor *> monitors;
-  
+  std::vector<Enemy> enemies;
+
   Paddle player;
   int width, height;
   void collisionLogic();
@@ -33,6 +49,9 @@ class Board {
   void collideBallsWithTiles();
   void collidePlayerWithPowerups();
   void collideBulletsWithTiles();
+  void collideBallsWithEnemies();
+  void collidePlayerWithEnemies();
+  void collideBulletsWithEnemies();
   void consumePowerup(Powerup &powerup);
 
 
@@ -53,10 +72,12 @@ class Board {
   std::vector<Tile> &getTiles();
   std::vector<Powerup> &getPowerups();
   std::vector<Bullet> &getBullets();
+  std::vector<Enemy> &getEnemies();
   Tile &getTile(int num);
   Paddle &getPaddle();
   int numTiles();
   int numBalls();
+  void spawnEnemy(bool left);
 };
 
 #endif

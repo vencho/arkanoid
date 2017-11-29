@@ -6,6 +6,26 @@
 #include<cstdio>
 #include<string>
 
+Board::EnemySpawner::EnemySpawner(Board &board) : board(board) {
+  ticksSinceSpawnLeft = 0;
+  ticksSinceSpawnRight = 400;
+  spawnRate = 800;
+}
+
+void Board::EnemySpawner::tick() {
+  ticksSinceSpawnLeft++;
+  ticksSinceSpawnRight++;
+
+  if(ticksSinceSpawnLeft == spawnRate) {
+    ticksSinceSpawnLeft = 0;
+    board.spawnEnemy(true);
+  }
+  if(ticksSinceSpawnRight == spawnRate) {
+    ticksSinceSpawnRight = 0;
+    board.spawnEnemy(false);
+  }
+}
+
 bool Board::gameWon() {
   return tiles.size() == 0;
 }
@@ -19,6 +39,22 @@ void Board::fireBullets() {
   bullets.emplace_back(player, true);
   bullets.emplace_back(player, false);
   player.fire();
+}
+
+void Board::collideBulletsWithEnemies() {
+  for(int i = 0; i < bullets.size(); i++) {
+    bool killBullet = false;
+    for(int j = 0; j < enemies.size(); j++) {
+      if(CollisionManager::rectanglesIntersect(bullets[i], enemies[j])) {
+	enemies.erase(enemies.begin() + j);
+	killBullet = true;
+      }
+    }
+    if(killBullet) {
+      bullets.erase(bullets.begin() + i);
+      i--;
+    }
+  }
 }
 
 void Board::collideBulletsWithTiles() {
@@ -139,12 +175,35 @@ void Board::collideBallsWithTiles() {
   }
 }
 
+void Board::collidePlayerWithEnemies() {
+  for(int i = 0; i < enemies.size(); i++) {
+    if(CollisionManager::rectanglesIntersect(player, enemies[i])) {
+      enemies.erase(enemies.begin() + i);
+      i--;
+    }
+  }
+}
+
+void Board::collideBallsWithEnemies() {
+  for(int i = 0; i < balls.size(); i++) {
+    for(int j = 0; j < enemies.size(); j++) {
+      if(CollisionManager::collideRectangle(balls[i], enemies[j], 15, 3)) {
+	enemies.erase(enemies.begin() + j);
+	j--;
+      }
+    }
+  }
+}
+
 void Board::collisionLogic() {
   collideBulletsWithTiles();
+  collideBulletsWithEnemies();
   collideBallsWithTiles();
   collideBallsWithPlayer();
   collideBallsWithBorders();
+  collideBallsWithEnemies();
   collidePlayerWithPowerups();
+  collidePlayerWithEnemies();
 }
 
 void Board::collidePlayerWithPowerups() {
@@ -177,7 +236,7 @@ void Board::consumePowerup(Powerup &powerup) {
   else if(powerup.getType() == 'L') player.startLaser();
 }
 
-Board::Board(int width, int height) : 
+Board::Board(int width, int height) : enemySpawner(*this),
   player(45/*width/2 - BASE_PADDLE_WIDTH/2*/, PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT) {
   this -> width = width;
   this -> height = height;
@@ -190,6 +249,9 @@ void Board::resetBoard(std::string filename) {
   balls.back().setY(player.getY() - BALL_HEIGHT);
   balls.back().stick(player, 3);
   loadTiles(filename);
+
+  enemies.clear();
+  // enemies.emplace_back(PLAY_AREA_WIDTH/2, PLAY_AREA_HEIGHT/2);
 }
 
 void Board::loadTiles(std::string filename) {
@@ -254,6 +316,8 @@ void Board::tick() {
     }
   }
   
+  enemySpawner.tick();
+
   player.tick();
   collidePlayerWithBorders();
   for(int i = 0; i < balls.size(); i++) {
@@ -271,6 +335,10 @@ void Board::tick() {
       bullets.erase(bullets.begin() + i);
       i--;
     }
+  }
+
+  for(int i = 0; i < enemies.size(); i++) {
+    enemies[i].tick();
   }
 
   collisionLogic();
@@ -317,4 +385,13 @@ Paddle & Board::getPaddle() {
 
 std::vector<Powerup> &Board::getPowerups() {
   return powerups;
+}
+
+std::vector<Enemy> &Board::getEnemies() {
+  return enemies;
+}
+
+void Board::spawnEnemy(bool left) {
+  if(left) enemies.emplace_back(90, 0);
+  else enemies.emplace_back(270, 0);
 }

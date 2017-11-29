@@ -33,6 +33,12 @@ void GameScreen::loadBorderSprites(SDL_Surface *spritesheet) {
   loadSpritesFromGrid(spritesheet, 0, 181, 90, 22, 0, 0, 7, 1, 90, 18, gateSprites);
 }
 
+void GameScreen::loadEnemySprites(SDL_Surface *spritesheet) {
+  std::vector<SDL_Surface *> enemySprites;
+  loadSpritesFromGrid(spritesheet, 8, 335, 34, 44, 10, 0, 5, 5, ENEMY_WIDTH, ENEMY_HEIGHT, enemySprites);
+  enemyAnimator.loadSprites(enemySprites);
+}
+
 void GameScreen::loadBulletSprite(SDL_Surface *spritesheet) {
   bulletSprite = loadSingleSprite(spritesheet, 123, 45, 5, 5); 
 }
@@ -96,7 +102,8 @@ void GameScreen::loadSpritesFromGrid(SDL_Surface *spritesheet,
 GameScreen::GameScreen(Board &newBoard) : board(newBoard), 
 					  tileAnimator(newBoard.getTiles()), 
 					  powerupAnimator(newBoard.getPowerups()),
-					  ballAnimator(newBoard.getBalls()) {
+					  ballAnimator(newBoard.getBalls()),
+					  enemyAnimator(newBoard.getEnemies()) {
   width = GAME_SCREEN_WIDTH;
   height = GAME_SCREEN_HEIGHT;
   board.addMonitor(&tileAnimator);
@@ -108,6 +115,7 @@ GameScreen::GameScreen(Board &newBoard) : board(newBoard),
   loadPaddleSprites(spritesheet);
   loadPowerupSprites(spritesheet);
   loadBorderSprites(spritesheet);
+  loadEnemySprites(spritesheet);
   SDL_FreeSurface(spritesheet);
 }
 
@@ -184,13 +192,18 @@ void GameScreen::drawPaddle(SDL_Surface *target, int baseX, int baseY) {
   SDL_BlitSurface(paddleSprites[7-player.getLength()], nullptr, target, &r);
 }
 
+void GameScreen::drawEnemies(SDL_Surface *target, int baseX, int baseY) {
+  enemyAnimator.drawEnemies(target, baseX, baseY);
+}
+
 void GameScreen::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   drawBackground(target, baseX, baseY);
   drawShadows(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
-  drawBorders(target, baseX, baseY);
   drawBullets(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
   drawTiles(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
   drawPowerups(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
   drawBalls(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
+  drawBorders(target, baseX, baseY);
   drawPaddle(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
+  drawEnemies(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
 }

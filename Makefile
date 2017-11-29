@@ -24,7 +24,8 @@ MODELS = \
 ./$(OBJDIR)/model/Ball.o \
 ./$(OBJDIR)/model/Board.o \
 ./$(OBJDIR)/model/Powerup.o \
-./$(OBJDIR)/model/Bullet.o
+./$(OBJDIR)/model/Bullet.o \
+./$(OBJDIR)/model/Enemy.o
 
 GEOMETRY = \
 ./$(OBJDIR)/geometry/DockedRectangle.o \
@@ -52,7 +53,8 @@ MENUS = \
 ANIMATORS = \
 ./$(OBJDIR)/animators/TileAnimator.o \
 ./$(OBJDIR)/animators/PowerupAnimator.o \
-./$(OBJDIR)/animators/BallAnimator.o
+./$(OBJDIR)/animators/BallAnimator.o \
+./$(OBJDIR)/animators/EnemyAnimator.o
 
 MONITORS = \
 ./$(OBJDIR)/observers/GameEventMonitor.o
