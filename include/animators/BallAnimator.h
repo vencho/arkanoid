@@ -13,9 +13,9 @@ class BallAnimator {
   
  public:
   BallAnimator(std::vector<Ball> &balls);
-  void drawBalls(SDL_Surface *target, int baseX, int baseY);
+  void draw(SDL_Surface *target, int baseX, int baseY);
   void drawShadows(SDL_Surface *target, int baseX, int baseY);
-  void loadSprites(std::vector<SDL_Surface *> &sprites);
+  void loadSprites(SDL_Surface *spritesheet);
 };
 
 #endif

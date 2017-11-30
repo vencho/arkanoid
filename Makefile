@@ -54,7 +54,12 @@ ANIMATORS = \
 ./$(OBJDIR)/animators/TileAnimator.o \
 ./$(OBJDIR)/animators/PowerupAnimator.o \
 ./$(OBJDIR)/animators/BallAnimator.o \
-./$(OBJDIR)/animators/EnemyAnimator.o
+./$(OBJDIR)/animators/EnemyAnimator.o \
+./$(OBJDIR)/animators/ExplosionAnimator.o \
+./$(OBJDIR)/animators/PaddleAnimator.o \
+./$(OBJDIR)/animators/BorderAnimator.o \
+./$(OBJDIR)/animators/BulletAnimator.o \
+./$(OBJDIR)/SpriteUtils.o 
 
 MONITORS = \
 ./$(OBJDIR)/observers/GameEventMonitor.o

@@ -1,11 +1,13 @@
 #include<animators/EnemyAnimator.h>
+#include<Global.h>
+#include<SpriteUtils.h>
 
 EnemyAnimator::EnemyAnimator(std::vector<Enemy> &enemies) : enemies(enemies) {
 
 }
 
-void EnemyAnimator::loadSprites(std::vector<SDL_Surface *> &sprites) {
-  enemySprites = sprites;
+void EnemyAnimator::loadSprites(SDL_Surface *spritesheet) {
+  SpriteUtils::loadSpritesFromGrid(spritesheet, 8, 335, 34, 44, 10, 0, 5, 5, ENEMY_WIDTH, ENEMY_HEIGHT, enemySprites);
 }
 
 void EnemyAnimator::incrementAll() {
@@ -16,7 +18,7 @@ void EnemyAnimator::incrementAll() {
   }
 }
 
-void EnemyAnimator::drawEnemies(SDL_Surface *target, int baseX, int baseY) {
+void EnemyAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
   incrementAll();
   for(int i = 0; i < enemies.size(); i++) {
     Enemy &enemy = enemies[i];

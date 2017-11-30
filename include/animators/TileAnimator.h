@@ -19,9 +19,9 @@ class TileAnimator : public GameEventMonitor {
 
  public:
   TileAnimator(std::vector<Tile> &tiles);
-  void loadSprites(std::vector<SDL_Surface *> &sprites);
+  void loadSprites(SDL_Surface *spritesheet);
   void drawShadows(SDL_Surface *target, int baseX, int baseY);
-  void drawTiles(SDL_Surface *target, int baseX, int baseY);
+  void draw(SDL_Surface *target, int baseX, int baseY);
   virtual void notifyTileDestroyed(int id);
   virtual void notifyTileHit(int id);
 };

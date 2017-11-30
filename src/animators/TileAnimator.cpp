@@ -1,4 +1,5 @@
 #include<animators/TileAnimator.h>
+#include<SpriteUtils.h>
 
 TileAnimator::TileAnimator(std::vector<Tile> &tiles) : tiles(tiles) {
 
@@ -12,16 +13,13 @@ void TileAnimator::notifyTileHit(int id) {
   framesShining[id] = 0;
 }
 
-void TileAnimator::loadSprites(std::vector<SDL_Surface *> &sprites) {
+void TileAnimator::loadSprites(SDL_Surface *spritesheet) {
+  SpriteUtils::loadSpritesFromGrid(spritesheet, 129, 1, 44, 22, 0, 0, 3, 3, 44, 22, normalTiles);
+  shadow = normalTiles[8];
   normalTiles.resize(8);
-  for(int i = 0; i < 8; i++) normalTiles[i] = sprites[i];
-  shadow = sprites[8];
-
+  SpriteUtils::loadSpritesFromGrid(spritesheet, 129, 77, 44, 22, 0, 0, 4, 5, 44, 22, silverTiles);
+  goldenTiles = std::vector<SDL_Surface *>(silverTiles.begin() + 10, silverTiles.end());
   silverTiles.resize(10);
-  for(int i = 0; i < 10; i++) silverTiles[i] = sprites[i + 9];
-
-  goldenTiles.resize(10);
-  for(int i = 0; i < 10; i++) goldenTiles[i] = sprites[i + 19];
 }
 
 void TileAnimator::drawShadows(SDL_Surface *target, int baseX, int baseY) {
@@ -41,7 +39,7 @@ void TileAnimator::incrementAllFramesShining() {
   }
 }
 
-void TileAnimator::drawTiles(SDL_Surface *target, int baseX, int baseY) {
+void TileAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
   incrementAllFramesShining();
   for(int i = 0; i < tiles.size(); i++) {
     Tile &tile = tiles[i];

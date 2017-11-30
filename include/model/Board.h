@@ -42,7 +42,8 @@ class Board {
   void reportTileDestruction(int id);
   void reportTileHit(int id);
   void reportPowerupDestroyed(int id);
-
+  void reportEnemyDestroyed(Enemy &enemy);
+  
   void collideBallsWithBorders();
   void collideBallsWithPlayer();
   void collidePlayerWithBorders();

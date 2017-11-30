@@ -46,6 +46,7 @@ void Board::collideBulletsWithEnemies() {
     bool killBullet = false;
     for(int j = 0; j < enemies.size(); j++) {
       if(CollisionManager::rectanglesIntersect(bullets[i], enemies[j])) {
+	reportEnemyDestroyed(enemies[j]);
 	enemies.erase(enemies.begin() + j);
 	killBullet = true;
       }
@@ -178,6 +179,7 @@ void Board::collideBallsWithTiles() {
 void Board::collidePlayerWithEnemies() {
   for(int i = 0; i < enemies.size(); i++) {
     if(CollisionManager::rectanglesIntersect(player, enemies[i])) {
+      reportEnemyDestroyed(enemies[i]);
       enemies.erase(enemies.begin() + i);
       i--;
     }
@@ -188,6 +190,7 @@ void Board::collideBallsWithEnemies() {
   for(int i = 0; i < balls.size(); i++) {
     for(int j = 0; j < enemies.size(); j++) {
       if(CollisionManager::collideRectangle(balls[i], enemies[j], 15, 3)) {
+	reportEnemyDestroyed(enemies[j]);
 	enemies.erase(enemies.begin() + j);
 	j--;
       }
@@ -296,6 +299,12 @@ void Board::reportTileDestruction(int id) {
 void Board::reportPowerupDestroyed(int id) {
   for(int i = 0; i < monitors.size(); i++) {
     monitors[i] -> notifyPowerupDestroyed(id);
+  }
+}
+
+void Board::reportEnemyDestroyed(Enemy &enemy) {
+  for(int i = 0; i < monitors.size(); i++) {
+    monitors[i] -> notifyEnemyDestroyed(enemy);
   }
 }
 

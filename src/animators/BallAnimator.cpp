@@ -1,11 +1,11 @@
 #include<animators/BallAnimator.h>
-
+#include<SpriteUtils.h>
 
 BallAnimator::BallAnimator(std::vector<Ball> &balls) : balls(balls) {
 
 }
 
-void BallAnimator::drawBalls(SDL_Surface *target, int baseX, int baseY) {
+void BallAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
   for(int i = 0; i < balls.size(); i++) {
     Ball &ball = balls[i];
     SDL_Rect r;
@@ -25,10 +25,9 @@ void BallAnimator::drawShadows(SDL_Surface *target, int baseX, int baseY) {
   }
 }
 
-
-void BallAnimator::loadSprites(std::vector<SDL_Surface *> &sprites) {
+void BallAnimator::loadSprites(SDL_Surface *spritesheet) {
+  SpriteUtils::loadSpritesFromGrid(spritesheet, 129, 67, 10, 10, 0, 0, 1, 5, 10, 10, ballSprites);
+  ballShadow = ballSprites[4];
   ballSprites.resize(4);
-  for(int i = 0; i < 4; i++) ballSprites[i] = sprites[i];
-  ballShadow = sprites[4];
 }
 

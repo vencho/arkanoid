@@ -3,6 +3,7 @@
 #include<model/Powerup.h>
 #include<vector>
 #include<unordered_map>
+#include<SpriteUtils.h>
 
 PowerupAnimator::PowerupAnimator(std::vector<Powerup> &powerups) : powerups(powerups), 
 								   powerupSprites(7, std::vector<SDL_Surface *>(8, nullptr)) {
@@ -15,7 +16,9 @@ PowerupAnimator::PowerupAnimator(std::vector<Powerup> &powerups) : powerups(powe
   whichRow['P'] = 6;
 }
 
-void PowerupAnimator::loadSprites(std::vector<SDL_Surface *> &sprites) {
+void PowerupAnimator::loadSprites(SDL_Surface *spritesheet) {
+  std::vector<SDL_Surface *> sprites;
+  SpriteUtils::loadSpritesFromGrid(spritesheet, 129, 165, 44, 22, 0, 2, 7, 8, 44, 22, sprites);
   for(int i = 0; i < sprites.size(); i++) {
     powerupSprites[i/8][i%8] = sprites[i];
   }
@@ -25,7 +28,7 @@ void PowerupAnimator::notifyPowerupDestroyed(int id) {
   whichFrame.erase(id);
 }
 
-void PowerupAnimator::drawPowerups(SDL_Surface *target, int baseX, int baseY) {
+void PowerupAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
   incrementAll();
   for(int i = 0; i < powerups.size(); i++) {
     Powerup &powerup = powerups[i];

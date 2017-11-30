@@ -4,4 +4,4 @@ void GameEventMonitor::notifyTileDestroyed(int id) { }
 void GameEventMonitor::notifyTileHit(int id) { }
 void GameEventMonitor::notifyPowerupDestroyed(int id) { }
 void GameEventMonitor::notifyDied() { }
-
+void GameEventMonitor::notifyEnemyDestroyed(Enemy &enemy) { }

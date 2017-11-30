@@ -18,8 +18,9 @@ class PowerupAnimator : public GameEventMonitor {
   const static int framesPerSprite = 5;
  public:
   PowerupAnimator(std::vector<Powerup> &powerups);
-  void loadSprites(std::vector<SDL_Surface *> &sprites);
-  void drawPowerups(SDL_Surface *target, int baseX, int baseY);
+  void loadSprites(SDL_Surface *spritesheet);
+
+  void draw(SDL_Surface *target, int baseX, int baseY);
   virtual void notifyPowerupDestroyed(int id);
 };
 

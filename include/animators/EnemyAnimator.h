@@ -14,7 +14,7 @@ class EnemyAnimator {
   void incrementAll();
  public:
   EnemyAnimator(std::vector<Enemy> &tiles);
-  void loadSprites(std::vector<SDL_Surface *> &sprites);
-  void drawEnemies(SDL_Surface *target, int baseX, int baseY);
+  void loadSprites(SDL_Surface *spritesheet);
+  void draw(SDL_Surface *target, int baseX, int baseY);
 };
 #endif
