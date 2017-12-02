@@ -4,12 +4,28 @@
 #include<cmath>
 
 int Ball::framesLeftSlow = 0;
+const double Ball::baseSpeed = 4.242640687; // 3*sqrt(2)
 
-Ball::Ball(int x, int y, int dx, int dy) : MovableRectangle(x, y, BALL_WIDTH, BALL_HEIGHT, dx, dy) { 
+Ball::Ball(const Paddle &player) {
   frozen = 0;
   frozen_player = nullptr;
   frozen_partX = 0;
   frozen_offsetY = 0;
+  height = BALL_HEIGHT;
+  width = BALL_WIDTH;
+
+  setX(player.getX() + (player.getWidth() - width) / 2);
+  setY(player.getY() - height);
+
+  setAngle(-M_PI/4);
+  stick(player, 3);
+}
+
+void Ball::setAngle(double angle) {
+  double cs = cos(angle);
+  double sn = sin(angle);
+  scaledVx = (int) (baseSpeed * denominator * cs);
+  scaledVy = (int) (baseSpeed * denominator * sn);
 }
 
 void Ball::modifyAngle(double angle) {
@@ -23,6 +39,10 @@ void Ball::startSlow() {
   framesLeftSlow = Configuration::powerupDuration;
 }
 
+void Ball::stopSlow() {
+  framesLeftSlow = 0;
+}
+
 void Ball::move() {
   if(!framesLeftSlow) MovableRectangle::move();
   else {
@@ -31,9 +51,7 @@ void Ball::move() {
   }
 }
 
-void Ball::tick() {
-  if(framesLeftSlow) framesLeftSlow--;
-  
+void Ball::tick() {  
   if(!frozen) {
     move();
     return;
@@ -48,18 +66,22 @@ void Ball::tick() {
     setX(frozen_player -> getX() + frozen_player -> getWidth()); 
   }
   else {
-    setX(frozen_player -> getX() + (frozen_partX * frozen_player -> getWidth())/1000);
+    setX(frozen_player -> getX() + (frozen_partX * frozen_player -> getWidth())/10000);
   }
 }
 
+void Ball::tickSlow() {
+  if(framesLeftSlow) framesLeftSlow--;
+}
+
 // mask says which side you got stuck to: 1 for left, 2 for right, 3 for top
-void Ball::stick(Paddle &player, int mask) {
+void Ball::stick(const Paddle &player, int mask) {
   frozen = mask;
   frozen_player = &player;
   frozen_offsetY = getY() - player.getY();;
 
   if(frozen == 3) {
-    frozen_partX = (int) (((getX() - player.getX()) / (double) player.getWidth()) * 1000);
+    frozen_partX = (int) (((getX() - player.getX()) / (double) player.getWidth()) * 10000);
   }
 }
 
@@ -70,7 +92,7 @@ void Ball::unstick() {
   frozen_offsetY = 0;
 }
 
-void Ball::modifyAngle(Paddle &player) {
+void Ball::modifyAngle(const Paddle &player) {
   double ballMidx = getX() + (width - 1) / 2.;
   double f = (ballMidx - player.getX()) / player.getWidth();
   double angle;

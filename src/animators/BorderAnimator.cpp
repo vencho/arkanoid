@@ -1,7 +1,7 @@
 #include<animators/BorderAnimator.h>
 #include<SpriteUtils.h>
 
-BorderAnimator::BorderAnimator(Board &board) : board(board) { }
+BorderAnimator::BorderAnimator(const Board &board) : board(board) { }
 void BorderAnimator::loadSprites(SDL_Surface *spritesheet) {
   loadBorderSprites(spritesheet);
 }
@@ -41,3 +41,5 @@ void BorderAnimator::drawBorders(SDL_Surface *target, int baseX, int baseY) {
   SpriteUtils::drawSpritesInRow(target, 0 + baseX, leftAnglePipeSprite -> h + baseY, v, true);
   SpriteUtils::drawSpritesInRow(target, GAME_SCREEN_WIDTH - BORDER_SIZE + baseX, rightAnglePipeSprite -> h + baseY, v, true);
 }
+
+void BorderAnimator::reset() { }

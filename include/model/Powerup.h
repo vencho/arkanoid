@@ -9,9 +9,9 @@ class Powerup : public MovableRectangle {
   char type;
   int id;
  public:
-  int getId();
-  char getType();
-  Powerup(Tile &tile, char type);
+  int getId() const;
+  char getType() const;
+  Powerup(const Tile &tile, char type);
 };
 
 #endif

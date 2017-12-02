@@ -12,12 +12,12 @@ class ScorePane : public DrawablePane, public GameEventMonitor {
   int deaths, tilesLeft, tilesTotal;
   TTF_Font *font;
   SDL_Color textcolor;
-  Board &board;
+  const Board &board;
  public:
   ScorePane(Board &B);
   virtual void notifyDied();
   virtual void notifyTileDestroyed(int id);
-  void resetPane();
+  virtual void reset();
  protected:
   virtual void drawYourself(SDL_Surface *target, int baseX, int baseY);
 };

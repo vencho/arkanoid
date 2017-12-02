@@ -36,14 +36,15 @@ class Board {
 
   Paddle player;
   int width, height;
-  void collisionLogic();
   void loadTiles(std::string filename);
-  void reportDeath();
-  void reportTileDestruction(int id);
-  void reportTileHit(int id);
-  void reportPowerupDestroyed(int id);
-  void reportEnemyDestroyed(Enemy &enemy);
+
+  void reportDeath() const;
+  void reportTileDestruction(int id) const;
+  void reportTileHit(int id) const;
+  void reportPowerupDestroyed(int id) const;
+  void reportEnemyDestroyed(Enemy &enemy) const;
   
+  void collisionLogic();
   void collideBallsWithBorders();
   void collideBallsWithPlayer();
   void collidePlayerWithBorders();
@@ -53,32 +54,27 @@ class Board {
   void collideBallsWithEnemies();
   void collidePlayerWithEnemies();
   void collideBulletsWithEnemies();
+
+  void startDisruption();
   void consumePowerup(Powerup &powerup);
-
-
+  void spawnEnemy(bool left);
+  void destroyTile(int index);
  public:
   Board(int width, int height);
   void addMonitor(GameEventMonitor *gem);
   void unstickBalls();
-
   void fireBullets();
-
   void resetBoard(std::string filename);
   void tick();
-  void disruptionPowerup();
+  void consumePowerup(char type);
 
-  bool gameWon();
-  bool gameLost();
-  std::vector<Ball> &getBalls();
-  std::vector<Tile> &getTiles();
-  std::vector<Powerup> &getPowerups();
-  std::vector<Bullet> &getBullets();
-  std::vector<Enemy> &getEnemies();
-  Tile &getTile(int num);
+  const std::vector<Ball> &getBalls() const;
+  const std::vector<Tile> &getTiles() const;
+  const std::vector<Powerup> &getPowerups() const;
+  const std::vector<Bullet> &getBullets() const;
+  const std::vector<Enemy> &getEnemies() const;
+  const Paddle &getPaddle() const;
   Paddle &getPaddle();
-  int numTiles();
-  int numBalls();
-  void spawnEnemy(bool left);
 };
 
 #endif

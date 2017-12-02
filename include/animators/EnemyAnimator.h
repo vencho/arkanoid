@@ -7,14 +7,15 @@
  
 class EnemyAnimator {
  private:
-  std::vector<Enemy> &enemies;
+  const std::vector<Enemy> &enemies;
   std::vector<SDL_Surface *> enemySprites;
   const static int framesPerSprite = 3;
   std::unordered_map<int, int> frameCounter;
   void incrementAll();
  public:
-  EnemyAnimator(std::vector<Enemy> &tiles);
+  EnemyAnimator(const std::vector<Enemy> &tiles);
   void loadSprites(SDL_Surface *spritesheet);
   void draw(SDL_Surface *target, int baseX, int baseY);
+  void reset();
 };
 #endif

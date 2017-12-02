@@ -18,11 +18,12 @@ class DockedRectangle : public FloatingRectangle {
   /* 
      Upper right corner, rounded to nearest pixel.
   */
-  int getX();
-  int getY();
+  int getX() const;
+  int getY() const;
   void setX(int x);
   void setY(int y);
   DockedRectangle(int x, int y, int width, int height);
+  DockedRectangle();
 };
 
 #endif

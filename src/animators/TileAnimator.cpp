@@ -1,7 +1,7 @@
 #include<animators/TileAnimator.h>
 #include<SpriteUtils.h>
 
-TileAnimator::TileAnimator(std::vector<Tile> &tiles) : tiles(tiles) {
+TileAnimator::TileAnimator(const std::vector<Tile> &tiles) : tiles(tiles) {
 
 }
 
@@ -24,7 +24,7 @@ void TileAnimator::loadSprites(SDL_Surface *spritesheet) {
 
 void TileAnimator::drawShadows(SDL_Surface *target, int baseX, int baseY) {
   for(int i = 0; i < tiles.size(); i++) {
-    Tile & tile = tiles[i];
+    const Tile & tile = tiles[i];
     SDL_Rect r;
     r.x = tile.getX() + baseX + SHADOW_OFFSET_X;
     r.y = tile.getY() + baseY + SHADOW_OFFSET_Y;
@@ -42,7 +42,7 @@ void TileAnimator::incrementAllFramesShining() {
 void TileAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
   incrementAllFramesShining();
   for(int i = 0; i < tiles.size(); i++) {
-    Tile &tile = tiles[i];
+    const Tile &tile = tiles[i];
     SDL_Rect r;
     r.x = tile.getX() + baseX;
     r.y = tile.getY() + baseY;
@@ -64,4 +64,8 @@ void TileAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
     }
     SDL_BlitSurface(sprites[whichSprite], nullptr, target, &r);
   }
+}
+
+void TileAnimator::reset() {
+  framesShining.clear();
 }

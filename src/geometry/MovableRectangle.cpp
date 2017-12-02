@@ -1,6 +1,10 @@
 #include<geometry/MovableRectangle.h>
 #include<cstdio>
 
+MovableRectangle::MovableRectangle() {
+
+}
+
 MovableRectangle::MovableRectangle(
 				   int x, 
 				   int y, 

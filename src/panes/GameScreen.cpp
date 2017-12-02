@@ -2,8 +2,7 @@
 #include<model/Board.h>
 #include<SDL.h>
 
-GameScreen::GameScreen(Board &board) : board(board), 
-				       tileAnimator(board.getTiles()), 
+GameScreen::GameScreen(Board &board) : tileAnimator(board.getTiles()), 
 				       powerupAnimator(board.getPowerups()),
 				       ballAnimator(board.getBalls()),
 				       enemyAnimator(board.getEnemies()),
@@ -42,4 +41,15 @@ void GameScreen::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   paddleAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
   enemyAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
   explosionAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
+}
+
+void GameScreen::reset() {
+  borderAnimator.reset();
+  tileAnimator.reset();
+  ballAnimator.reset();
+  bulletAnimator.reset();
+  powerupAnimator.reset();
+  paddleAnimator.reset();
+  enemyAnimator.reset();
+  explosionAnimator.reset();
 }

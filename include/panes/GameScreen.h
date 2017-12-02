@@ -14,8 +14,6 @@
 
 class GameScreen : public DrawablePane {
  private:
-  Board &board;
-
   TileAnimator tileAnimator;
   PowerupAnimator powerupAnimator;
   BallAnimator ballAnimator;
@@ -27,6 +25,7 @@ class GameScreen : public DrawablePane {
 
  public:
   GameScreen(Board &board);
+  virtual void reset();
 
  protected:
   virtual void drawYourself(SDL_Surface *target, int baseX, int baseY);

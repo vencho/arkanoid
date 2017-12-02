@@ -10,18 +10,19 @@
 class PowerupAnimator : public GameEventMonitor {
  private:
   std::vector<std::vector<SDL_Surface *>> powerupSprites;
-  std::vector<Powerup> &powerups;
+  const std::vector<Powerup> &powerups;
   std::unordered_map<int, int> whichFrame;
   std::unordered_map<char, int> whichRow;
   void incrementAll();
 
   const static int framesPerSprite = 5;
  public:
-  PowerupAnimator(std::vector<Powerup> &powerups);
+  PowerupAnimator(const std::vector<Powerup> &powerups);
   void loadSprites(SDL_Surface *spritesheet);
 
   void draw(SDL_Surface *target, int baseX, int baseY);
   virtual void notifyPowerupDestroyed(int id);
+  void reset();
 };
 
 #endif

@@ -7,7 +7,7 @@
 class DrawablePane : public FloatingRectangle {
  public:
   void draw(SDL_Surface *target, int baseX, int baseY);
-  virtual void resetPane();
+  virtual void reset();
   DrawablePane();
  private:
   void setClip(SDL_Surface *target, int baseX, int baseY);

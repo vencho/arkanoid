@@ -8,6 +8,7 @@ GamePane::GamePane(Board &board) : DrawablePaneComposition(true) {
   addPane(std::move(gs));
 }
 
-void GamePane::resetPane() {
-  panes[0] -> resetPane();
+void GamePane::reset() {
+  panes[0] -> reset();
+  panes[1] -> reset();
 }

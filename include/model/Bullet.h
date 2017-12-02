@@ -6,7 +6,7 @@
 
 class Bullet : public MovableRectangle {
  public:
-  Bullet(Paddle &player, bool leftside);
+  Bullet(const Paddle &player, bool leftside);
 };
 
 #endif

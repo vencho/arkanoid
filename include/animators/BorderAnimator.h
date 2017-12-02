@@ -5,15 +5,16 @@
 
 class BorderAnimator {
  private:
-  Board &board;
+  const Board &board;
   SDL_Surface *shortHorizontalPipeSprite, *longHorizontalPipeSprite, *leftAnglePipeSprite, *rightAnglePipeSprite, *verticalPipeSprite;
   std::vector<SDL_Surface *> gateSprites;
   void loadBorderSprites(SDL_Surface *spritesheet);
   
  public:
-  BorderAnimator(Board &board);
+  BorderAnimator(const Board &board);
   void loadSprites(SDL_Surface *spritesheet);
   void drawBackground(SDL_Surface *target, int baseX, int baseY);
   void drawBorders(SDL_Surface *target, int baseX, int baseY);
+  void reset();
 };
 #endif

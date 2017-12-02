@@ -5,11 +5,12 @@
 
 class PaddleAnimator {
  private:
-  Board &board;
+  const Board &board;
   std::vector<SDL_Surface *> paddleSprites;
  public:
-  PaddleAnimator(Board &board);
+  PaddleAnimator(const Board &board);
   void loadSprites(SDL_Surface *spritesheet);
   void draw(SDL_Surface *target, int baseX, int baseY);
+  void reset();
 };
 #endif

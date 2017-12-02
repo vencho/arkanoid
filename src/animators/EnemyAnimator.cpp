@@ -2,7 +2,7 @@
 #include<Global.h>
 #include<SpriteUtils.h>
 
-EnemyAnimator::EnemyAnimator(std::vector<Enemy> &enemies) : enemies(enemies) {
+EnemyAnimator::EnemyAnimator(const std::vector<Enemy> &enemies) : enemies(enemies) {
 
 }
 
@@ -21,7 +21,7 @@ void EnemyAnimator::incrementAll() {
 void EnemyAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
   incrementAll();
   for(int i = 0; i < enemies.size(); i++) {
-    Enemy &enemy = enemies[i];
+    const Enemy &enemy = enemies[i];
     SDL_Rect r;
     r.x = enemy.getX() + baseX;
     r.y = enemy.getY() + baseY;
@@ -31,4 +31,8 @@ void EnemyAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
     int whichSprite = framesSoFar / framesPerSprite;
     SDL_BlitSurface(enemySprites[whichSprite], nullptr, target, &r);
   }
+}
+
+void EnemyAnimator::reset() {
+  frameCounter.clear();
 }

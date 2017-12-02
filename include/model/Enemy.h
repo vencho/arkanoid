@@ -12,6 +12,6 @@ class Enemy : public DockedRectangle {
  public:
   Enemy(int x, int y);
   void tick();
-  int getId();
+  int getId() const;
 };
 #endif

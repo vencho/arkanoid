@@ -1,14 +1,20 @@
 #include<model/Paddle.h>
 
 Paddle::Paddle(int x, int y) : MovableRectangle(x, y, BASE_PADDLE_WIDTH, BASE_PADDLE_HEIGHT) {
+  reset();
+}
+
+const int Paddle::paddleLength[8] = { 80, 92, 100, 108, 116, 120, 124, 128 };
+
+void Paddle::reset() {
+  setX( (PLAY_AREA_WIDTH - width) / 2 );
+  setY(PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT);
   whichPaddleLength = 0;
   ticksLeftLaser = 0;
   ticksLeftEnlarge = 0;
   ticksLeftCatch = 0;
   laserCooldown = 0;
 }
-
-const int Paddle::paddleLength[8] = { 80, 92, 100, 108, 116, 120, 124, 128 };
 
 void Paddle::setLength(int newSpriteNumber) {
   int oldLength = paddleLength[whichPaddleLength];
@@ -36,7 +42,7 @@ void Paddle::tick() {
   if(ticksLeftEnlarge == 0) setLength(0);
 }
 
-int Paddle::getLength() {
+int Paddle::getLength() const {
   return whichPaddleLength;
 }
 
@@ -53,15 +59,15 @@ void Paddle::startLaser() {
   laserCooldown = 0;
 }
 
-bool Paddle::catchActive() {
+bool Paddle::catchActive() const {
   return (ticksLeftCatch > 0);
 }
 
-bool Paddle::laserActive() {
+bool Paddle::laserActive() const {
   return (ticksLeftLaser > 0);
 }
 
-bool Paddle::canFire() {
+bool Paddle::canFire() const {
   return laserActive() && laserCooldown == 0;
 }
 

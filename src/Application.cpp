@@ -69,19 +69,21 @@ void Application::tick() {
   handleInput();
   if(isFinished()) return;
 
-  board.tick();
-
   if(menuMode) menuPane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0); 
-  else gamePane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0);
-
+  else {
+    board.tick();
+    gamePane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0);
+  }
   SDL_UpdateWindowSurface(window);
 
   t2 = clock();
   double secondsspent = (t2 - t1) / ( (double) CLOCKS_PER_SEC) ;
   int delay = (int)(1000*(SPF - secondsspent));
-  SDL_Delay(delay);
+  if(delay > 0){
+    SDL_Delay(delay);
+  }
 
-  if(!menuMode && board.numTiles() == 0) switchToMenuMode();
+  if(!menuMode && board.getTiles().size() == 0) switchToMenuMode();
 }
 
 void Application::requestEnd() {
@@ -114,6 +116,6 @@ void Application::switchToGameMode() {
   std::string levelpath = "levels/level" + level + ".txt";
 
   board.resetBoard(levelpath);
-  gamePane -> resetPane();
+  gamePane -> reset();
 }
 

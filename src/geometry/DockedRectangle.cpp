@@ -8,7 +8,7 @@ void DockedRectangle::setY(int y) {
   scaledY = y*denominator;
 }
 
-int DockedRectangle::getX() { 
+int DockedRectangle::getX() const { 
   int whole = scaledX / denominator;
   int remainder = scaledX % denominator;
   if(remainder >= denominator / 2) whole++;
@@ -16,7 +16,7 @@ int DockedRectangle::getX() {
   return whole;
 }
 
-int DockedRectangle::getY() { 
+int DockedRectangle::getY() const { 
   int whole = scaledY / denominator;
   int remainder = scaledY % denominator;
   if(remainder >= denominator / 2) whole++;
@@ -28,4 +28,8 @@ DockedRectangle::DockedRectangle(int x, int y, int width, int height)
   : FloatingRectangle(width, height) { 
   setX(x);
   setY(y);
+}
+
+DockedRectangle::DockedRectangle() {
+
 }

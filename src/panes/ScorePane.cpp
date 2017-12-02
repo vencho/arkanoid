@@ -6,11 +6,11 @@ ScorePane::ScorePane(Board &board) : board(board) {
   this -> height = SCORE_PANE_HEIGHT;
   font = TTF_OpenFont("./res/fonts/Pacifico.ttf", 20);
   textcolor = {0, 0, 255};
-  resetPane();
+  reset();
 }
 
-void ScorePane::resetPane() {
-  tilesTotal = board.numTiles();
+void ScorePane::reset() {
+  tilesTotal = board.getTiles().size();
   tilesLeft = tilesTotal;
   deaths = 0;
 }
@@ -22,7 +22,6 @@ void ScorePane::notifyDied() {
 void ScorePane::notifyTileDestroyed(int id) {
   tilesLeft--;
 }
-
 
 void ScorePane::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   char txt[64];

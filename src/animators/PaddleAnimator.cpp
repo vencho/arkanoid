@@ -1,9 +1,9 @@
 #include<animators/PaddleAnimator.h>
 
-PaddleAnimator::PaddleAnimator(Board &board) : board(board) { }
+PaddleAnimator::PaddleAnimator(const Board &board) : board(board) { }
 
 void PaddleAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
-  Paddle &player = board.getPaddle();
+  const Paddle &player = board.getPaddle();
   SDL_Rect r;
   r.x = player.getX() + baseX;
   r.y = player.getY() + baseY;
@@ -27,4 +27,8 @@ void PaddleAnimator::loadSprites(SDL_Surface *spritesheet) {
     else if(i < 6) paddleWidth -= 8;
     else paddleWidth -= 12;
   }
+}
+
+void PaddleAnimator::reset() {
+  
 }

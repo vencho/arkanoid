@@ -18,16 +18,17 @@ class Paddle : public MovableRectangle {
 
  public:
   Paddle(int x, int y);
-  void tick();
-  void startEnlarge();
-  int getLength();
+  int getLength() const;
+  bool canFire() const;
+  bool laserActive() const;
+  bool catchActive() const;
   void setLength(int newSpriteNumber);
   void startCatch();
+  void startEnlarge();
   void startLaser();
-  bool catchActive();
   void fire();
-  bool canFire();
-  bool laserActive();
+  void tick();
+  void reset();
 };
 
 #endif

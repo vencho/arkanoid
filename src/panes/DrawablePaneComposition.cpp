@@ -7,9 +7,9 @@ DrawablePaneComposition::DrawablePaneComposition(bool vertical) {
   this -> height = 0;
 }
 
-void DrawablePaneComposition::resetPane() {
+void DrawablePaneComposition::reset() {
   for(int i = 0; i < panes.size(); i++) {
-    panes[i] -> resetPane();
+    panes[i] -> reset();
   }
 }
 
@@ -23,7 +23,6 @@ void DrawablePaneComposition::drawYourself(SDL_Surface *target, int baseX, int b
     offset += amount;
   }
 }
-
 
 void DrawablePaneComposition::addPane(std::unique_ptr<DrawablePane> pane) {
   if(vertical) {

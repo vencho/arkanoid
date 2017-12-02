@@ -10,7 +10,7 @@ Enemy::Enemy(int x, int y) : DockedRectangle(x, y, ENEMY_WIDTH, ENEMY_HEIGHT) {
   curvesCompleted = 0;
 }
 
-int Enemy::getId() {
+int Enemy::getId() const {
   return id;
 }
 

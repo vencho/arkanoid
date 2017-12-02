@@ -5,14 +5,10 @@
 GameInputHandler::GameInputHandler(Board &board) : board(board) { }
 void GameInputHandler::handleInput(SDL_Event &e) { 
   if(e.type == SDL_KEYDOWN) {
+    // cheat code for debugging
     if(e.key.keysym.sym == SDLK_i) {
-      board.disruptionPowerup();
+      board.consumePowerup('D');
     }
-    /*
-    else if(e.key.keysym.sym == SDLK_SPACE) {
-      board.fireBullets();
-    }
-    */
   }
 }
 
@@ -30,8 +26,10 @@ void GameInputHandler::handleInput() {
   if(currentKeyStates[SDL_SCANCODE_W]) board.unstickBalls();
   if(currentKeyStates[SDL_SCANCODE_SPACE]) board.fireBullets();
   
-  if(currentKeyStates[SDL_SCANCODE_O]) board.getPaddle().startEnlarge();
-  if(currentKeyStates[SDL_SCANCODE_P]) board.getPaddle().startCatch();
-  if(currentKeyStates[SDL_SCANCODE_L]) board.getPaddle().startLaser();
+  // cheat codes for debugging
+  if(currentKeyStates[SDL_SCANCODE_O]) board.consumePowerup('E');
+  if(currentKeyStates[SDL_SCANCODE_P]) board.consumePowerup('C');
+  if(currentKeyStates[SDL_SCANCODE_L]) board.consumePowerup('L');
+  if(currentKeyStates[SDL_SCANCODE_K]) board.consumePowerup('S');
 }
 

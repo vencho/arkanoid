@@ -1,7 +1,7 @@
 #include<panes/DrawablePane.h>
 
 DrawablePane::DrawablePane() : FloatingRectangle(0, 0) { }
-void DrawablePane::resetPane() { }
+void DrawablePane::reset() { }
 
 void DrawablePane::draw(SDL_Surface *target, int baseX, int baseY) {
   setClip(target, baseX, baseY);

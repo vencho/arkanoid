@@ -5,8 +5,8 @@
 #include<unordered_map>
 #include<SpriteUtils.h>
 
-PowerupAnimator::PowerupAnimator(std::vector<Powerup> &powerups) : powerups(powerups), 
-								   powerupSprites(7, std::vector<SDL_Surface *>(8, nullptr)) {
+PowerupAnimator::PowerupAnimator(const std::vector<Powerup> &powerups) : powerups(powerups), 
+									 powerupSprites(7, std::vector<SDL_Surface *>(8, nullptr)) {
   whichRow['L'] = 0;
   whichRow['E'] = 1;
   whichRow['C'] = 2;
@@ -31,12 +31,12 @@ void PowerupAnimator::notifyPowerupDestroyed(int id) {
 void PowerupAnimator::draw(SDL_Surface *target, int baseX, int baseY) {
   incrementAll();
   for(int i = 0; i < powerups.size(); i++) {
-    Powerup &powerup = powerups[i];
+    const Powerup &powerup = powerups[i];
+    int row = whichRow[powerup.getType()];
+    int column = whichFrame[powerup.getId()] / framesPerSprite;
     SDL_Rect r;
     r.x = powerup.getX() + baseX;
     r.y = powerup.getY() + baseY;
-    int row = whichRow[powerup.getType()];
-    int column = whichFrame[powerup.getId()] / framesPerSprite;
     SDL_BlitSurface(powerupSprites[row][column], nullptr, target, &r);
   }
 }
@@ -49,3 +49,6 @@ void PowerupAnimator::incrementAll() {
   }
 }
 
+void PowerupAnimator::reset() {
+  whichFrame.clear();
+}

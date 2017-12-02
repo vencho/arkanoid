@@ -4,11 +4,12 @@
 #include<SDL.h>
 class BulletAnimator {
  private:
-  Board &board;
+  const Board &board;
   SDL_Surface *bulletSprite;
  public:
-  BulletAnimator(Board &board);
+  BulletAnimator(const Board &board);
   void loadSprites(SDL_Surface *spritesheet);
   void draw(SDL_Surface *target, int baseX, int baseY);
+  void reset();
 };
 #endif

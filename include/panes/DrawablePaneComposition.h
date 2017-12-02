@@ -15,7 +15,7 @@ class DrawablePaneComposition : public DrawablePane {
   
  public:
   DrawablePaneComposition(bool vertical);
-  virtual void resetPane();
+  virtual void reset();
   void addPane(std::unique_ptr<DrawablePane> pane);
 
 };

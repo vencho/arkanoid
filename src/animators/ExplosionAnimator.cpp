@@ -42,3 +42,7 @@ ExplosionAnimator::explosion::explosion(int x, int y) {
 void ExplosionAnimator::notifyEnemyDestroyed(Enemy &enemy) {
   addExplosion(enemy.getX() + enemy.getWidth() / 2, enemy.getY() + enemy.getHeight()/2);
 }
+
+void ExplosionAnimator::reset() {
+  ongoingExplosions.clear();
+}

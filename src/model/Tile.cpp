@@ -8,15 +8,15 @@ Tile::Tile(int i, int j, int healthleft, int colour) : DockedRectangle( (j-1)*TI
   this -> id = nextIdToAssign++;
 }
 
-int Tile::getId() {
+int Tile::getId() const {
   return id;
 }
 
-int Tile::getColour() {
+int Tile::getColour() const {
   return colour;
 }
 
-int Tile::getHealth() {
+int Tile::getHealth() const {
   return healthleft;
 }
 

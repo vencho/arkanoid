@@ -13,17 +13,18 @@ class TileAnimator : public GameEventMonitor {
   std::vector<SDL_Surface *> silverTiles;
   std::vector<SDL_Surface *> goldenTiles;
   SDL_Surface *shadow;
-  std::vector<Tile> &tiles;
+  const std::vector<Tile> &tiles;
   std::unordered_map<int, int> framesShining;
   void incrementAllFramesShining();
 
  public:
-  TileAnimator(std::vector<Tile> &tiles);
+  TileAnimator(const std::vector<Tile> &tiles);
   void loadSprites(SDL_Surface *spritesheet);
   void drawShadows(SDL_Surface *target, int baseX, int baseY);
   void draw(SDL_Surface *target, int baseX, int baseY);
   virtual void notifyTileDestroyed(int id);
   virtual void notifyTileHit(int id);
+  void reset();
 };
 
 #endif

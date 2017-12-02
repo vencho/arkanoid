@@ -8,20 +8,24 @@
 
 class Ball : public MovableRectangle {
  public:
-  Ball(int x, int y, int dx = BALL_SPEED_X, int dy = -BALL_SPEED_Y);
+  Ball(const Paddle &player);
   void modifyAngle(double angle);
-  void modifyAngle(Paddle &player);
+  void modifyAngle(const Paddle &player);
+  void setAngle(double angle);
   virtual void tick();
   virtual void move();
-  void stick(Paddle &player, int stickCode);
+  void stick(const Paddle &player, int stickCode);
   void unstick();
   static void startSlow();
+  static void stopSlow();
+  static void tickSlow();
  private:
+  const static double baseSpeed;
   static int framesLeftSlow;
   int frozen;
-  Paddle *frozen_player;
+  const Paddle *frozen_player;
   int frozen_offsetY;
-  int frozen_partX; // out of 1000
+  int frozen_partX; // out of 10000
 };
 
 #endif

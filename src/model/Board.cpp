@@ -26,14 +26,6 @@ void Board::EnemySpawner::tick() {
   }
 }
 
-bool Board::gameWon() {
-  return tiles.size() == 0;
-}
-
-bool Board::gameLost() {
-  return balls.size() == 0;
-}
-
 void Board::fireBullets() {
   if(!player.canFire()) return;
   bullets.emplace_back(player, true);
@@ -70,8 +62,7 @@ void Board::collideBulletsWithTiles() {
       reportTileHit(tile.getId());
       printf("Tile with id %d takes damage, health down to %d.\n", tile.getId(), tile.getHealth());
       if(tile.getHealth() == 0) {
-	reportTileDestruction(tile.getId());
-	tiles.erase(tiles.begin() + j);
+	destroyTile(j);
 	j--;
       }
     }
@@ -147,29 +138,7 @@ void Board::collideBallsWithTiles() {
       reportTileHit(tile.getId());
       printf("Tile with id %d takes damage, health down to %d.\n", tile.getId(), tile.getHealth());
       if(tile.getHealth() == 0) {
-	reportTileDestruction(tile.getId());
-
-	char powerupLetter;
-	switch(rand() % 7) {
-	case 0:
-	  powerupLetter = 'L'; break;
-	case 1:
-	  powerupLetter = 'E'; break;
-	case 2:
-	  powerupLetter = 'C'; break;
-	case 3:
-	  powerupLetter = 'S'; break;
-	case 4:
-	  powerupLetter = 'D'; break;
-	case 5:
-	  powerupLetter = 'B'; break;
-	case 6:
-	  powerupLetter = 'P'; break;
-	}
-	powerups.emplace_back(tile, powerupLetter);
-
-	printf("Erasing tile with id %d.\n", tile.getId());
-	tiles.erase(tiles.begin() + whichTilesHit[j] - countRemoved);
+	destroyTile(whichTilesHit[j] - countRemoved);
 	countRemoved++;
       }
     }
@@ -220,7 +189,7 @@ void Board::collidePlayerWithPowerups() {
   }
 }
 
-void Board::disruptionPowerup() {
+void Board::startDisruption() {
   int n = balls.size();
   for(int i = 0; i < n; i++) {
     balls.push_back(balls[i]);
@@ -230,31 +199,63 @@ void Board::disruptionPowerup() {
   }
 }
 
+void Board::consumePowerup(char type) {
+  if(type == 'E') player.startEnlarge();
+  else if(type == 'C') player.startCatch();
+  else if(type == 'S') Ball::startSlow();
+  else if(type == 'D') startDisruption();
+  else if(type == 'L') player.startLaser();
+}
+
 void Board::consumePowerup(Powerup &powerup) {
   printf("Consumed powerup with id %d of type %c.\n", powerup.getId(), powerup.getType());
-  if(powerup.getType() == 'E') player.startEnlarge();
-  else if(powerup.getType() == 'C') player.startCatch();
-  else if(powerup.getType() == 'S') Ball::startSlow();
-  else if(powerup.getType() == 'D') disruptionPowerup();
-  else if(powerup.getType() == 'L') player.startLaser();
+  consumePowerup(powerup.getType());
+}
+
+void Board::destroyTile(int idx) {
+  printf("Erasing tile with id %d.\n", tiles[idx].getId());
+  reportTileDestruction(tiles[idx].getId());
+  char powerupLetter;
+  switch(rand() % 7) {
+  case 0:
+    powerupLetter = 'L'; break;
+  case 1:
+    powerupLetter = 'E'; break;
+  case 2:
+    powerupLetter = 'C'; break;
+  case 3:
+    powerupLetter = 'S'; break;
+  case 4:
+    powerupLetter = 'D'; break;
+  case 5:
+    powerupLetter = 'B'; break;
+  case 6:
+    powerupLetter = 'P'; break;
+  }
+  powerups.emplace_back(tiles[idx], powerupLetter);
+  tiles.erase(tiles.begin() + idx);
 }
 
 Board::Board(int width, int height) : enemySpawner(*this),
-  player(45/*width/2 - BASE_PADDLE_WIDTH/2*/, PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT) {
+				      player(0, 0) {
   this -> width = width;
   this -> height = height;
 }
 
 void Board::resetBoard(std::string filename) {
+  enemies.clear();
+  powerups.clear();
+  bullets.clear();
+
   balls.clear();
-  balls.push_back(Ball(0, 0));
-  balls.back().setX(player.getX() + player.getWidth()/2);
-  balls.back().setY(player.getY() - BALL_HEIGHT);
-  balls.back().stick(player, 3);
+  balls.emplace_back(player);
+  Ball::stopSlow();
+
   loadTiles(filename);
 
-  enemies.clear();
-  // enemies.emplace_back(PLAY_AREA_WIDTH/2, PLAY_AREA_HEIGHT/2);
+  player.reset();
+
+  // FIXME: reset enemy spawner and powerup spawner
 }
 
 void Board::loadTiles(std::string filename) {
@@ -263,7 +264,7 @@ void Board::loadTiles(std::string filename) {
   int row, column, health, colour;
   while(1) {
     if(fscanf(fin, "%d%d%d%d", &row, &column, &health, &colour) != 4) break;
-    tiles.push_back(Tile(row, column, health, colour));
+    tiles.emplace_back(row, column, health, colour);
   }
   fclose(fin);
 }
@@ -278,31 +279,31 @@ void Board::addMonitor(GameEventMonitor *gem) {
   monitors.push_back(gem);
 }
 
-void Board::reportDeath() {
+void Board::reportDeath() const {
   for(int i = 0; i < monitors.size(); i++) {
     monitors[i] -> notifyDied();
   }
 }
 
-void Board::reportTileHit(int id) {
+void Board::reportTileHit(int id) const {
   for(int i = 0; i < monitors.size(); i++) {
     monitors[i] -> notifyTileHit(id);
   }
 }
 
-void Board::reportTileDestruction(int id) {
+void Board::reportTileDestruction(int id) const {
   for(int i = 0; i < monitors.size(); i++) {
     monitors[i] -> notifyTileDestroyed(id);
   }
 }
 
-void Board::reportPowerupDestroyed(int id) {
+void Board::reportPowerupDestroyed(int id) const {
   for(int i = 0; i < monitors.size(); i++) {
     monitors[i] -> notifyPowerupDestroyed(id);
   }
 }
 
-void Board::reportEnemyDestroyed(Enemy &enemy) {
+void Board::reportEnemyDestroyed(Enemy &enemy) const {
   for(int i = 0; i < monitors.size(); i++) {
     monitors[i] -> notifyEnemyDestroyed(enemy);
   }
@@ -314,10 +315,7 @@ void Board::tick() {
     if(timetorespawn > 0) timetorespawn--;
     else if(timetorespawn == 0) {
       reportDeath();
-      balls.push_back(Ball(0, 0));
-      balls.back().setX(player.getX() + player.getWidth()/2);
-      balls.back().setY(player.getY() - BALL_HEIGHT);
-      balls.back().stick(player, 3);
+      balls.emplace_back(player);
       timetorespawn--;
     }
     else {
@@ -337,7 +335,8 @@ void Board::tick() {
       i--;
     }
   }
-
+  Ball::tickSlow();
+  
   for(int i = 0; i < bullets.size(); i++) {
     bullets[i].tick();
     if(CollisionManager::collideBorders(bullets[i])) {
@@ -364,39 +363,31 @@ void Board::tick() {
 }
 
 
-std::vector<Ball> &Board::getBalls() {
+const std::vector<Ball> &Board::getBalls() const {
   return balls;
 }
 
-std::vector<Bullet> &Board::getBullets() {
+const std::vector<Bullet> &Board::getBullets() const {
   return bullets;
 }
 
-int Board::numTiles() {
-  return tiles.size();
-}
-
-int Board::numBalls() {
-  return balls.size();
-}
-
-Tile & Board::getTile(int i) {
-  return tiles[i];
-}
-
-std::vector<Tile> & Board::getTiles() {
+const std::vector<Tile> &Board::getTiles() const {
   return tiles;
 }
 
-Paddle & Board::getPaddle() {
+const Paddle &Board::getPaddle() const {
   return player;
 }
 
-std::vector<Powerup> &Board::getPowerups() {
+Paddle &Board::getPaddle() {
+  return player;
+}
+
+const std::vector<Powerup> &Board::getPowerups() const {
   return powerups;
 }
 
-std::vector<Enemy> &Board::getEnemies() {
+const std::vector<Enemy> &Board::getEnemies() const {
   return enemies;
 }
 

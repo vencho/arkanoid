@@ -12,11 +12,11 @@ class Tile : public DockedRectangle {
   int colour;
   int id;
  public: 
-  int getHealth();
   void takeDamage();
   Tile(int x, int y, int healthleft, int colour);
-  int getColour();
-  int getId();
+  int getColour() const;
+  int getId() const;
+  int getHealth() const;
 };
 
 #endif
