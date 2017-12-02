@@ -7,7 +7,9 @@ EnemyAnimator::EnemyAnimator(const std::vector<Enemy> &enemies) : enemies(enemie
 }
 
 void EnemyAnimator::loadSprites(SDL_Surface *spritesheet) {
-  SpriteUtils::loadSpritesFromGrid(spritesheet, 8, 335, 34, 44, 10, 0, 5, 5, ENEMY_WIDTH, ENEMY_HEIGHT, enemySprites);
+  // Scale sprites to enemy physical dimensions.
+  SpriteUtils::loadSpritesFromGrid(spritesheet, 8, 335, 34, 44, 10, 0, 5, 5, 
+				   Enemy::enemyPhysicalWidth, Enemy::enemyPhysicalHeight, enemySprites);
 }
 
 void EnemyAnimator::incrementAll() {

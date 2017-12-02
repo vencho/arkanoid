@@ -10,9 +10,8 @@ GameScreen::GameScreen(Board &board) : tileAnimator(board.getTiles()),
 				       borderAnimator(board),
 				       bulletAnimator(board),
 				       explosionAnimator() {
-  width = GAME_SCREEN_WIDTH;
-  height = GAME_SCREEN_HEIGHT;
-
+  width = gameScreenWidth;
+  height = gameScreenHeight;
   board.addMonitor(&tileAnimator);
   board.addMonitor(&powerupAnimator);
   board.addMonitor(&explosionAnimator);
@@ -31,16 +30,16 @@ GameScreen::GameScreen(Board &board) : tileAnimator(board.getTiles()),
 
 void GameScreen::drawYourself(SDL_Surface *target, int baseX, int baseY) {
   borderAnimator.drawBackground(target, baseX, baseY);
-  tileAnimator.drawShadows(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
-  ballAnimator.drawShadows(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
-  bulletAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
-  tileAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
-  powerupAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
-  ballAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
+  tileAnimator.drawShadows(target, baseX + borderSize, baseY + borderSize);
+  ballAnimator.drawShadows(target, baseX + borderSize, baseY + borderSize);
+  bulletAnimator.draw(target, baseX + borderSize, baseY + borderSize);
+  tileAnimator.draw(target, baseX + borderSize, baseY + borderSize);
+  powerupAnimator.draw(target, baseX + borderSize, baseY + borderSize);
+  ballAnimator.draw(target, baseX + borderSize, baseY + borderSize);
   borderAnimator.drawBorders(target, baseX, baseY);
-  paddleAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
-  enemyAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
-  explosionAnimator.draw(target, baseX + BORDER_SIZE, baseY + BORDER_SIZE);
+  paddleAnimator.draw(target, baseX + borderSize, baseY + borderSize);
+  enemyAnimator.draw(target, baseX + borderSize, baseY + borderSize);
+  explosionAnimator.draw(target, baseX + borderSize, baseY + borderSize);
 }
 
 void GameScreen::reset() {

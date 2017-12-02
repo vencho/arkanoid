@@ -21,7 +21,7 @@ void GameInputHandler::handleInput() {
   else if(leftPressed) { dx = -1; } 
   else { dx = 1; }
 
-  board.getPaddle().setVelocity(dx*PADDLE_SPEED, 0);
+  board.getPaddle().setVelocity(dx*Paddle::paddleSpeedWhenMoving, 0);
 
   if(currentKeyStates[SDL_SCANCODE_W]) board.unstickBalls();
   if(currentKeyStates[SDL_SCANCODE_SPACE]) board.fireBullets();

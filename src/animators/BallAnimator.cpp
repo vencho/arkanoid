@@ -1,4 +1,5 @@
 #include<animators/BallAnimator.h>
+#include<panes/GameScreen.h>
 #include<SpriteUtils.h>
 
 BallAnimator::BallAnimator(const std::vector<Ball> &balls) : balls(balls) {
@@ -19,8 +20,8 @@ void BallAnimator::drawShadows(SDL_Surface *target, int baseX, int baseY) {
   for(int i = 0; i < balls.size(); i++) {
     const Ball &ball = balls[i];
     SDL_Rect r;
-    r.x = ball.getX() + baseX + SHADOW_OFFSET_X;
-    r.y = ball.getY() + baseY + SHADOW_OFFSET_Y;
+    r.x = ball.getX() + baseX + GameScreen::shadowOffsetX;
+    r.y = ball.getY() + baseY + GameScreen::shadowOffsetY;
     SDL_BlitSurface(ballShadow, nullptr, target, &r);
   }
 }

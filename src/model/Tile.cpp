@@ -1,6 +1,8 @@
 #include<model/Tile.h>
 
-Tile::Tile(int i, int j, int healthleft, int colour) : DockedRectangle( (j-1)*TILE_WIDTH, (i-1)*TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT ) {
+Tile::Tile(int i, int j, int healthleft, int colour) : DockedRectangle( (j-1)*tilePhysicalWidth, (i-1)*tilePhysicalHeight, 
+									tilePhysicalWidth, 
+									tilePhysicalHeight) {
   static int nextIdToAssign = 7;
   this -> healthleft = healthleft;
   this -> indestructible = false;

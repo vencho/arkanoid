@@ -1,9 +1,10 @@
 #include<model/Enemy.h>
+#include<model/Board.h>
 #include<Global.h>
 #include<cstdlib>
 #include<cstdio>
 
-Enemy::Enemy(int x, int y) : DockedRectangle(x, y, ENEMY_WIDTH, ENEMY_HEIGHT) {
+Enemy::Enemy(int x, int y) : DockedRectangle(x, y, enemyPhysicalWidth, enemyPhysicalHeight) {
   static int nextId = 0;
   id = nextId++;
   ticksOnCurrentCurve = ticksPerCurve;
@@ -34,11 +35,11 @@ void Enemy::generateNewCurve(bool leave) {
     xA = scaledX / denominator;
     yA = scaledY / denominator;
   }
-  xB = rand() % PLAY_AREA_WIDTH;
-  xC = rand() % PLAY_AREA_WIDTH;
-  xD = rand() % PLAY_AREA_WIDTH;
-  yB = rand() % PLAY_AREA_HEIGHT;
-  yC = rand() % PLAY_AREA_HEIGHT;
-  yD = rand() % PLAY_AREA_HEIGHT;
+  xB = rand() % Board::playAreaWidth;
+  xC = rand() % Board::playAreaWidth;
+  xD = rand() % Board::playAreaWidth;
+  yB = rand() % Board::playAreaHeight;
+  yC = rand() % Board::playAreaHeight;
+  yD = rand() % Board::playAreaHeight;
   curvesCompleted++;
 }

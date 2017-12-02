@@ -1,23 +1,30 @@
+#ifndef PADDLE_H_INCLUDED
+#define PADDLE_H_INCLUDED
+
 #include<Global.h>
 #include<geometry/MovableRectangle.h>
 #include<Configuration.h>
+#include<model/Tile.h>
 
-#ifndef PADDLE_H_INCLUDED
-#define PADDLE_H_INCLUDED
 class Paddle : public MovableRectangle {
+ private:
   int ticksLeftLaser;
   int ticksLeftEnlarge;
   int ticksLeftCatch;
   int laserCooldown;
 
-  // 0 to 7 corresponding to 
-  // sprites from smallest to largest.
+  // 0 to 7 smallest to largest.
   int whichPaddleLength; 
 
-  const static int paddleLength[8];
 
  public:
-  Paddle(int x, int y);
+
+  const static int paddleOffsetFromTop = 26*Tile::tilePhysicalHeight;
+  const static int paddlePhysicalHeight = Tile::tilePhysicalHeight;
+  const static int paddlePhysicalLength[8];
+  const static int paddleSpeedWhenMoving = 5;
+
+  Paddle();
   int getLength() const;
   bool canFire() const;
   bool laserActive() const;

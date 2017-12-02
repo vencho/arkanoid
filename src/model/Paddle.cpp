@@ -1,14 +1,15 @@
 #include<model/Paddle.h>
+#include<model/Board.h>
 
-Paddle::Paddle(int x, int y) : MovableRectangle(x, y, BASE_PADDLE_WIDTH, BASE_PADDLE_HEIGHT) {
+const int Paddle::paddlePhysicalLength[8] = { 80, 92, 100, 108, 116, 120, 124, 128 };
+
+Paddle::Paddle() : MovableRectangle(0, 0, paddlePhysicalLength[0], paddlePhysicalHeight) {
   reset();
 }
 
-const int Paddle::paddleLength[8] = { 80, 92, 100, 108, 116, 120, 124, 128 };
-
 void Paddle::reset() {
-  setX( (PLAY_AREA_WIDTH - width) / 2 );
-  setY(PADDLE_OFFSET_FROM_TOP + BASE_PADDLE_HEIGHT);
+  setX( (Board::playAreaWidth - width) / 2 );
+  setY(paddleOffsetFromTop);
   whichPaddleLength = 0;
   ticksLeftLaser = 0;
   ticksLeftEnlarge = 0;
@@ -17,12 +18,12 @@ void Paddle::reset() {
 }
 
 void Paddle::setLength(int newSpriteNumber) {
-  int oldLength = paddleLength[whichPaddleLength];
-  int newLength = paddleLength[newSpriteNumber];
+  int oldLength = paddlePhysicalLength[whichPaddleLength];
+  int newLength = paddlePhysicalLength[newSpriteNumber];
   int oldx = getX();
   int newx = oldx - (newLength - oldLength) / 2;
   whichPaddleLength = newSpriteNumber;
-  width = paddleLength[whichPaddleLength];
+  width = paddlePhysicalLength[whichPaddleLength];
   setX(newx);
 }
 

@@ -11,13 +11,13 @@ Ball::Ball(const Paddle &player) {
   frozen_player = nullptr;
   frozen_partX = 0;
   frozen_offsetY = 0;
-  height = BALL_HEIGHT;
-  width = BALL_WIDTH;
+  width = ballPhysicalWidth;
+  height = ballPhysicalHeight;
 
   setX(player.getX() + (player.getWidth() - width) / 2);
   setY(player.getY() - height);
 
-  setAngle(-M_PI/4);
+  setAngle(-2*M_PI/5);
   stick(player, 3);
 }
 

@@ -19,7 +19,7 @@ class ExplosionAnimator : public GameEventMonitor {
   void loadSprites(SDL_Surface *spritesheet);
   void draw(SDL_Surface *target, int baseX, int baseY);
   void addExplosion(int centreX, int centreY);
-  virtual void notifyEnemyDestroyed(Enemy &enemy);
+  virtual void notifyEnemyDestroyed(const Enemy &enemy);
   void reset();
 };
 #endif

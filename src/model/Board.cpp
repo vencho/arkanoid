@@ -236,10 +236,7 @@ void Board::destroyTile(int idx) {
   tiles.erase(tiles.begin() + idx);
 }
 
-Board::Board(int width, int height) : enemySpawner(*this),
-				      player(0, 0) {
-  this -> width = width;
-  this -> height = height;
+Board::Board() : enemySpawner(*this) {
 }
 
 void Board::resetBoard(std::string filename) {
@@ -319,7 +316,7 @@ void Board::tick() {
       timetorespawn--;
     }
     else {
-      timetorespawn = RESPAWN_TIME_IN_FRAMES;
+      timetorespawn = respawnTimeInFrames;
     }
   }
   
@@ -329,7 +326,7 @@ void Board::tick() {
   collidePlayerWithBorders();
   for(int i = 0; i < balls.size(); i++) {
     balls[i].tick();
-    if(balls[i].getY() > PLAY_AREA_HEIGHT) {
+    if(balls[i].getY() > playAreaHeight) {
       balls[i] = balls.back();
       balls.pop_back();
       i--;
@@ -353,7 +350,7 @@ void Board::tick() {
 
   for(int i = 0; i < powerups.size(); i++) {
     powerups[i].tick();
-    if(powerups[i].getY() > PLAY_AREA_HEIGHT) {
+    if(powerups[i].getY() > playAreaHeight) {
       printf("Powerup with id %d and type %c has left the screen.\n", powerups[i].getId(), powerups[i].getType());
       reportPowerupDestroyed(powerups[i].getId());
       powerups.erase(powerups.begin() + i);

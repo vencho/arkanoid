@@ -1,4 +1,5 @@
 #include<animators/TileAnimator.h>
+#include<panes/GameScreen.h>
 #include<SpriteUtils.h>
 
 TileAnimator::TileAnimator(const std::vector<Tile> &tiles) : tiles(tiles) {
@@ -26,8 +27,8 @@ void TileAnimator::drawShadows(SDL_Surface *target, int baseX, int baseY) {
   for(int i = 0; i < tiles.size(); i++) {
     const Tile & tile = tiles[i];
     SDL_Rect r;
-    r.x = tile.getX() + baseX + SHADOW_OFFSET_X;
-    r.y = tile.getY() + baseY + SHADOW_OFFSET_Y;
+    r.x = tile.getX() + baseX + GameScreen::shadowOffsetX;
+    r.y = tile.getY() + baseY + GameScreen::shadowOffsetY;
     SDL_BlitSurface(shadow, nullptr, target, &r);
   }
 }

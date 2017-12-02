@@ -2,6 +2,9 @@
 #define ENEMY_H_INCLUDED
 #include<geometry/DockedRectangle.h>
 class Enemy : public DockedRectangle {
+ public:
+  const static int enemyPhysicalWidth = 25; 
+  const static int enemyPhysicalHeight = 30;
  private:
   int id;
   const static int ticksPerCurve = 250;

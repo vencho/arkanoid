@@ -16,22 +16,22 @@ class CollisionManager {
   static bool intervalsIntersect(int a, int b, int c, int d);
   static int intervalOverlap(int a, int b, int c, int d);
   static bool intervalContainment(int a, int b, int c, int d);
-  static int popRectangle(DockedRectangle &first, DockedRectangle &second, int allowedPopDirections, struct collision_info &info);
+  static int popRectangle(DockedRectangle &first, const DockedRectangle &second, int allowedPopDirections, struct collision_info &info);
   
   static DockedRectangle leftBorder;
   static DockedRectangle rightBorder;
   static DockedRectangle topBorder;
   static DockedRectangle bottomBorder;
-  static void getIntersectionInfo(DockedRectangle &first, DockedRectangle &second, struct collision_info &ans);
+  static void getIntersectionInfo(const DockedRectangle &first, const DockedRectangle &second, struct collision_info &ans);
 
 
  public:
-  static bool rectanglesIntersect(DockedRectangle &first, DockedRectangle &second);
+  static bool rectanglesIntersect(const DockedRectangle &first, const DockedRectangle &second);
   static bool collideBorders(MovableRectangle &ball);
 
   // allowedPopDirections is a four-bit mask (left, right, top, bottom)
   // allowedReflects is a two-bit mask (x, y)
-  static int collideRectangle(MovableRectangle &first, DockedRectangle &second, int allowedPopDirections, int allowedReflects) ;
+  static int collideRectangle(MovableRectangle &first, const DockedRectangle &second, int allowedPopDirections, int allowedReflects) ;
 };
 
 #endif

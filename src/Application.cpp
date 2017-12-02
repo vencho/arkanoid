@@ -23,9 +23,8 @@
 Application::Application() : mainMenu(new MainMenu(*this)), 
 			     menuInputHandler(new MenuInputHandler(menuStack)),
 			     gameInputHandler(new GameInputHandler(board)),
-			     board(PLAY_AREA_WIDTH, PLAY_AREA_HEIGHT),
 			     gamePane(new GamePane(board)),
-			     menuPane(new MenuPane(menuStack, SCREEN_WIDTH, SCREEN_HEIGHT)) {
+			     menuPane(new MenuPane(menuStack, screenWidth, screenHeight)) {
   haveFinished = false;
   menuMode = true;
   menuStack.push(mainMenu.get());
@@ -33,8 +32,8 @@ Application::Application() : mainMenu(new MainMenu(*this)),
   window = SDL_CreateWindow("Arkanoid", 
 					SDL_WINDOWPOS_UNDEFINED,
 					SDL_WINDOWPOS_UNDEFINED,
-					SCREEN_WIDTH,
-					SCREEN_HEIGHT,
+					screenWidth,
+					screenHeight,
 					0);
   screen = SDL_GetWindowSurface(window);
 }
@@ -69,17 +68,17 @@ void Application::tick() {
   handleInput();
   if(isFinished()) return;
 
-  if(menuMode) menuPane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0); 
+  if(menuMode) menuPane -> draw(screen, (screenWidth-GameScreen::gameScreenWidth)/2, 0); 
   else {
     board.tick();
-    gamePane -> draw(screen, (SCREEN_WIDTH-GAME_SCREEN_WIDTH)/2, 0);
+    gamePane -> draw(screen, (screenWidth-GameScreen::gameScreenWidth)/2, 0);
   }
   SDL_UpdateWindowSurface(window);
 
   t2 = clock();
-  double secondsspent = (t2 - t1) / ( (double) CLOCKS_PER_SEC) ;
-  int delay = (int)(1000*(SPF - secondsspent));
-  if(delay > 0){
+  int msSpent = (int) (1000*(t2 - t1) / ( (double) CLOCKS_PER_SEC));
+  int delay = msPerFrame - msSpent;
+  if(delay > 0) {
     SDL_Delay(delay);
   }
 

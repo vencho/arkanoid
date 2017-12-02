@@ -1,4 +1,5 @@
 #include<geometry/CollisionManager.h>
+#include<model/Board.h>
 #include<Global.h>
 #include<vector>
 #include<utility>
@@ -6,12 +7,14 @@
 
 #define INFINITY 4000
 DockedRectangle CollisionManager::leftBorder = DockedRectangle(-INFINITY, 0, INFINITY, INFINITY);
-DockedRectangle CollisionManager::rightBorder = DockedRectangle(PLAY_AREA_WIDTH, 0, INFINITY, INFINITY);
+DockedRectangle CollisionManager::rightBorder = DockedRectangle(Board::playAreaWidth, 0, INFINITY, INFINITY);
 DockedRectangle CollisionManager::topBorder = DockedRectangle(0, -INFINITY, INFINITY, INFINITY);
 #undef INFINITY
 
 
-void CollisionManager::getIntersectionInfo(DockedRectangle &first, DockedRectangle &second, struct CollisionManager::collision_info &ans) {
+void CollisionManager::getIntersectionInfo(const DockedRectangle &first,
+					   const DockedRectangle &second, 
+					   struct CollisionManager::collision_info &ans) {
   if(!rectanglesIntersect(first, second)) {
     ans.intersect[0] = false;
     ans.intersect[1] = false;
@@ -51,7 +54,7 @@ bool CollisionManager::collideBorders(MovableRectangle &ball) {
 }
 
 int CollisionManager::collideRectangle(MovableRectangle &first, 
-				       DockedRectangle &second, 
+				       const DockedRectangle &second, 
 				       int allowedPopDirections, 
 				       int allowedReflects) {
   if(first.isMovingX(true)) allowedPopDirections &= 14;
@@ -92,7 +95,7 @@ If two edges are equally near and both allowed, then push
 out in both directions.
 */
 int CollisionManager::popRectangle(DockedRectangle &first, 
-				   DockedRectangle &second, 
+				   const DockedRectangle &second, 
 				   int allowedPopDirections, 
 				   CollisionManager::collision_info &info) {
 
@@ -147,7 +150,7 @@ int CollisionManager::intervalOverlap(int a, int b, int c, int d) {
 }
 
 /* Do the rectangles first and second intersect? */
-bool CollisionManager::rectanglesIntersect(DockedRectangle &first, DockedRectangle &second) {
+bool CollisionManager::rectanglesIntersect(const DockedRectangle &first, const DockedRectangle &second) {
   bool a = intervalsIntersect(first.getX(), first.getX() + first.getWidth()-1, 
 			      second.getX(), second.getX() + second.getWidth()-1);
   bool b = intervalsIntersect(first.getY(), first.getY() + first.getHeight()-1, 

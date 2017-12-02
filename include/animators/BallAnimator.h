@@ -1,5 +1,5 @@
 #ifndef BALL_ANIMATOR_H_DEFINED
-#define BALL_ANIMATOR_H
+#define BALL_ANIMATOR_H_DEFINED
 
 #include<model/Ball.h>
 #include<SDL.h>

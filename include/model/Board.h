@@ -34,6 +34,8 @@ class Board {
   std::vector<GameEventMonitor *> monitors;
   std::vector<Enemy> enemies;
 
+  const static int respawnTimeInFrames = 60;
+
   Paddle player;
   int width, height;
   void loadTiles(std::string filename);
@@ -60,7 +62,10 @@ class Board {
   void spawnEnemy(bool left);
   void destroyTile(int index);
  public:
-  Board(int width, int height);
+  const static int playAreaWidth = 13*Tile::tilePhysicalWidth;
+  const static int playAreaHeight = 28*Tile::tilePhysicalHeight;
+
+  Board();
   void addMonitor(GameEventMonitor *gem);
   void unstickBalls();
   void fireBullets();

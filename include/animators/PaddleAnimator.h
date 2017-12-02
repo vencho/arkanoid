@@ -7,6 +7,8 @@ class PaddleAnimator {
  private:
   const Board &board;
   std::vector<SDL_Surface *> paddleSprites;
+  const static int paddleSpriteLength[8];
+  
  public:
   PaddleAnimator(const Board &board);
   void loadSprites(SDL_Surface *spritesheet);

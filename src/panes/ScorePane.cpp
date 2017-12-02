@@ -2,8 +2,8 @@
 
 ScorePane::ScorePane(Board &board) : board(board) {
   board.addMonitor(this);
-  this -> width = SCORE_PANE_WIDTH;
-  this -> height = SCORE_PANE_HEIGHT;
+  this -> width = scorePaneWidth;
+  this -> height = scorePaneHeight;
   font = TTF_OpenFont("./res/fonts/Pacifico.ttf", 20);
   textcolor = {0, 0, 255};
   reset();
@@ -31,8 +31,8 @@ void ScorePane::drawYourself(SDL_Surface *target, int baseX, int baseY) {
 
   r.x = baseX; 
   r.y = baseY;
-  r.w = SCORE_PANE_WIDTH;
-  r.h = SCORE_PANE_HEIGHT;
+  r.w = scorePaneWidth;
+  r.h = scorePaneHeight;
   SDL_FillRect(target, &r, SDL_MapRGB(target->format, 0, 0, 0));
 
   r.x = baseX;

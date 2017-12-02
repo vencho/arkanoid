@@ -19,6 +19,8 @@ class Ball : public MovableRectangle {
   static void startSlow();
   static void stopSlow();
   static void tickSlow();
+  const static int ballPhysicalWidth = 10;
+  const static int ballPhysicalHeight = 10;
  private:
   const static double baseSpeed;
   static int framesLeftSlow;

@@ -39,7 +39,7 @@ ExplosionAnimator::explosion::explosion(int x, int y) {
   ticksSoFar = 0;
 }
 
-void ExplosionAnimator::notifyEnemyDestroyed(Enemy &enemy) {
+void ExplosionAnimator::notifyEnemyDestroyed(const Enemy &enemy) {
   addExplosion(enemy.getX() + enemy.getWidth() / 2, enemy.getY() + enemy.getHeight()/2);
 }
 

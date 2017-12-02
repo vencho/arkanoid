@@ -9,6 +9,8 @@ class Powerup : public MovableRectangle {
   char type;
   int id;
  public:
+  const static int powerupPhysicalWidth = 44;
+  const static int powerupPhysicalHeight = 22;
   int getId() const;
   char getType() const;
   Powerup(const Tile &tile, char type);

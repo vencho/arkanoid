@@ -9,7 +9,7 @@ class GameEventMonitor {
   virtual void notifyTileHit(int id);
   virtual void notifyPowerupDestroyed(int id);
   virtual void notifyDied();
-  virtual void notifyEnemyDestroyed(Enemy &enemy);
+  virtual void notifyEnemyDestroyed(const Enemy &enemy);
 };
 
 #endif

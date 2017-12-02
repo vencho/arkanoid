@@ -26,6 +26,11 @@ class GameScreen : public DrawablePane {
  public:
   GameScreen(Board &board);
   virtual void reset();
+  const static int borderSize = 18;
+  const static int gameScreenWidth = Board::playAreaWidth + 2*borderSize;
+  const static int gameScreenHeight = Board::playAreaHeight + borderSize;
+  const static int shadowOffsetX = 5;
+  const static int shadowOffsetY = 10;
 
  protected:
   virtual void drawYourself(SDL_Surface *target, int baseX, int baseY);

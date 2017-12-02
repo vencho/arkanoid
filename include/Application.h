@@ -41,6 +41,11 @@ class Application {
   void switchToGameMode();
   void switchToMenuMode();
   void menuNavigate(Menu *menu);
+
+  const static int screenWidth = 640;
+  const static int screenHeight = 700;
+  const static int framerate = 60;
+  const static int msPerFrame = 1000/framerate;
 };
 
 

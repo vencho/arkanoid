@@ -12,6 +12,8 @@ class Tile : public DockedRectangle {
   int colour;
   int id;
  public: 
+  const static int tilePhysicalWidth = 44;
+  const static int tilePhysicalHeight = 22;
   void takeDamage();
   Tile(int x, int y, int healthleft, int colour);
   int getColour() const;
