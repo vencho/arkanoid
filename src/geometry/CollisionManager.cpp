@@ -1,6 +1,5 @@
 #include<geometry/CollisionManager.h>
 #include<model/Board.h>
-#include<Global.h>
 #include<vector>
 #include<utility>
 #include<cstdio>

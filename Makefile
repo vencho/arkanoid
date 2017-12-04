@@ -79,9 +79,7 @@ $(MONITORS)
 
 ABSTRACTS = \
 ./$(INCDIR)/commands/AbstractCommand.h \
-./$(INCDIR)/controllers/AbstractInputHandler.h \
-./$(INCDIR)/Global.h
-
+./$(INCDIR)/controllers/AbstractInputHandler.h 
 
 
 all : main 
@@ -89,7 +87,7 @@ all : main
 main : $(OBJECTS) $(ABSTRACTS)
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main $(LIBS)
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCDIR)/%.h $(INCDIR)/Global.h
+$(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) -c $< -o $@ $(LIBS)
 
 clean :

@@ -1,6 +1,5 @@
 #ifndef TILE_H_INCLUDED
 #define TILE_H_INCLUDED
-#include<Global.h>
 #include<geometry/DockedRectangle.h>
 
 class Tile : public DockedRectangle {

@@ -1,6 +1,5 @@
 #include<model/Enemy.h>
 #include<model/Board.h>
-#include<Global.h>
 #include<cstdlib>
 #include<cstdio>
 

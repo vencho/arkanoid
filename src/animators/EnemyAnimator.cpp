@@ -1,5 +1,4 @@
 #include<animators/EnemyAnimator.h>
-#include<Global.h>
 #include<SpriteUtils.h>
 
 EnemyAnimator::EnemyAnimator(const std::vector<Enemy> &enemies) : enemies(enemies) {

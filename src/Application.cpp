@@ -1,6 +1,5 @@
 #include<string>
 #include<Application.h>
-#include<Global.h>
 #include<Configuration.h>
 
 #include<model/Board.h>

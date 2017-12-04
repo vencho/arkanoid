@@ -1,7 +1,6 @@
 #ifndef PADDLE_H_INCLUDED
 #define PADDLE_H_INCLUDED
 
-#include<Global.h>
 #include<geometry/MovableRectangle.h>
 #include<Configuration.h>
 #include<model/Tile.h>

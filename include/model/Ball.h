@@ -4,7 +4,6 @@
 #include<model/Tile.h>
 #include<model/Paddle.h>
 #include<geometry/MovableRectangle.h>
-#include<Global.h>
 
 class Ball : public MovableRectangle {
  public:
