@@ -33,19 +33,28 @@ class Board {
   std::vector<Powerup> powerups;
   std::vector<GameEventMonitor *> monitors;
   std::vector<Enemy> enemies;
+  std::vector<Paddle> paddles;
 
   const static int respawnTimeInFrames = 60;
 
-  Paddle player;
   int width, height;
   void loadTiles(std::string filename);
 
   void reportDeath() const;
-  void reportTileDestruction(int id) const;
   void reportTileHit(int id) const;
-  void reportPowerupDestroyed(int id) const;
-  void reportEnemyDestroyed(Enemy &enemy) const;
-  
+
+  void reportTileEnters(const Tile &tile) const;
+  void reportTileLeaves(const Tile &tile) const;
+  void reportEnemyEnters(const Enemy &enemy) const;
+  void reportEnemyLeaves(const Enemy &enemy) const;
+  void reportBallEnters(const Ball &ball) const;
+  void reportBallLeaves(const Ball &ball) const;
+  void reportPowerupEnters(const Powerup &powerup) const;
+  void reportPowerupLeaves(const Powerup &powerup) const;
+  void reportBulletEnters(const Bullet &bullet) const;
+  void reportBulletLeaves(const Bullet &bullet) const;
+  void reportTileHit(const Tile &tile) const;
+
   void collisionLogic();
   void collideBallsWithBorders();
   void collideBallsWithPlayer();
@@ -60,7 +69,8 @@ class Board {
   void startDisruption();
   void consumePowerup(Powerup &powerup);
   void spawnEnemy(bool left);
-  void destroyTile(int index);
+  void spawnBall();
+  void destroyTile(Tile &tile, int index);
  public:
   const static int playAreaWidth = 13*Tile::tilePhysicalWidth;
   const static int playAreaHeight = 28*Tile::tilePhysicalHeight;
@@ -78,6 +88,8 @@ class Board {
   const std::vector<Powerup> &getPowerups() const;
   const std::vector<Bullet> &getBullets() const;
   const std::vector<Enemy> &getEnemies() const;
+  const std::vector<Paddle> &getPaddles() const;
+  Paddle &player;
   const Paddle &getPaddle() const;
   Paddle &getPaddle();
 };

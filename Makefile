@@ -19,6 +19,7 @@ CONTROLLERS = \
 ./$(OBJDIR)/controllers/GameInputHandler.o 
 
 MODELS = \
+./$(OBJDIR)/model/GameObject.o \
 ./$(OBJDIR)/model/Tile.o \
 ./$(OBJDIR)/model/Paddle.o \
 ./$(OBJDIR)/model/Ball.o \
@@ -51,14 +52,9 @@ MENUS = \
 ./$(OBJDIR)/menus/SetValueMenuItem.o
 
 ANIMATORS = \
-./$(OBJDIR)/animators/TileAnimator.o \
-./$(OBJDIR)/animators/PowerupAnimator.o \
-./$(OBJDIR)/animators/BallAnimator.o \
-./$(OBJDIR)/animators/EnemyAnimator.o \
+./$(OBJDIR)/animators/Animator.o \
 ./$(OBJDIR)/animators/ExplosionAnimator.o \
-./$(OBJDIR)/animators/PaddleAnimator.o \
 ./$(OBJDIR)/animators/BorderAnimator.o \
-./$(OBJDIR)/animators/BulletAnimator.o \
 ./$(OBJDIR)/SpriteUtils.o 
 
 MONITORS = \
@@ -87,7 +83,7 @@ all : main
 main : $(OBJECTS) $(ABSTRACTS)
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) $(SRCDIR)/main.cpp $(OBJECTS) -o $(BINDIR)/main $(LIBS)
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+$(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCDIR)/%.h
 	$(CC) $(FLAGS) -I$(INCDIR) -I$(LIBDIR) -c $< -o $@ $(LIBS)
 
 clean :

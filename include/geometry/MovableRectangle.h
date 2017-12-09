@@ -5,9 +5,7 @@
 
 class MovableRectangle : public DockedRectangle {
  protected:
-  /*
-    The velocity is (scaledVx, scaledVy) / denominator.
-  */
+  /* The velocity is (scaledVx, scaledVy) / denominator. */
   int scaledVx, scaledVy;
   virtual void move();
   double getScaledSpeed();
@@ -18,8 +16,9 @@ class MovableRectangle : public DockedRectangle {
   MovableRectangle();
   int getPreviousY();
   int getPreviousX();
-  int getVelocityX();
-  int getVelocityY();
+  int getScaledVelocityX() const;
+  int getScaledVelocityY() const;
+  static int getVelocityDenominator();
   void setVelocity(int dx, int dy);
   void setVelocityX(int dx);
   void setVelocityY(int dy);

@@ -3,9 +3,10 @@
 
 #include<model/Tile.h>
 #include<model/Paddle.h>
+#include<model/GameObject.h>
 #include<geometry/MovableRectangle.h>
 
-class Ball : public MovableRectangle {
+class Ball : public MovableRectangle, public GameObject {
  public:
   Ball(const Paddle &player);
   void modifyAngle(double angle);

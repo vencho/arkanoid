@@ -4,14 +4,8 @@
 #include<cstdio>
 
 Enemy::Enemy(int x, int y) : DockedRectangle(x, y, enemyPhysicalWidth, enemyPhysicalHeight) {
-  static int nextId = 0;
-  id = nextId++;
   ticksOnCurrentCurve = ticksPerCurve;
   curvesCompleted = 0;
-}
-
-int Enemy::getId() const {
-  return id;
 }
 
 void Enemy::tick() {

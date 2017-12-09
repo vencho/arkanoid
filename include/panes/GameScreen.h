@@ -3,25 +3,21 @@
 #include<SDL.h>
 #include<panes/DrawablePane.h>
 #include<model/Board.h>
-#include<animators/TileAnimator.h>
-#include<animators/PowerupAnimator.h>
-#include<animators/BallAnimator.h>
-#include<animators/EnemyAnimator.h>
 #include<animators/ExplosionAnimator.h>
-#include<animators/PaddleAnimator.h>
 #include<animators/BorderAnimator.h>
-#include<animators/BulletAnimator.h>
+
+#include<../src/animators/Animator.cpp>
 
 class GameScreen : public DrawablePane {
  private:
-  TileAnimator tileAnimator;
-  PowerupAnimator powerupAnimator;
-  BallAnimator ballAnimator;
-  EnemyAnimator enemyAnimator;
-  ExplosionAnimator explosionAnimator;
-  PaddleAnimator paddleAnimator;
+  Animator<Powerup> powerupAnimator;
+  Animator<Ball> ballAnimator;
+  Animator<Enemy> enemyAnimator;
+  Animator<Tile> tileAnimator;
+  Animator<Paddle> paddleAnimator;
+  Animator<Bullet> bulletAnimator;
   BorderAnimator borderAnimator;
-  BulletAnimator bulletAnimator;
+  ExplosionAnimator explosionAnimator;
 
  public:
   GameScreen(Board &board);

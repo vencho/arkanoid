@@ -8,6 +8,18 @@ void DockedRectangle::setY(int y) {
   scaledY = y*denominator;
 }
 
+int DockedRectangle::getScaledX() const {
+  return scaledX;
+}
+
+int DockedRectangle::getScaledY() const {
+  return scaledY;
+}
+
+int DockedRectangle::getPositionDenominator() {
+  return denominator;
+}
+
 int DockedRectangle::getX() const { 
   int whole = scaledX / denominator;
   int remainder = scaledX % denominator;

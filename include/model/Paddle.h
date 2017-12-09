@@ -4,8 +4,9 @@
 #include<geometry/MovableRectangle.h>
 #include<Configuration.h>
 #include<model/Tile.h>
+#include<model/GameObject.h>
 
-class Paddle : public MovableRectangle {
+class Paddle : public MovableRectangle, public GameObject {
  private:
   int ticksLeftLaser;
   int ticksLeftEnlarge;

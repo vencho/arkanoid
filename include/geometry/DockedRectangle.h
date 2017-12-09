@@ -15,13 +15,16 @@ class DockedRectangle : public FloatingRectangle {
   const static int denominator = 1000;
 
  public:
-  /* 
-     Upper right corner, rounded to nearest pixel.
-  */
+  /* Upper right corner, rounded to nearest pixel. */
   int getX() const;
   int getY() const;
   void setX(int x);
   void setY(int y);
+
+  int getScaledX() const;
+  int getScaledY() const;
+  static int getPositionDenominator();
+
   DockedRectangle(int x, int y, int width, int height);
   DockedRectangle();
 };

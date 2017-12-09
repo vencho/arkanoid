@@ -113,7 +113,7 @@ void Application::switchToGameMode() {
   std::string level(lvl);
   std::string levelpath = "levels/level" + level + ".txt";
 
-  board.resetBoard(levelpath);
   gamePane -> reset();
+  board.resetBoard(levelpath);
 }
 

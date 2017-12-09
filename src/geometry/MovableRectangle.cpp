@@ -25,12 +25,16 @@ void MovableRectangle::tick() {
   move();
 }
 
-int MovableRectangle::getVelocityX() { 
-return scaledVx; 
+int MovableRectangle::getScaledVelocityX() const {
+  return scaledVx; 
 }
 
-int MovableRectangle::getVelocityY() { 
+int MovableRectangle::getScaledVelocityY() const {
   return scaledVy; 
+}
+
+int MovableRectangle::getVelocityDenominator() {
+  return denominator;
 }
 
 void MovableRectangle::setVelocity(int dx, int dy) { 
