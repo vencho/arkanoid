@@ -14,18 +14,9 @@
 class Board {
  private:
 
-
-  class EnemySpawner : public GameEventMonitor {
- private:
-   Board &board;
- public:
-   EnemySpawner(Board &board);
-   void tick();
-   int spawnRate;
-   int ticksSinceSpawnLeft;
-   int ticksSinceSpawnRight;
- };
- EnemySpawner enemySpawner;
+  const static int enemySpawnRate = 800;
+  int ticksSinceEnemySpawnedLeft;
+  int ticksSinceEnemySpawnedRight;
 
   std::vector<Tile> tiles;
   std::vector<Ball> balls;
@@ -92,6 +83,9 @@ class Board {
   Paddle &player;
   const Paddle &getPaddle() const;
   Paddle &getPaddle();
+
+  int getTicksSinceSpawnLeft() const;
+  int getTicksSinceSpawnRight() const;
 };
 
 #endif

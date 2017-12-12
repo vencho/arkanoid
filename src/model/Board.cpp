@@ -6,24 +6,12 @@
 #include<cstdio>
 #include<string>
 
-Board::EnemySpawner::EnemySpawner(Board &board) : board(board) {
-  ticksSinceSpawnLeft = 0;
-  ticksSinceSpawnRight = 400;
-  spawnRate = 800;
+int Board::getTicksSinceSpawnLeft() const {
+  return ticksSinceEnemySpawnedLeft;
 }
 
-void Board::EnemySpawner::tick() {
-  ticksSinceSpawnLeft++;
-  ticksSinceSpawnRight++;
-
-  if(ticksSinceSpawnLeft == spawnRate) {
-    ticksSinceSpawnLeft = 0;
-    board.spawnEnemy(true);
-  }
-  if(ticksSinceSpawnRight == spawnRate) {
-    ticksSinceSpawnRight = 0;
-    board.spawnEnemy(false);
-  }
+int Board::getTicksSinceSpawnRight() const {
+  return ticksSinceEnemySpawnedRight;
 }
 
 void Board::fireBullets() {
@@ -244,7 +232,7 @@ void Board::destroyTile(Tile &tile, int idx) {
   reportPowerupEnters(powerups.back());
 }
 
-Board::Board() : enemySpawner(*this), paddles(1, Paddle()), player(paddles[0]) {
+Board::Board() : paddles(1, Paddle()), player(paddles[0]) {
 }
 
 void Board::spawnBall() {
@@ -265,7 +253,9 @@ void Board::resetBoard(std::string filename) {
 
   player.reset();
 
-  // FIXME: reset enemy spawner and powerup spawner
+  ticksSinceEnemySpawnedLeft = 0;
+  ticksSinceEnemySpawnedRight = enemySpawnRate / 2;
+  // FIXME: reset powerup spawner
 }
 
 void Board::loadTiles(std::string filename) {
@@ -376,7 +366,10 @@ void Board::tick() {
     }
   }
   
-  enemySpawner.tick();
+  ticksSinceEnemySpawnedLeft = (ticksSinceEnemySpawnedLeft + 1) % enemySpawnRate;
+  ticksSinceEnemySpawnedRight = (ticksSinceEnemySpawnedRight + 1) % enemySpawnRate;
+  if(ticksSinceEnemySpawnedLeft == 25) spawnEnemy(true);
+  if(ticksSinceEnemySpawnedRight == 25) spawnEnemy(false);
 
   player.tick();
   collidePlayerWithBorders();
@@ -451,8 +444,8 @@ const std::vector<Paddle> &Board::getPaddles() const {
 }
 
 void Board::spawnEnemy(bool left) {
-  if(left) enemies.emplace_back(90, 0);
-  else enemies.emplace_back(270, 0);
+  if(left) enemies.emplace_back(132 - Enemy::enemyPhysicalWidth/2, -25);
+  else enemies.emplace_back(Board::playAreaWidth - 132 - Enemy::enemyPhysicalWidth/2, -25);
   reportEnemyEnters(enemies.back());
 }
 

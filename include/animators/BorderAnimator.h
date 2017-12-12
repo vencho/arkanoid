@@ -13,6 +13,9 @@ class BorderAnimator {
 
   std::vector<SDL_Surface *> topPipes, leftPipes, rightPipes;
 
+  int chooseGateSprite(int x);
+  void selectGateSprites();
+
  public:
   BorderAnimator(const Board &board);
   void loadSprites(SDL_Surface *spritesheet);
