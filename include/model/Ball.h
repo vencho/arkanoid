@@ -22,7 +22,6 @@ class Ball : public MovableRectangle, public GameObject {
   const static int ballPhysicalWidth = 10;
   const static int ballPhysicalHeight = 10;
  private:
-  const static double baseSpeed;
   static int framesLeftSlow;
   int frozen;
   const Paddle *frozen_player;

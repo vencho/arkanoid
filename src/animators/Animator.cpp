@@ -155,16 +155,26 @@ template <> class Animator<Enemy> : public AnimatorBase<Enemy> {
 public:
   Animator<Enemy>(const std::vector<Enemy> &gameObjects) : AnimatorBase<Enemy>(gameObjects) { }
   virtual void loadSprites(SDL_Surface *spritesheet) {
-    sprites.resize(1);
-    framesPerSprite.resize(1);
-    nextCycle.resize(1);
+    sprites.resize(3);
+    framesPerSprite.resize(3);
+    nextCycle.resize(3);
     SpriteUtils::loadSpritesFromGrid(spritesheet, 8, 335, 34, 44, 10, 0, 5, 5, 
 				     Enemy::enemyPhysicalWidth, Enemy::enemyPhysicalHeight, sprites[0]);
     framesPerSprite[0] = 3; 
     nextCycle[0] = 0;
+
+    SpriteUtils::loadSpritesFromGrid(spritesheet, 222, 337, 40, 40, 4, 4, 5, 5,
+				     Enemy::enemyPhysicalWidth, Enemy::enemyPhysicalHeight, sprites[1]);
+    framesPerSprite[1] = 6;
+    nextCycle[1] = 1;
+
+    SpriteUtils::loadSpritesFromGrid(spritesheet, 5, 567, 34, 34, 10, 10, 5, 5,
+				     Enemy::enemyPhysicalWidth, Enemy::enemyPhysicalHeight, sprites[2]);
+    framesPerSprite[2] = 6;
+    nextCycle[2] = 2;
   }
   virtual void notifyEnters(const Enemy &gameObject) {
-    frameCounter[gameObject.getId()] = CountPacket(0, 0, 0);
+    frameCounter[gameObject.getId()] = CountPacket(rand() % sprites.size(), 0, 0);
   }
 };
 

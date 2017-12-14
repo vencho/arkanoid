@@ -209,6 +209,7 @@ void Board::consumePowerup(Powerup &powerup) {
 
 void Board::destroyTile(Tile &tile, int idx) {
   printf("Erasing tile with id %d.\n", tiles[idx].getId());
+  bool spawnPowerup = (rand() % Configuration::powerupSpawnRate == 0 && powerups.size() < Configuration::maxPowerupsOnScreen);
   char powerupLetter;
   switch(rand() % 7) {
   case 0:
@@ -227,9 +228,9 @@ void Board::destroyTile(Tile &tile, int idx) {
     powerupLetter = 'P'; break;
   }
   reportTileLeaves(tile);
-  powerups.emplace_back(tile, powerupLetter);
+  if(spawnPowerup) powerups.emplace_back(tile, powerupLetter);
   tiles.erase(tiles.begin() + idx);
-  reportPowerupEnters(powerups.back());
+  if(spawnPowerup) reportPowerupEnters(powerups.back());
 }
 
 Board::Board() : paddles(1, Paddle()), player(paddles[0]) {
@@ -254,8 +255,7 @@ void Board::resetBoard(std::string filename) {
   player.reset();
 
   ticksSinceEnemySpawnedLeft = 0;
-  ticksSinceEnemySpawnedRight = enemySpawnRate / 2;
-  // FIXME: reset powerup spawner
+  ticksSinceEnemySpawnedRight = Configuration::enemySpawnRate / 2;
 }
 
 void Board::loadTiles(std::string filename) {
@@ -264,6 +264,7 @@ void Board::loadTiles(std::string filename) {
   int row, column, health, colour;
   while(1) {
     if(fscanf(fin, "%d%d%d%d", &row, &column, &health, &colour) != 4) break;
+    if(colour == 8 || colour == 9) health += Configuration::toughTileBonus;
     tiles.emplace_back(row, column, health, colour);
     reportTileEnters(tiles.back());
   }
@@ -366,8 +367,8 @@ void Board::tick() {
     }
   }
   
-  ticksSinceEnemySpawnedLeft = (ticksSinceEnemySpawnedLeft + 1) % enemySpawnRate;
-  ticksSinceEnemySpawnedRight = (ticksSinceEnemySpawnedRight + 1) % enemySpawnRate;
+  ticksSinceEnemySpawnedLeft = (ticksSinceEnemySpawnedLeft + 1) % Configuration::enemySpawnRate;
+  ticksSinceEnemySpawnedRight = (ticksSinceEnemySpawnedRight + 1) % Configuration::enemySpawnRate;
   if(ticksSinceEnemySpawnedLeft == 25) spawnEnemy(true);
   if(ticksSinceEnemySpawnedRight == 25) spawnEnemy(false);
 

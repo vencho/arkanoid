@@ -23,17 +23,17 @@ Application::Application() : mainMenu(new MainMenu(*this)),
 			     menuInputHandler(new MenuInputHandler(menuStack)),
 			     gameInputHandler(new GameInputHandler(board)),
 			     gamePane(new GamePane(board)),
-			     menuPane(new MenuPane(menuStack, screenWidth, screenHeight)) {
+			     menuPane(new MenuPane(menuStack, Configuration::screenWidth, Configuration::screenHeight)) {
   haveFinished = false;
   menuMode = true;
   menuStack.push(mainMenu.get());
-
+  
   window = SDL_CreateWindow("Arkanoid", 
-					SDL_WINDOWPOS_UNDEFINED,
-					SDL_WINDOWPOS_UNDEFINED,
-					screenWidth,
-					screenHeight,
-					0);
+			    SDL_WINDOWPOS_UNDEFINED,
+			    SDL_WINDOWPOS_UNDEFINED,
+			    Configuration::screenWidth,
+			    Configuration::screenHeight,
+			    0);
   screen = SDL_GetWindowSurface(window);
 }
 
@@ -67,21 +67,30 @@ void Application::tick() {
   handleInput();
   if(isFinished()) return;
 
-  if(menuMode) menuPane -> draw(screen, (screenWidth-GameScreen::gameScreenWidth)/2, 0); 
+  if(menuMode) menuPane -> draw(screen, (Configuration::screenWidth-GameScreen::gameScreenWidth)/2, 0); 
   else {
     board.tick();
-    gamePane -> draw(screen, (screenWidth-GameScreen::gameScreenWidth)/2, 0);
+    gamePane -> draw(screen, (Configuration::screenWidth-GameScreen::gameScreenWidth)/2, 0);
   }
   SDL_UpdateWindowSurface(window);
 
   t2 = clock();
   int msSpent = (int) (1000*(t2 - t1) / ( (double) CLOCKS_PER_SEC));
-  int delay = msPerFrame - msSpent;
+  int delay = Configuration::msPerFrame - msSpent;
   if(delay > 0) {
     SDL_Delay(delay);
   }
 
-  if(!menuMode && board.getTiles().size() == 0) switchToMenuMode();
+  if(!menuMode && board.getTiles().size() == 0) {
+    Configuration::level++;
+    if(Configuration::level > Configuration::maxLevel) {
+      Configuration::level = Configuration::minLevel;
+      switchToMenuMode();
+    }
+    else {
+      switchToGameMode();
+    }
+  }
 }
 
 void Application::requestEnd() {
@@ -106,6 +115,7 @@ void Application::switchToMenuMode() {
 }
 
 void Application::switchToGameMode() {
+  Configuration::setDifficulty(Configuration::difficulty);
   menuMode = false;
  
   char lvl[4];

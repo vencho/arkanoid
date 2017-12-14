@@ -18,6 +18,7 @@ class Menu {
  public:
   Menu(std::string title, Application &application);
   int getNumItems();
+  int getSelectedIndex();
   void advanceSelection(int howmuch);
   MenuItem & getItemByIndex(int ind);
   MenuItem & getSelectedItem();

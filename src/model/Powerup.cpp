@@ -1,5 +1,6 @@
 #include<model/Powerup.h>
 #include<model/Tile.h>
+#include<Configuration.h>
 
 char Powerup::getType() const {
   return type;
@@ -7,6 +8,6 @@ char Powerup::getType() const {
 
 Powerup::Powerup(const Tile &tile, char type) : MovableRectangle(tile.getX(), tile.getY(), 
 								 powerupPhysicalWidth, 
-								 powerupPhysicalHeight, 0, 1) {
+								 powerupPhysicalHeight, 0, Configuration::powerupSpeed) {
   this -> type = type;
 }

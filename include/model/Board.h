@@ -14,7 +14,6 @@
 class Board {
  private:
 
-  const static int enemySpawnRate = 800;
   int ticksSinceEnemySpawnedLeft;
   int ticksSinceEnemySpawnedRight;
 
@@ -63,7 +62,7 @@ class Board {
   void spawnBall();
   void destroyTile(Tile &tile, int index);
  public:
-  const static int playAreaWidth = 13*Tile::tilePhysicalWidth;
+  const static int playAreaWidth = 11*Tile::tilePhysicalWidth;
   const static int playAreaHeight = 28*Tile::tilePhysicalHeight;
 
   Board();

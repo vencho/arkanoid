@@ -4,7 +4,6 @@
 #include<cmath>
 
 int Ball::framesLeftSlow = 0;
-const double Ball::baseSpeed = 4.242640687; // 3*sqrt(2)
 
 Ball::Ball(const Paddle &player) {
   frozen = 0;
@@ -24,8 +23,8 @@ Ball::Ball(const Paddle &player) {
 void Ball::setAngle(double angle) {
   double cs = cos(angle);
   double sn = sin(angle);
-  scaledVx = (int) (baseSpeed * denominator * cs);
-  scaledVy = (int) (baseSpeed * denominator * sn);
+  scaledVx = (int) (Configuration::ballSpeed * denominator * cs);
+  scaledVy = (int) (Configuration::ballSpeed * denominator * sn);
 }
 
 void Ball::modifyAngle(double angle) {
@@ -46,8 +45,8 @@ void Ball::stopSlow() {
 void Ball::move() {
   if(!framesLeftSlow) MovableRectangle::move();
   else {
-    scaledX += scaledVx / 2;
-    scaledY += scaledVy / 2;
+    scaledX += scaledVx / Configuration::slowFactor;
+    scaledY += scaledVy / Configuration::slowFactor;
   }
 }
 

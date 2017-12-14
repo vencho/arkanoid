@@ -20,21 +20,23 @@ GameScreen::GameScreen(Board &board) : tileAnimator(board.getTiles()),
   board.addMonitor(&bulletAnimator);
 
   SDL_Surface *spritesheet = SDL_LoadBMP("./res/sprites/sprites.bmp");
+  SDL_Surface *backgrounds = SDL_LoadBMP("./res/sprites/backgrounds.bmp");
   tileAnimator.loadSprites(spritesheet);
   ballAnimator.loadSprites(spritesheet);
   paddleAnimator.loadSprites(spritesheet);
   powerupAnimator.loadSprites(spritesheet);
-  borderAnimator.loadSprites(spritesheet);
+  borderAnimator.loadSprites(spritesheet, backgrounds);
   bulletAnimator.loadSprites(spritesheet);
   enemyAnimator.loadSprites(spritesheet);
   explosionAnimator.loadSprites(spritesheet);
+  SDL_FreeSurface(backgrounds);
   SDL_FreeSurface(spritesheet);
 }
 
 void GameScreen::drawYourself(SDL_Surface *target, int baseX, int baseY) {
-  borderAnimator.drawBackground(target, baseX, baseY);
-  tileAnimator.drawShadows(target, baseX + borderSize + shadowOffsetX, baseY + borderSize + shadowOffsetY);
-  ballAnimator.drawShadows(target, baseX + borderSize + shadowOffsetX, baseY + borderSize + shadowOffsetY);
+  borderAnimator.drawBackground(target, baseX + borderSize, baseY + borderSize);
+  // tileAnimator.drawShadows(target, baseX + borderSize + shadowOffsetX, baseY + borderSize + shadowOffsetY);
+  // ballAnimator.drawShadows(target, baseX + borderSize + shadowOffsetX, baseY + borderSize + shadowOffsetY);
   bulletAnimator.draw(target, baseX + borderSize, baseY + borderSize);
   tileAnimator.draw(target, baseX + borderSize, baseY + borderSize);
   powerupAnimator.draw(target, baseX + borderSize, baseY + borderSize);

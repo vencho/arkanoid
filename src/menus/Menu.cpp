@@ -10,6 +10,10 @@ int Menu::getNumItems() {
   return v.size();
 }
 
+int Menu::getSelectedIndex() {
+  return whichSelected;
+}
+
 MenuItem & Menu::getSelectedItem() {
   return *(v[whichSelected]);
 }
@@ -25,4 +29,3 @@ void Menu::advanceSelection(int howmuch) {
   if(whichSelected < 0) whichSelected += getNumItems();
   getSelectedItem().toggleSelect(); 
 }
-

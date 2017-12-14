@@ -3,7 +3,7 @@
 #include<panes/GameScreen.h>
 
 BorderAnimator::BorderAnimator(const Board &board) : board(board) { }
-void BorderAnimator::loadSprites(SDL_Surface *spritesheet) {
+void BorderAnimator::loadSprites(SDL_Surface *spritesheet, SDL_Surface *backgrounds) {
   shortHorizontalPipeSprite = SpriteUtils::loadSingleSprite(spritesheet, 261, 8, 77, 18);
   longHorizontalPipeSprite = SpriteUtils::loadSingleSprite(spritesheet, 261, 26, 218, 18, Board::playAreaWidth - 177*2, 18);
   leftAnglePipeSprite = SpriteUtils::loadSingleSprite(spritesheet, 479, 5, 28, 40);
@@ -24,15 +24,29 @@ void BorderAnimator::loadSprites(SDL_Surface *spritesheet) {
     leftPipes.push_back(leftVerticalPipeSprite);
     rightPipes.push_back(rightVerticalPipeSprite);
   }
+
+  SpriteUtils::loadSpritesFromGrid(backgrounds, 0, 0, 32, 32, 0, 0, 10, 28, 32, 32, bgSprites);
+  curBgSpriteIdx = rand() % bgSprites.size();
 }
 
 void BorderAnimator::drawBackground(SDL_Surface *target, int baseX, int baseY) {
+  int x, y;
+  for(int x = 0; x < Board::playAreaWidth; x += bgSprites[curBgSpriteIdx] -> w) {
+    for(int y = 0; y < Board::playAreaHeight; y += bgSprites[curBgSpriteIdx] -> h) {
+      SDL_Rect r;
+      r.x = x + baseX;
+      r.y = y + baseY;
+      SDL_BlitSurface(bgSprites[curBgSpriteIdx], nullptr, target, &r);
+    }
+  }
+  /*
   SDL_Rect r;
   r.x = baseX;
   r.y = baseY;
   r.w = GameScreen::gameScreenWidth;
   r.h = GameScreen::gameScreenHeight;
   SDL_FillRect(target, &r, SDL_MapRGB(target->format, 0xcd, 0xcd, 0xcd));
+  */
 }
 
 int BorderAnimator::chooseGateSprite(int x) {
@@ -73,4 +87,6 @@ void BorderAnimator::drawBorders(SDL_Surface *target, int baseX, int baseY) {
 				rightAnglePipeSprite -> h + baseY, rightPipes, true);
 }
 
-void BorderAnimator::reset() { }
+void BorderAnimator::reset() { 
+  curBgSpriteIdx = rand() % bgSprites.size();
+}

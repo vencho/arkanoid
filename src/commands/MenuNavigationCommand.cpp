@@ -3,6 +3,9 @@
 #include<Application.h>
 
 void MenuNavigationCommand::execute() {
+  if(menu != nullptr) {
+    menu -> advanceSelection(menu -> getNumItems() - menu -> getSelectedIndex());
+  }
   application.menuNavigate(menu);
 }
 
