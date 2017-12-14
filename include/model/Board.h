@@ -28,7 +28,8 @@ class Board {
   const static int respawnTimeInFrames = 60;
 
   int width, height;
-  void loadTiles(std::string filename);
+  void loadTiles(const std::string &filename);
+  int colourOf(const std::string &word) const;
 
   void reportDeath() const;
   void reportTileHit(int id) const;

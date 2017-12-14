@@ -7,7 +7,7 @@ const int Configuration::maxDifficulty = 3;
 int Configuration::difficulty = 1;
 
 const int Configuration::minLevel = 1;
-const int Configuration::maxLevel = 3;
+const int Configuration::maxLevel = 35;
 int Configuration::level = minLevel;
 
 const int Configuration::screenWidth = 640;

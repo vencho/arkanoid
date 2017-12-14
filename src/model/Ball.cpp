@@ -84,6 +84,10 @@ void Ball::stick(const Paddle &player, int mask) {
   }
 }
 
+bool Ball::isStuck() const {
+  return frozen;
+}
+
 void Ball::unstick() {
   frozen = false;
   frozen_player = nullptr;

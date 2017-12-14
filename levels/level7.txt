@@ -1,0 +1,16 @@
+GAP
+GAP
+GAP
+GAP
+gap gap gap gap yellow cyan blue
+gap gap gap yellow green blue cyan yellow
+gap gap gap cyan blue green yellow orange
+gap gap green blue cyan yellow green red orange
+gap gap blue green yellow orange red green yellow
+gap gap cyan yellow green red orange yellow green
+gap gap yellow orange red green yellow cyan blue
+gap gap green red orange yellow green blue cyan
+gap gap red green yellow cyan blue green yellow
+gap gap gap yellow green blue cyan yellow
+gap gap gap cyan blue green yellow orange
+gap gap gap gap cyan yellow green

@@ -16,6 +16,7 @@ class Ball : public MovableRectangle, public GameObject {
   virtual void move();
   void stick(const Paddle &player, int stickCode);
   void unstick();
+  bool isStuck() const;
   static void startSlow();
   static void stopSlow();
   static void tickSlow();

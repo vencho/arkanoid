@@ -5,6 +5,9 @@
 #include<geometry/CollisionManager.h>
 #include<cstdio>
 #include<string>
+#include<sstream>
+#include<fstream>
+#include<iostream>
 
 int Board::getTicksSinceSpawnLeft() const {
   return ticksSinceEnemySpawnedLeft;
@@ -149,7 +152,8 @@ void Board::collidePlayerWithEnemies() {
 void Board::collideBallsWithEnemies() {
   for(int i = 0; i < balls.size(); i++) {
     for(int j = 0; j < enemies.size(); j++) {
-      if(CollisionManager::collideRectangle(balls[i], enemies[j], 15, 3)) {
+      int allowedReflects = balls[i].isStuck() ? 0 : 3;
+      if(CollisionManager::collideRectangle(balls[i], enemies[j], 15, allowedReflects)) {
 	reportEnemyLeaves(enemies[j]);
 	enemies.erase(enemies.begin() + j);
 	j--;
@@ -258,17 +262,50 @@ void Board::resetBoard(std::string filename) {
   ticksSinceEnemySpawnedRight = Configuration::enemySpawnRate / 2;
 }
 
-void Board::loadTiles(std::string filename) {
-  tiles.clear();
-  FILE *fin = fopen(filename.c_str(), "r");
-  int row, column, health, colour;
-  while(1) {
-    if(fscanf(fin, "%d%d%d%d", &row, &column, &health, &colour) != 4) break;
-    if(colour == 8 || colour == 9) health += Configuration::toughTileBonus;
-    tiles.emplace_back(row, column, health, colour);
-    reportTileEnters(tiles.back());
+int Board::colourOf(const std::string &word) const {
+  if(word == "white") return 0;
+  else if(word == "orange") return 1;
+  else if(word == "cyan") return 2;
+  else if(word == "red") return 3;
+  else if(word == "blue") return 4;
+  else if(word == "pink") return 5;
+  else if(word == "green") return 6;
+  else if(word == "yellow") return 7;
+  else if(word == "silver") return 8;
+  else if(word == "golden") return 9;
+  else {
+    printf("unrecognised colour in level description!\n");
+    return 0;
   }
-  fclose(fin);
+}
+
+void Board::loadTiles(const std::string &filename) {
+  tiles.clear();
+
+  bool swap = false;
+  std::ifstream fin;
+  fin.open(filename);
+  int row, column, health, colour;
+  for(int row = 1; !fin.eof(); row++) {
+    std::string line;
+    std::getline(fin, line);
+    if(line == "SWAP") { swap ^= 1; row--; continue; }
+    if(line.length() == 0 || line == "GAP") continue;
+    std::istringstream lineStream(line);
+    for(int column = 1; !lineStream.eof(); column++) {
+      std::string word;
+      lineStream >> word;
+      if(word == "gap") continue;
+      if(swap) {
+	tiles.emplace_back(column, row, colourOf(word));
+      }
+      else {
+	tiles.emplace_back(row, column, colourOf(word));
+      }
+      reportTileEnters(tiles.back());
+    }
+  }
+  fin.close();
 }
 
 void Board::unstickBalls() {
