@@ -11,6 +11,7 @@ void BorderAnimator::loadSprites(SDL_Surface *spritesheet, SDL_Surface *backgrou
   leftVerticalPipeSprite = SpriteUtils::loadSingleSprite(spritesheet, 490, 96, 18, 94);
   rightVerticalPipeSprite = SpriteUtils::loadSingleSprite(spritesheet, 490, 192, 18, 94);
   SpriteUtils::loadSpritesFromGrid(spritesheet, 0, 181, 90, 22, 0, 0, 7, 1, 90, 18, gateSprites);
+  shimmerSprite = SpriteUtils::loadSingleSprite(spritesheet, 3, 792, 18, 86);
 
   topPipes.push_back(leftAnglePipeSprite);
   topPipes.push_back(shortHorizontalPipeSprite);
@@ -24,6 +25,11 @@ void BorderAnimator::loadSprites(SDL_Surface *spritesheet, SDL_Surface *backgrou
     leftPipes.push_back(leftVerticalPipeSprite);
     rightPipes.push_back(rightVerticalPipeSprite);
   }
+  rightPipesWithShimmer = rightPipes;
+  rightPipesWithShimmer.pop_back();
+  rightPipesWithShimmer.pop_back();
+  rightPipesWithShimmer.push_back(shimmerSprite);
+  rightPipesWithShimmer.push_back(shimmerSprite);
 
   SpriteUtils::loadSpritesFromGrid(backgrounds, 0, 0, 32, 32, 0, 0, 10, 28, 32, 32, bgSprites);
   curBgSpriteIdx = rand() % bgSprites.size();
@@ -39,14 +45,6 @@ void BorderAnimator::drawBackground(SDL_Surface *target, int baseX, int baseY) {
       SDL_BlitSurface(bgSprites[curBgSpriteIdx], nullptr, target, &r);
     }
   }
-  /*
-  SDL_Rect r;
-  r.x = baseX;
-  r.y = baseY;
-  r.w = GameScreen::gameScreenWidth;
-  r.h = GameScreen::gameScreenHeight;
-  SDL_FillRect(target, &r, SDL_MapRGB(target->format, 0xcd, 0xcd, 0xcd));
-  */
 }
 
 int BorderAnimator::chooseGateSprite(int x) {
@@ -83,8 +81,9 @@ void BorderAnimator::drawBorders(SDL_Surface *target, int baseX, int baseY) {
   selectGateSprites();
   SpriteUtils::drawSpritesInRow(target, baseX, baseY, topPipes, false);
   SpriteUtils::drawSpritesInRow(target, 0 + baseX, leftAnglePipeSprite -> h + baseY, leftPipes, true);
+  std::vector<SDL_Surface *> &rp = board.isPortalOpen() ? rightPipesWithShimmer : rightPipes;
   SpriteUtils::drawSpritesInRow(target, GameScreen::gameScreenWidth - GameScreen::borderSize + baseX, 
-				rightAnglePipeSprite -> h + baseY, rightPipes, true);
+				rightAnglePipeSprite -> h + baseY, rp, true);
 }
 
 void BorderAnimator::reset() { 

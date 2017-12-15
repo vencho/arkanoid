@@ -24,6 +24,7 @@ class Ball : public MovableRectangle, public GameObject {
   const static int ballPhysicalHeight = 10;
  private:
   static int framesLeftSlow;
+  int framesLeftFrozen;
   int frozen;
   const Paddle *frozen_player;
   int frozen_offsetY;

@@ -16,7 +16,8 @@ class Board {
 
   int ticksSinceEnemySpawnedLeft;
   int ticksSinceEnemySpawnedRight;
-
+  bool portalOpen;
+  
   std::vector<Tile> tiles;
   std::vector<Ball> balls;
   std::vector<Bullet> bullets;
@@ -73,6 +74,7 @@ class Board {
   void resetBoard(std::string filename);
   void tick();
   void consumePowerup(char type);
+  bool isPortalOpen() const;
 
   const std::vector<Ball> &getBalls() const;
   const std::vector<Tile> &getTiles() const;

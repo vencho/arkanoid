@@ -27,7 +27,7 @@ class CollisionManager {
 
  public:
   static bool rectanglesIntersect(const DockedRectangle &first, const DockedRectangle &second);
-  static bool collideBorders(MovableRectangle &ball);
+  static bool collideBorders(MovableRectangle &ball, bool collideRight);
 
   // allowedPopDirections is a four-bit mask (left, right, top, bottom)
   // allowedReflects is a two-bit mask (x, y)

@@ -84,6 +84,9 @@ protected:
 
   void reset() {
     frameCounter.clear();
+    for(int i = 0; i < gameObjects.size(); i++) {
+      notifyEnters(gameObjects[i]);
+    }
   }
 
   virtual void loadSprites(SDL_Surface *spritesheet) = 0;

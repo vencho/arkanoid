@@ -10,6 +10,7 @@ Ball::Ball(const Paddle &player) {
   frozen_player = nullptr;
   frozen_partX = 0;
   frozen_offsetY = 0;
+  framesLeftFrozen = 0;
   width = ballPhysicalWidth;
   height = ballPhysicalHeight;
 
@@ -67,6 +68,11 @@ void Ball::tick() {
   else {
     setX(frozen_player -> getX() + (frozen_partX * frozen_player -> getWidth())/10000);
   }
+
+  if(framesLeftFrozen) {
+    framesLeftFrozen--;
+    if(framesLeftFrozen == 0) unstick();
+  }
 }
 
 void Ball::tickSlow() {
@@ -78,6 +84,7 @@ void Ball::stick(const Paddle &player, int mask) {
   frozen = mask;
   frozen_player = &player;
   frozen_offsetY = getY() - player.getY();;
+  framesLeftFrozen = Configuration::ballStickTime;
 
   if(frozen == 3) {
     frozen_partX = (int) (((getX() - player.getX()) / (double) player.getWidth()) * 10000);
@@ -93,6 +100,7 @@ void Ball::unstick() {
   frozen_player = nullptr;
   frozen_partX = 0;
   frozen_offsetY = 0;
+  framesLeftFrozen = 0;
 }
 
 void Ball::modifyAngle(const Paddle &player) {

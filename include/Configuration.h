@@ -10,6 +10,9 @@ public:
   const static int framerate;
   const static int msPerFrame;
 
+  static const int ballStickTime;
+  static const int enemyFramesPerCurve;
+  
   static int difficulty;
   static const int minDifficulty;
   static const int maxDifficulty;

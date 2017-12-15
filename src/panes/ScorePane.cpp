@@ -19,7 +19,7 @@ void ScorePane::notifyDied() {
   deaths++;
 }
 
-void ScorePane::notifyTileDestroyed(int id) {
+void ScorePane::notifyLeaves(const Tile &tile) {
   tilesLeft--;
 }
 

@@ -15,6 +15,9 @@ const int Configuration::screenHeight = 700;
 const int Configuration::framerate = 60;
 const int Configuration::msPerFrame = 1000/Configuration::framerate;
 
+const int Configuration::ballStickTime = 4*framerate;
+const int Configuration::enemyFramesPerCurve = 125;
+
 int Configuration::powerupDuration = 0;
 int Configuration::powerupSpawnRate = 0;
 int Configuration::laserCooldown = 0;

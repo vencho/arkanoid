@@ -19,8 +19,8 @@ class ScorePane : public DrawablePane, public GameEventMonitor {
   const static int scorePaneHeight = 40;
   ScorePane(Board &B);
   virtual void notifyDied();
-  virtual void notifyTileDestroyed(int id);
   virtual void reset();
+  virtual void notifyLeaves(const Tile &tile);
  protected:
   virtual void drawYourself(SDL_Surface *target, int baseX, int baseY);
 };

@@ -116,6 +116,7 @@ void Application::switchToMenuMode() {
 
 void Application::switchToGameMode() {
   Configuration::setDifficulty(Configuration::difficulty);
+  srand(time(0));
   menuMode = false;
  
   char lvl[4];
@@ -123,7 +124,7 @@ void Application::switchToGameMode() {
   std::string level(lvl);
   std::string levelpath = "levels/level" + level + ".txt";
 
-  gamePane -> reset();
   board.resetBoard(levelpath);
+  gamePane -> reset();
 }
 

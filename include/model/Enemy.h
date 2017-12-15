@@ -9,10 +9,8 @@ class Enemy : public DockedRectangle, public GameObject {
   const static int enemyPhysicalWidth = 25; 
   const static int enemyPhysicalHeight = 30;
  private:
-  const static int ticksPerCurve = 250;
   int ticksOnCurrentCurve;
   int curvesCompleted;
-  // int xA, yA, xB, yB, xC, yC, xD, yD;
   std::vector<std::pair<int, int>> deBoor;
   std::vector<std::pair<int, int>> bezier;
   bool initialised;

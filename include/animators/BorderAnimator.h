@@ -9,10 +9,12 @@ class BorderAnimator {
   SDL_Surface *shortHorizontalPipeSprite, *longHorizontalPipeSprite;
   SDL_Surface *leftAnglePipeSprite, *rightAnglePipeSprite; 
   SDL_Surface *leftVerticalPipeSprite, *rightVerticalPipeSprite;
+  SDL_Surface *shimmerSprite;
+  
   std::vector<SDL_Surface *> gateSprites;
   std::vector<SDL_Surface *> bgSprites;
   int curBgSpriteIdx;
-  std::vector<SDL_Surface *> topPipes, leftPipes, rightPipes;
+  std::vector<SDL_Surface *> topPipes, leftPipes, rightPipes, rightPipesWithShimmer;
 
   int chooseGateSprite(int x);
   void selectGateSprites();

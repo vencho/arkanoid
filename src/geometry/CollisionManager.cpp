@@ -44,11 +44,11 @@ void CollisionManager::getIntersectionInfo(const DockedRectangle &first,
   if(ans.intersect[3]) ans.pop[3] = y4 - y1 + 1;
 }
 
-bool CollisionManager::collideBorders(MovableRectangle &ball) {
+bool CollisionManager::collideBorders(MovableRectangle &ball, bool collideRight) {
   bool ans = false;
   ans |= collideRectangle(ball, topBorder, 8, 2);
   ans |= collideRectangle(ball, leftBorder, 2, 1);
-  ans |= collideRectangle(ball, rightBorder, 1, 1);
+  if(collideRight) ans |= collideRectangle(ball, rightBorder, 1, 1);
   return ans;
 }
 

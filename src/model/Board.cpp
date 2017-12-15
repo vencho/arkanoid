@@ -69,7 +69,9 @@ void Board::collideBulletsWithTiles() {
 
 void Board::collideBallsWithBorders() {
   for(int i = 0; i < balls.size(); i++) {
-    CollisionManager::collideBorders(balls[i]);
+    if(!balls[i].isStuck()) {
+      CollisionManager::collideBorders(balls[i], true);
+    }
   }
 }
 
@@ -90,7 +92,7 @@ void Board::collideBallsWithPlayer() {
 }
 
 void Board::collidePlayerWithBorders() {
-  CollisionManager::collideBorders(player);
+  CollisionManager::collideBorders(player, !portalOpen);
 }
 
 void Board::collideBallsWithTiles() {
@@ -204,6 +206,7 @@ void Board::consumePowerup(char type) {
   else if(type == 'S') Ball::startSlow();
   else if(type == 'D') startDisruption();
   else if(type == 'L') player.startLaser();
+  else if(type == 'B') portalOpen = true;
 }
 
 void Board::consumePowerup(Powerup &powerup) {
@@ -215,7 +218,7 @@ void Board::destroyTile(Tile &tile, int idx) {
   printf("Erasing tile with id %d.\n", tiles[idx].getId());
   bool spawnPowerup = (rand() % Configuration::powerupSpawnRate == 0 && powerups.size() < Configuration::maxPowerupsOnScreen);
   char powerupLetter;
-  switch(rand() % 7) {
+  switch(rand() % 6) {
   case 0:
     powerupLetter = 'L'; break;
   case 1:
@@ -228,8 +231,6 @@ void Board::destroyTile(Tile &tile, int idx) {
     powerupLetter = 'D'; break;
   case 5:
     powerupLetter = 'B'; break;
-  case 6:
-    powerupLetter = 'P'; break;
   }
   reportTileLeaves(tile);
   if(spawnPowerup) powerups.emplace_back(tile, powerupLetter);
@@ -260,6 +261,7 @@ void Board::resetBoard(std::string filename) {
 
   ticksSinceEnemySpawnedLeft = 0;
   ticksSinceEnemySpawnedRight = Configuration::enemySpawnRate / 2;
+  portalOpen = false;
 }
 
 int Board::colourOf(const std::string &word) const {
@@ -274,7 +276,7 @@ int Board::colourOf(const std::string &word) const {
   else if(word == "silver") return 8;
   else if(word == "golden") return 9;
   else {
-    printf("unrecognised colour in level description!\n");
+    printf("unrecognised colour %s in level description!\n", word.c_str());
     return 0;
   }
 }
@@ -404,6 +406,11 @@ void Board::tick() {
     }
   }
   
+  if(player.getX() + player.getWidth() - 1 > playAreaWidth) {
+    tiles.clear();
+    return;
+  }
+
   ticksSinceEnemySpawnedLeft = (ticksSinceEnemySpawnedLeft + 1) % Configuration::enemySpawnRate;
   ticksSinceEnemySpawnedRight = (ticksSinceEnemySpawnedRight + 1) % Configuration::enemySpawnRate;
   if(ticksSinceEnemySpawnedLeft == 25) spawnEnemy(true);
@@ -424,7 +431,7 @@ void Board::tick() {
   
   for(int i = 0; i < bullets.size(); i++) {
     bullets[i].tick();
-    if(CollisionManager::collideBorders(bullets[i])) {
+    if(CollisionManager::collideBorders(bullets[i], false)) {
       reportBulletLeaves(bullets[i]);
       bullets.erase(bullets.begin() + i);
       i--;
@@ -487,3 +494,6 @@ void Board::spawnEnemy(bool left) {
   reportEnemyEnters(enemies.back());
 }
 
+bool Board::isPortalOpen() const {
+  return portalOpen;
+}

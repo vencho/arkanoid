@@ -11,9 +11,9 @@ blue blue blue blue blue blue blue blue blue blue blue
 GAP
 blue silver silver silver silver silver silver silver silver silver blue
 golden gap gap gap gap gap gap gap gap gap golden
-red red red red red red red red red red red 
+red red red red red red red red red red red
 GAP
-red red red red red red red red red red red 
+red red red red red red red red red red red
 golden gap gap gap gap gap gap gap gap gap golden
 
 
