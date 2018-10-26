@@ -10,9 +10,13 @@ LIBDIR = /usr/include/SDL2
 
 LDFLAGS = $(flags)
 ifeq ($(shell uname -s), Darwin)
-    flags = -I/Library/Frameworks/SDL2.framework/Headers -I/Library/Frameworks/SDL2_image.framework/Headers -I/Library/Frameworks/SDL2_ttf.framework/Headers -framework SDL2 -framework SDL2_image -framework SDL2_ttf -framework Cocoa
+    flags = -I/Library/Frameworks/SDL2.framework/Headers \
+			-I/Library/Frameworks/SDL2_image.framework/Headers \
+			-I/Library/Frameworks/SDL2_ttf.framework/Headers \
+			-I/Library/Frameworks/SDL2_mixer.framework/Headers \
+			-framework SDL2 -framework SDL2_image -framework SDL2_ttf -framework SDL2_mixer -framework Cocoa
 else
-    flags = -I/usr/include/SDL2 -lSDL2 -lSDL2_image -lSDL2_ttf
+    flags = -I/usr/include/SDL2 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 endif
 
 COMMANDS = \

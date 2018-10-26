@@ -2,6 +2,7 @@
 #define APPLICATION_H_DEFINED
 #include<SDL.h>
 #include<SDL_image.h>
+#include<SDL_mixer.h>
 #include<stack>
 #include<memory>
 #include<model/Board.h>
@@ -17,6 +18,7 @@ class Application {
  private:
   SDL_Surface *screen;
   SDL_Window *window;
+  Mix_Music *music = NULL;
   bool haveFinished;
   bool menuMode;
 
