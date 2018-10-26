@@ -99,6 +99,7 @@ void Application::requestEnd() {
 
 void Application::end() {
   haveFinished = true;
+  Mix_FreeMusic(music);
   SDL_FreeSurface(screen);
   SDL_DestroyWindow(window);
 }
