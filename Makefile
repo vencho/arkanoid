@@ -74,6 +74,7 @@ MONITORS = \
 OBJECTS = \
 ./$(OBJDIR)/Application.o \
 ./$(OBJDIR)/Configuration.o \
+./$(OBJDIR)/Sound.o \
 $(MENUS) \
 $(GEOMETRY) \
 $(PANES) \

@@ -1,6 +1,7 @@
 #include<string>
 #include<Application.h>
 #include<Configuration.h>
+#include<Sound.h>
 
 #include<model/Board.h>
 
@@ -99,7 +100,7 @@ void Application::requestEnd() {
 
 void Application::end() {
   haveFinished = true;
-  Mix_FreeMusic(music);
+  Sound::free();
   SDL_FreeSurface(screen);
   SDL_DestroyWindow(window);
 }
@@ -125,13 +126,7 @@ void Application::switchToGameMode() {
   std::string level(lvl);
   std::string levelpath = "levels/level" + level + ".txt";
 
-  if (music == NULL) {
-	  music = Mix_LoadMUS("res/music/music.wav");
-
-	  if (!(music == NULL)) {
-		  Mix_PlayMusic(music, -1);
-	  }
-  }
+  Sound::playMusic();
 
   board.resetBoard(levelpath);
   gamePane -> reset();
