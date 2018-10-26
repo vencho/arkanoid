@@ -19,6 +19,8 @@ int Board::getTicksSinceSpawnRight() const {
 
 void Board::fireBullets() {
   if(!player.canFire()) return;
+  Sound::playSound("fire");
+
   bullets.emplace_back(player, true);
   reportBulletEnters(bullets.back());
   bullets.emplace_back(player, false);
@@ -70,7 +72,9 @@ void Board::collideBulletsWithTiles() {
 void Board::collideBallsWithBorders() {
   for(int i = 0; i < balls.size(); i++) {
     if(!balls[i].isStuck()) {
-      CollisionManager::collideBorders(balls[i], true);
+      if(CollisionManager::collideBorders(balls[i], true)) {
+          Sound::playSound("bounce");
+      };
     }
   }
 }
@@ -79,6 +83,8 @@ void Board::collideBallsWithPlayer() {
   for(int i = 0; i < balls.size(); i++) {
     int answerMask = CollisionManager::collideRectangle(balls[i], player, 7, 3);
     if(answerMask) {
+      Sound::playSound("bounce");
+
       int stickCode;
       if(answerMask & 1) stickCode = 1;
       else if(answerMask & 2) stickCode = 2;
@@ -109,12 +115,16 @@ void Board::collideBallsWithTiles() {
        (tiles[whichTilesHit[0]].getX() != tiles[whichTilesHit[1]].getX() &&
 	tiles[whichTilesHit[0]].getY() != tiles[whichTilesHit[1]].getY())) {
       for(int j = 0; j < whichTilesHit.size(); j++) {
-	Tile &tile = tiles[whichTilesHit[j]];
-	printf("Collision with tile id %d.\n", tile.getId());
-	CollisionManager::collideRectangle(balls[i], tile, 15, 3);
+          Sound::playSound("tile");
+
+	      Tile &tile = tiles[whichTilesHit[j]];
+	      printf("Collision with tile id %d.\n", tile.getId());
+	      CollisionManager::collideRectangle(balls[i], tile, 15, 3);
       }
     }
     else {
+      Sound::playSound("tile");
+
       Tile &a = tiles[whichTilesHit[0]];
       Tile &b = tiles[whichTilesHit[1]];
       printf("Collision with tiles id %d and %d simultaneously.\n", a.getId(), b.getId());
@@ -144,6 +154,8 @@ void Board::collideBallsWithTiles() {
 void Board::collidePlayerWithEnemies() {
   for(int i = 0; i < enemies.size(); i++) {
     if(CollisionManager::rectanglesIntersect(player, enemies[i])) {
+      Sound::playSound("enemy");
+      
       reportEnemyLeaves(enemies[i]);
       enemies.erase(enemies.begin() + i);
       i--;
@@ -156,9 +168,11 @@ void Board::collideBallsWithEnemies() {
     for(int j = 0; j < enemies.size(); j++) {
       int allowedReflects = balls[i].isStuck() ? 0 : 3;
       if(CollisionManager::collideRectangle(balls[i], enemies[j], 15, allowedReflects)) {
-	reportEnemyLeaves(enemies[j]);
-	enemies.erase(enemies.begin() + j);
-	j--;
+        Sound::playSound("enemy");
+
+	    reportEnemyLeaves(enemies[j]);
+	    enemies.erase(enemies.begin() + j);
+	    j--;
       }
     }
   }
@@ -201,6 +215,8 @@ void Board::startDisruption() {
 }
 
 void Board::consumePowerup(char type) {
+  Sound::playSound("powerup");
+
   if(type == 'E') player.startEnlarge();
   else if(type == 'C') player.startCatch();
   else if(type == 'S') Ball::startSlow();
@@ -311,6 +327,8 @@ void Board::loadTiles(const std::string &filename) {
 }
 
 void Board::unstickBalls() {
+  Sound::playSound("start");
+
   for(int i = 0; i < balls.size(); i++) {
     balls[i].unstick();
   }
@@ -405,7 +423,7 @@ void Board::tick() {
       timetorespawn = respawnTimeInFrames;
     }
   }
-  
+
   if(player.getX() + player.getWidth() - 1 > playAreaWidth) {
     tiles.clear();
     return;
@@ -428,7 +446,7 @@ void Board::tick() {
     }
   }
   Ball::tickSlow();
-  
+
   for(int i = 0; i < bullets.size(); i++) {
     bullets[i].tick();
     if(CollisionManager::collideBorders(bullets[i], false)) {

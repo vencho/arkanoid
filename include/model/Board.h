@@ -1,6 +1,7 @@
 #ifndef BOARD_H_INCLUDED
 #define BOARD_H_INCLUDED
 
+#include<Sound.h>
 #include<model/Tile.h>
 #include<model/Ball.h>
 #include<model/Paddle.h>
@@ -17,7 +18,7 @@ class Board {
   int ticksSinceEnemySpawnedLeft;
   int ticksSinceEnemySpawnedRight;
   bool portalOpen;
-  
+
   std::vector<Tile> tiles;
   std::vector<Ball> balls;
   std::vector<Bullet> bullets;
