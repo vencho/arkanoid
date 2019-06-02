@@ -1,6 +1,7 @@
 #include<string>
 #include<Application.h>
 #include<Configuration.h>
+#include<Sound.h>
 
 #include<model/Board.h>
 
@@ -19,7 +20,7 @@
 #include<controllers/GameInputHandler.h>
 
 
-Application::Application() : mainMenu(new MainMenu(*this)), 
+Application::Application() : mainMenu(new MainMenu(*this)),
 			     menuInputHandler(new MenuInputHandler(menuStack)),
 			     gameInputHandler(new GameInputHandler(board)),
 			     gamePane(new GamePane(board)),
@@ -27,8 +28,8 @@ Application::Application() : mainMenu(new MainMenu(*this)),
   haveFinished = false;
   menuMode = true;
   menuStack.push(mainMenu.get());
-  
-  window = SDL_CreateWindow("Arkanoid", 
+
+  window = SDL_CreateWindow("Arkanoid",
 			    SDL_WINDOWPOS_UNDEFINED,
 			    SDL_WINDOWPOS_UNDEFINED,
 			    Configuration::screenWidth,
@@ -44,10 +45,10 @@ bool Application::isFinished() {
 
 void Application::handleInput() {
   SDL_Event e;
-  while(SDL_PollEvent(&e)) { 
-    if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_q) { 
+  while(SDL_PollEvent(&e)) {
+    if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_q) {
       requestEnd();
-      return; 
+      return;
     }
 
     if(menuMode) menuInputHandler -> handleInput(e);
@@ -67,7 +68,7 @@ void Application::tick() {
   handleInput();
   if(isFinished()) return;
 
-  if(menuMode) menuPane -> draw(screen, (Configuration::screenWidth-GameScreen::gameScreenWidth)/2, 0); 
+  if(menuMode) menuPane -> draw(screen, (Configuration::screenWidth-GameScreen::gameScreenWidth)/2, 0);
   else {
     board.tick();
     gamePane -> draw(screen, (Configuration::screenWidth-GameScreen::gameScreenWidth)/2, 0);
@@ -99,6 +100,7 @@ void Application::requestEnd() {
 
 void Application::end() {
   haveFinished = true;
+  Sound::free();
   SDL_FreeSurface(screen);
   SDL_DestroyWindow(window);
 }
@@ -118,13 +120,14 @@ void Application::switchToGameMode() {
   Configuration::setDifficulty(Configuration::difficulty);
   srand(time(0));
   menuMode = false;
- 
+
   char lvl[4];
   sprintf(lvl, "%d", Configuration::level);
   std::string level(lvl);
   std::string levelpath = "levels/level" + level + ".txt";
 
+  Sound::playMusic();
+
   board.resetBoard(levelpath);
   gamePane -> reset();
 }
-
